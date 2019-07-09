@@ -4,4 +4,5 @@ v8-compile-cache-0/
 composer.lock
 package-lock.json
 vendor/
+.idea/
 Todo.txt
