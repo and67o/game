@@ -1,0 +1,39 @@
+@import './variables';
+
+.game {
+	flex-flow: column nowrap;
+	height: 100vh;
+
+	&__fields {
+		display: flex;
+		justify-content: center;
+		flex-flow: column nowrap;
+		margin-bottom: 12px;
+
+		&__line {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	.line-field {
+		width: 2px;
+		height: 40px;
+		background: $white;
+		margin-left: 12px;
+		margin-right: 12px;
+	}
+
+	&__new-number {
+		flex-direction: column;
+
+		&__field {
+			margin-bottom: 12px;
+			font-size: 60px;
+			width: 190px;
+			text-align: center;
+
+		}
+	}
+
+}

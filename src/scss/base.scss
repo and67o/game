@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik+Mono+One&display=swap');
+@import "variables";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	display: flex;
+	flex-direction: column;
+	max-width: 1400px;
+	margin: 0 auto;
+	box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.6), 20px 5px 5px 0 rgba(0, 0, 0, 0.5);
+	background: $backgroundsDark;
+}
+
+body {
+	overflow-x: hidden;
+	overflow-y: visible;
+	box-sizing: border-box;
+	background: $backgrounds;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+p, li {
+	font-size: 35px;
+	color: $white;
+	font-weight: 500;
+	line-height: 26px;
+	text-align: justify;
+}
+
+
+a {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 26px;
+	text-align: justify;
+	text-decoration: none;
+	outline: none;
+	color: $white;
+	transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+	transition: 0.6s;
+}
+
+h1 {
+	font-size: 45px;
+	color: $white;
+	font-weight: 500;
+	line-height: 22px;
+}
+
+ol, ul, input {
+	list-style: none;
+}
+
+img {
+	vertical-align: middle;
+}
+
+h3 {
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-size: 20px;
+	color: $white;
+	font-weight: 500;
+	line-height: 26px;
+	text-align: justify;
+}
+
+h2 {
+	font-size: 25px;
+	color: $white;
+	font-weight: 500;
+	line-height: 26px;
+	text-align: justify;
+	margin-bottom: 20px;
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.error-field {
+	color: $errorColor;
+	margin-bottom: 12px;
+	font-size: 25px;
+}
+
+.btn {
+	background: none;
+	border: 2px solid $white;
+	padding: 10px;
+	color: $white;
+	width: 250px;
+	font-size: 45px;
+	cursor: pointer;
+	&:hover {
+		border: 2px solid $hoverTextColor;
+		color: $hoverTextColor;
+	}
+	&:disabled {
+		border: 2px solid $backgroundsDark;
+		color: $backgroundsDark;
+	}
+}
+
+.field {
+	vertical-align: middle;
+	border: 2px solid $white;
+	min-width: 500px;
+	min-height: 150px;
+	font-family: 'Rubik Mono One', sans-serif;
+	font-size: 20px;
+	margin-bottom: 15px;
+}
