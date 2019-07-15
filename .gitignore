@@ -5,4 +5,3 @@ composer.lock
 package-lock.json
 vendor/
 .idea/
-Todo.txt

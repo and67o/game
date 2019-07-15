@@ -4,6 +4,8 @@
 namespace Router\src\classes\model;
 
 
+use Router\Db;
+
 class Game extends Model
 {
 
@@ -17,7 +19,6 @@ class Game extends Model
 		$this->computerNumber = $computerNumber;
 		$this->maxCountNumber = 4;
 	}
-
 
 	public function checkNumber($number)
 	{
@@ -46,20 +47,37 @@ class Game extends Model
 	 */
 	public static function createGame()
 	{
-		return Model::_db()->query('insert into games (dt_start, dt_finish, game_status) values (\'1970-01-01\', \'1970-01-01\', 0)');
-
+		$db = Model::_db();
+		$createGame = $db->query(
+			'insert into games
+					(dt_start, dt_finish, game_status)
+				values (\'1970-01-01\', \'1970-01-01\', 0)
+		');
+		return $createGame ? $db->getLastId() : 0;
+	}
+	
+	/**
+	 * Записывает загаднное число
+	 * @param int $gameId - уникальный идентификатор игры
+	 * @return bool
+	 */
+	public  static function writeNumber(int $gameId) : bool {
+		$number = self::createNumber();
+		$userId = 0;
+		$sql = sprintf('
+			insert into game_numbers
+				(g_id, user_id, game_number)
+			VALUES (%d, %d, %d)
+		', $gameId, $userId, $number);
+		return Model::_db()->query($sql);
+	}
+	
+	/**
+	 * возвращет случайное число компьютера
+	 * @return int
+	 */
+	public static function createNumber() {
+		return rand(1000, 9999);
 	}
 
-
-	public static function validateStringField($postParam, $nameField)
-	{
-		$error = '';
-		if (!$postParam) {
-			return [];
-		}
-		if (Validation::minLength($postParam, 3)) {
-			$error = sprintf('Минимальная длина поля %s  - %d символа', $nameField, Validation::MIN_LENGTH_OF_FIELD);
-		}
-		return $error;
-	}
 }

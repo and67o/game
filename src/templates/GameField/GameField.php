@@ -29,6 +29,7 @@
 
 	<div class="game__new-number flex-center">
 		<input type="text" class="game__new-number__field js-input-number" placeholder="Число" maxlength="4">
+		<p class="error-field"></p>
 		<button class="btn js-btn-go">Походить</button>
 	</div>
 

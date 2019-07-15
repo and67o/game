@@ -1,7 +1,11 @@
 import './../scss/base.scss';
 import './../scss/gameField.scss';
+import {
+	addError,
+	fireAsync
+} from './moduls/utils';
 
-class check {
+class GameField {
 	constructor() {
 		this.computerNumber = 3451;
 		this.countOfNumber = 4;
@@ -9,15 +13,15 @@ class check {
 
 	addNewNumber() {
 		const $errorField = document.querySelector('.error-field');
-		$errorField.innerText = '';
+		$errorField.innerHTML = '';
 		const $number = $('.js-input-number');
 		const error = this.validateField($number.val());
 		console.log(error);
 		if (error) {
-			this.showError(error);
+			addError(error, '.error-field');
 			return;
 		}
-		const dataForAfax = {
+		const dataForAjax = {
 			url: 'GameField/addNewNumber',
 			type: 'POST',
 			dataType: 'json',
@@ -25,7 +29,7 @@ class check {
 				number: $number.val()
 			}
 		};
-		$.ajax(dataForAfax)
+		$.ajax(dataForAjax)
 			.done((response) => this.goodRequest(response, $number.val()))
 			// .fail(this.badRequest());
 	}
@@ -43,12 +47,6 @@ class check {
 		// location.reload();
 	};
 
-	/**
-	 * Формирует строку с информацией о ходе пользователя
-	 * @param number
-	 * @param result
-	 * @returns {string}
-	 */
 	getNewNumberLineHTML = (number, result) => {
 		return `
 			<li class="game__fields__line">
@@ -74,11 +72,6 @@ class check {
 		return error;
 	}
 
-	showError = (error) => {
-		const $errorField = document.querySelector('.error-field');
-		$errorField.innerText = error;
-	};
-
 	bindEvents() {
 		const $btnAddNewNumber = $('.js-btn-go');
 		$btnAddNewNumber.on('click', () => this.addNewNumber());
@@ -89,5 +82,11 @@ class check {
 	}
 }
 
-const jofh = new check();
-jofh.init();
+const GameFieldClass = () => new GameField();
+
+const init = () =>
+	fireAsync([
+		GameFieldClass,
+	]);
+
+document.addEventListener('DOMContentLoaded', init);

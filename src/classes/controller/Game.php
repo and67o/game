@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use Router\Db;
 use Router\src\classes\model;
 
 
@@ -20,8 +21,11 @@ class Game extends CommonController
 	 * @return void
 	 */
 	public function createGame() {
+		$this->locationRedirect('/', !$this->isAjax());
+		$gameId = model\Game::createGame();
+		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId) : false;
 		$this->toJSON([
-			'result' => model\Game::createGame(),
+			'gameId' => $createNumber ? $gameId : 0,
 		], true);
 
 	}

@@ -1,9 +1,7 @@
 import './../scss/base.scss';
 import './../scss/mainPage.scss';
 
-const $createNewGame = $('.js-create-new-game');
-
-$createNewGame.on('click', (event) => {
+$('.js-create-new-game').on('click', (event) => {
 	event.preventDefault();
 	const dataForAfax = {
 		url: 'Game/createGame',
@@ -12,8 +10,11 @@ $createNewGame.on('click', (event) => {
 	};
 	$.ajax(dataForAfax)
 		.done((response) => {
-			if (response) {
-				location.href = 'GameField';
+			const {
+				gameId
+			} = response;
+			if (gameId > 0) {
+				location.href = 'GameField/index/' + gameId;
 			} else {
 				console.log('some trouble');
 			}

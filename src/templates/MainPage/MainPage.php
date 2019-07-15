@@ -6,6 +6,9 @@
 	<link rel="stylesheet" href="../../../dist/mainPage.css">
 </head>
 <body>
+<?php
+	include 'src/templates/_elements/autorized-user.php';
+?>
 <div class="main-page flex-center">
 	<ul class="main-page__variants">
 		<li class="main-page__variants-list flex-center"><a href="Game">Игра</a><span class="angle"></span></li>
