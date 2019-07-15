@@ -7,7 +7,7 @@ namespace Router\src\classes\controller;
 class CommonController
 {
 
-	public function render($namePage)
+	public function render($namePage, $data='')
 	{
 		require 'src/templates/' . $namePage . '/' . $namePage . '.php';
 	}

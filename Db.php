@@ -7,8 +7,8 @@ namespace Router;
 class Db
 {
 	private static $_instance = null;
-
-
+	
+	
 	public function __construct()
 	{
 		$config = [
@@ -32,49 +32,63 @@ class Db
 			echo mysqli_connect_error();
 			exit();
 		}
-
-//		self::$_instance = new \PDO(
-//			'mysql:host=' . $config['db']['server'] . ';dbname=' . $config['db']['name'],
-//			$config['db']['username'],
-//			$config['db']['password'],
-//			[\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"]
-//		);
-
 	}
 
-	private function __wakeup () {}
+	private function __wakeup()
+	{
+	}
 
-	private function __clone () {}
+	private function __clone()
+	{
+	}
 
 	public static function getInstance()
 	{
 		if (self::$_instance != null) {
 			return self::$_instance;
 		}
-
+		
 		return new self;
 	}
 
-	public function sqlGet($sql, $keyField, $field = '')
+	/**
+	 * получить первое значение из SELECT
+	 * @param $sql
+	 * @return mixed
+	 */
+	public function fetchFirstField($sql)
+	{
+		$result = self::$_instance->query($sql);
+		if ($result->num_rows) {
+			$result = $result->fetch_assoc();
+			return array_shift($result);
+		}
+		return false;
+	}
+
+	/**
+	 * получить первое значение из SELECT
+	 * @param $sql
+	 * @return mixed
+	 */
+	public function fetchFirstAll($sql): array
 	{
 		$sqlRes = [];
 		$result = self::$_instance->query($sql);
-		if ($result->num_rows) {
-			if ($keyField && $field) {
-				while ($row = $result->fetch_assoc()) {
-					$sqlRes[$row[$keyField]] = $row[$field];
-				}
-			} elseif ($keyField && !$field) {
-				while ($row = $result->fetch_assoc()) {
-					$sqlRes[] = $row[$keyField];
-				}
+		if (is_object($result) && $result->num_rows) {
+			while ($row = $result->fetch_assoc()) {
+				$sqlRes[] = $row;
 			}
-
 		}
 		return $sqlRes;
 	}
 
-	public function sqlGetAll($sql)
+	/**
+	 * Получить все значения из SELECT
+	 * @param $sql - запрос
+	 * @return array
+	 */
+	public function sqlGetAll($sql): array
 	{
 		$sqlRes = [];
 		$result = self::$_instance->query($sql);

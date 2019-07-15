@@ -8,15 +8,15 @@ use \Router\src\classes\model\Game;
 
 class GameField extends CommonController
 {
+	public $gameId;
+	public function __construct($param = '')
+	{
+		$this->gameId = $param;
+	}
+	
 	public function index()
 	{
 		$this->render('GameField');
-	}
-
-	public function createGame() {
-		$this->toJSON([
-			'result' => Game::createGame(),
-		], true);
 	}
 
 	public function addNewNumber() {

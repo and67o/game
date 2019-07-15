@@ -9,3 +9,7 @@ export const fireAsync = (functionsArr, timeout = 0) => {
 		element => setTimeout(element, timeout)
 	);
 };
+
+export const addError = (error, elem = 'error-field') => {
+	document.querySelector(elem).innerHTML = error;
+}

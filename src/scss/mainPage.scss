@@ -1,7 +1,7 @@
 @import './variables';
+@import "authorized-user";
 
 .main-page {
-	height: 100vh;
 
 	&__variants {
 		&-list {

@@ -23,34 +23,37 @@ class Auth {
 		const password = $('.js-auth-password').val();
 		const emailError = validateEmail(email);
 		const passwordError = validatePassword(password);
-		// if (!emailError) {
-		// 	this.addError(emailError);
-		// }
-		// if (!passwordError) {
-		// 	this.addError(passwordError);
-		// }
-		console.log(334);
-		const dataForAjax = {
-			url: 'auth/authorisation',
-			type: 'POST',
-			dataType: 'json',
-			data: {
-			
-			}
-		};
-		$.ajax(dataForAjax)
-			.done((response) => {
-				console.log(response);
-			}).fail(() => {
-				// location.reload();
-			});
-		
-		
-		
+		if (emailError) {
+			this.addError(emailError, '.js-error-email');
+		}
+		if (passwordError) {
+			this.addError(passwordError, '.js-error-password');
+		}
+		if (!emailError && !passwordError) {
+			const dataForAjax = {
+				url: 'auth/authorisation',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					email: email,
+					password: password
+				}
+			};
+			$.ajax(dataForAjax)
+				.done((response) => {
+					console.log(response);
+					if (response.result) {
+					
+					}
+				})
+			// .fail(() => {
+			// 	// location.reload();
+			// });
+		}
 	}
 	
-	addError(error) {
-	
+	addError(error, elem = 'error-field') {
+		document.querySelector(elem).innerHTML = error;
 	}
 	
 	init() {

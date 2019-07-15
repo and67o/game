@@ -6,9 +6,9 @@ namespace Router\src\classes\controller;
 
 class MainPage extends CommonController
 {
-
 	public function index()
 	{
-		$this->render('MainPage');
+		$html = array('TITLE' => 'Добро пожаловать!');
+		$this->render('MainPage', $html);
 	}
 }
