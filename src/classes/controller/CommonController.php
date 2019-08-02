@@ -6,12 +6,20 @@ namespace Router\src\classes\controller;
 
 class CommonController
 {
-
-	public function render($namePage, $data='')
-	{
-		require 'src/templates/' . $namePage . '/' . $namePage . '.php';
+	
+	public function render($file, $params = [], $return = false) {
+		$template  = 'src/templates/'. $file . '/' . $file .'.php';
+		extract($params);
+		ob_start();
+		include ($template);
+		if ($return) {
+			return ob_get_clean();
+		} else {
+			echo ob_get_clean();
+		}
 	}
-
+	
+	
 	public function redirectIfNotUser($isAdmin = false)
 	{
 		return (bool)$_COOKIE['user'];

@@ -1,3 +1,6 @@
+
+
+
 <div class="authorized">
 	<div class="authorized__profile">
 		<p class="authorized__name">oleg</p>

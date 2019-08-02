@@ -12,6 +12,8 @@ Class Router
 	private static $controller404 = 'Controller404';
 
 	/**
+	 *
+	 *
 	 * Роутер
 	 */
 	public function run()

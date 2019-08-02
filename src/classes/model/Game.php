@@ -42,7 +42,7 @@ class Game extends Model
 	}
 
 	/**
-	 * создание ноеой игры
+	 * создание новой игры
 	 * @return bool
 	 */
 	public static function createGame()
