@@ -7,8 +7,7 @@ namespace Router;
 class Db
 {
 	private static $_instance = null;
-	
-	
+
 	public function __construct()
 	{
 		$config = [
@@ -67,28 +66,11 @@ class Db
 	}
 
 	/**
-	 * получить первое значение из SELECT
-	 * @param $sql
-	 * @return mixed
-	 */
-	public function fetchFirstAll($sql): array
-	{
-		$sqlRes = [];
-		$result = self::$_instance->query($sql);
-		if (is_object($result) && $result->num_rows) {
-			while ($row = $result->fetch_assoc()) {
-				$sqlRes[] = $row;
-			}
-		}
-		return $sqlRes;
-	}
-
-	/**
 	 * Получить все значения из SELECT
 	 * @param $sql - запрос
 	 * @return array
 	 */
-	public function sqlGetAll($sql): array
+	public function fetchAll($sql): array
 	{
 		$sqlRes = [];
 		$result = self::$_instance->query($sql);
@@ -97,10 +79,15 @@ class Db
 				$sqlRes[] = $row;
 			}
 		}
-		return $sqlRes;
+		return array_shift($sqlRes);
 	}
 
-	public function query($sql)
+	/**
+	 * Выполнение запроса
+	 * @param string $sql
+	 * @return bool
+	 */
+	public function query(string $sql): bool
 	{
 		return mysqli_query(self::$_instance, $sql);
 	}
@@ -114,5 +101,4 @@ class Db
 	{
 		mysqli_close(self::$_instance);
 	}
-
 }

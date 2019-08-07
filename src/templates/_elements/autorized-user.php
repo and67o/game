@@ -1,9 +1,19 @@
+<header class="header">
+	<?php
+		if ($_COOKIE && $_COOKIE['userId'] && $email) {
+			echo sprintf('<div class="authorized">
+				<div class="authorized__profile">
+					<a href="Profile" class="authorized__profile-name">%s</a>
+					<p class="authorized__log-out js-log-out">Выход</p>
+				</div>
+				<a href="Profile"><img src="%s" alt="profile-avatar" class="authorized__avatar"></a>
+			</div>', $email, $path);
+		} else {
+			echo
+			'<div class="authorized">
+					<p class="js-log-in">Вход</p>
+				</div>';
+		}
+	?>
+</header>
 
-
-
-<div class="authorized">
-	<div class="authorized__profile">
-		<p class="authorized__name">oleg</p>
-		<a href="Profile"><img src="/src/img/wal2.jpg" alt="profile-avatar" class="authorized__avatar"></a>
-	</div>
-</div>

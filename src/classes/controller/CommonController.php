@@ -4,9 +4,21 @@
 namespace Router\src\classes\controller;
 
 
+use Router\Models\User;
+
 class CommonController
 {
-	
+	/** @var int уникальный идентификатор пользователя */
+	public $userId;
+	/** @var int объект пользователя */
+	public $User;
+
+	function __construct()
+	{
+		$this->userId = $_COOKIE ? $_COOKIE['userId'] : 0;
+		$this->User = $this->userId ? new User($this->userId) : [];
+	}
+
 	public function render($file, $params = [], $return = false) {
 		$template  = 'src/templates/'. $file . '/' . $file .'.php';
 		extract($params);
@@ -18,11 +30,10 @@ class CommonController
 			echo ob_get_clean();
 		}
 	}
-	
-	
+
 	public function redirectIfNotUser($isAdmin = false)
 	{
-		return (bool)$_COOKIE['user'];
+		return (bool) $_COOKIE && $_COOKIE['userId'];
 	}
 
 	public function toJSON($var, $send = false)
@@ -47,6 +58,25 @@ class CommonController
 			header('Location: ' . $location);
 			exit;
 		}
+	}
+
+	/**
+	 * Формирование параметров для шапки сайта
+	 * @param string $namePage
+	 * @return array
+	 */
+	public function headerParams(string $namePage) : array {
+		$userData = [];
+		if ($this->User) {
+			$userData = [
+				'email' => $this->User->email,
+				'path' => $this->User->profileAvatar,
+			];
+		}
+		$html = [
+			'title' => $namePage,
+		];
+		return array_merge($html, $userData);
 	}
 
 }

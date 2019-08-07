@@ -1,4 +1,4 @@
-const MIN_LENGTH = 3;
+const MIN_LENGTH = 2;
 
 export const validateEmail = (email) => {
 	let error = '';

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik+Mono+One&display=swap');
 @import "variables";
+@import "header";
+@import "autorization";
 
 * {
 	margin: 0;
@@ -28,7 +30,6 @@ body {
 
 p, li {
 	font-size: 35px;
-	color: $white;
 	font-weight: 500;
 	line-height: 26px;
 	text-align: justify;
@@ -100,19 +101,26 @@ h2 {
 
 .btn {
 	background: none;
-	border: 2px solid $white;
+	border: 2px solid $backgroundsDark;
 	padding: 10px;
-	color: $white;
 	width: 250px;
 	font-size: 45px;
 	cursor: pointer;
+
 	&:hover {
 		border: 2px solid $hoverTextColor;
 		color: $hoverTextColor;
 	}
+
 	&:disabled {
 		border: 2px solid $backgroundsDark;
 		color: $backgroundsDark;
+	}
+
+	&-close {
+		padding: 0;
+		width: 50px;
+		font-size: 30px;
 	}
 }
 

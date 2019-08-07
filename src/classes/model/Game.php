@@ -4,8 +4,6 @@
 namespace Router\src\classes\model;
 
 
-use Router\Db;
-
 class Game extends Model
 {
 
@@ -13,13 +11,13 @@ class Game extends Model
 	protected $maxCountNumber;
 
 	const GAME_IS_RUNNING = 0;
-
+	
 	public function __construct($computerNumber)
 	{
 		$this->computerNumber = $computerNumber;
 		$this->maxCountNumber = 4;
 	}
-
+	
 	public function checkNumber($number)
 	{
 		$rightCount = 0;
@@ -40,7 +38,7 @@ class Game extends Model
 			'rightCount' => $rightCount
 		];
 	}
-
+	
 	/**
 	 * создание новой игры
 	 * @return bool
@@ -59,11 +57,12 @@ class Game extends Model
 	/**
 	 * Записывает загаднное число
 	 * @param int $gameId - уникальный идентификатор игры
+	 * @param int $userId - уникальный идентификатор пользователя
 	 * @return bool
 	 */
-	public  static function writeNumber(int $gameId) : bool {
+	public static function writeNumber(int $gameId, int $userId = 0): bool
+	{
 		$number = self::createNumber();
-		$userId = 0;
 		$sql = sprintf('
 			insert into game_numbers
 				(g_id, user_id, game_number)
@@ -76,8 +75,9 @@ class Game extends Model
 	 * возвращет случайное число компьютера
 	 * @return int
 	 */
-	public static function createNumber() {
+	public static function createNumber()
+	{
 		return rand(1000, 9999);
 	}
-
+	
 }

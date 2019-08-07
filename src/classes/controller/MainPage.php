@@ -3,12 +3,20 @@
 
 namespace Router\src\classes\controller;
 
-
+/**
+ * Главная страница
+ * Class MainPage
+ * @package Router\src\classes\controller
+ */
 class MainPage extends CommonController
 {
+	/**
+	 * Главная страницы
+	 */
 	public function index()
 	{
-		$html = array('TITLE' => 'Добро пожаловать!');
-		$this->render('MainPage', $html);
+		$permanentValues = $this->headerParams('Главная');
+		$paramsForPage = [];
+		$this->render('MainPage', array_merge($permanentValues, $paramsForPage));
 	}
 }

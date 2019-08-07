@@ -1,5 +1,4 @@
 import './../scss/base.scss';
-import './../scss/auth.scss';
 import {
 	validateEmail,
 	validatePassword
@@ -8,16 +7,69 @@ import {
 	fireAsync,
 } from './moduls/utils';
 
-class Auth {
+export class Auth {
 	constructor() {
-		this.btnSubmit = $('.js-btn-auth');
 		this.init();
 	}
-	
+
 	bindEvents() {
-		this.btnSubmit.on('click', () => this.authorisation());
+		$('.js-log-in').on('click', () => this.showModal());
+		$('.js-log-out').on('click', () => this.logOut());
+	}
+
+	bindEventsAuth() {
+		$('.js-close-modal').on('click', () => this.closeModal());
+		$('.js-btn-submit').on('click', () => this.authorisation());
+	}
+	logOut = () => {
+		console.log(222);
+		document.cookie ='userId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		location.reload();
+	};
+
+	closeModal = () => {
+		$('.modal-container').remove();
+	};
+
+	showModal() {
+		const modalContainer = $('.modal-container');
+		if (!modalContainer.length) {
+			$('.main-page').after(this._modalAuth());
+			this.bindEventsAuth();
+		} else {
+			modalContainer.remove();
+		}
 	}
 	
+	_modalAuth = () => {
+		return `
+			<div class="modal-container ">
+				<div class="modal">
+					<div class="modal__header">
+						<p class="modal__title">Слова</p>
+						<button class="btn btn-close js-close-modal">X</button>
+					</div>
+					<div class="modal__content">
+						<div class="auth__email">
+							<p class="auth__text">Email</p>
+							<input class="auth__field js-auth-email" type="text" placeholder="Email" value="">
+							<p class="error-field js-error-email"></p>
+						</div>
+						<div class="auth__password">
+							<p class="auth__text">Пароль</p>
+							<input class="auth__field js-auth-password" type="password" placeholder="Пароль" value="">
+							<p class="error-field js-error-password"></p>
+						</div>
+					</div>
+					<div class="modal__footer">
+						<button class="btn js-btn-submit">Ок</button>
+					</div>
+				</div>
+				<div class="modal__mask"></div>
+			</div>
+		`;
+	};
+
 	authorisation() {
 		const email = $('.js-auth-email').val();
 		const password = $('.js-auth-password').val();
@@ -43,7 +95,7 @@ class Auth {
 				.done((response) => {
 					console.log(response);
 					if (response.result) {
-					
+						location.reload()
 					}
 				})
 			// .fail(() => {
@@ -52,9 +104,9 @@ class Auth {
 		}
 	}
 	
-	addError(error, elem = 'error-field') {
+	addError = (error, elem = 'error-field') => {
 		document.querySelector(elem).innerHTML = error;
-	}
+	};
 	
 	init() {
 		this.bindEvents();

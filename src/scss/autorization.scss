@@ -1,0 +1,45 @@
+@import "modal";
+
+.auth {
+	&__text {
+		font-family: 'Rubik Mono One', sans-serif;
+		font-size: 35px;
+	}
+
+	&__field {
+		margin-top: 7px;
+		padding: 20px 10px;
+		font-size: 40px;
+	}
+
+	&__email {
+		margin-bottom: 20px;
+	}
+}
+
+.authorized {
+	display: flex;
+	margin-top: 25px;
+
+	&__avatar {
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+	}
+
+	&__log-out {
+		cursor: pointer;
+	}
+
+	&__profile-name {
+		font-size: 60px;
+	}
+
+	&__profile {
+		display: flex;
+		justify-content: space-around;
+		flex-direction: column;
+		margin-right: 20px;
+		color: #fff;
+	}
+}
