@@ -78,5 +78,14 @@ class CommonController
 		];
 		return array_merge($html, $userData);
 	}
+	
+	/**
+	 * Задает авторизационные куки
+	 * @param int $userId
+	 */
+	public function setAuthCookie(int $userId)
+	{
+		setcookie('userId', $userId, strtotime( '+30 days' ), '/');
+	}
 
 }

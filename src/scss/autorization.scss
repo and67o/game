@@ -20,6 +20,9 @@
 .authorized {
 	display: flex;
 	margin-top: 25px;
+	color: #fff;
+	width: 300px;
+	justify-content: space-between;
 
 	&__avatar {
 		width: 150px;
@@ -27,12 +30,13 @@
 		border-radius: 50%;
 	}
 
-	&__log-out {
+	&__field {
 		cursor: pointer;
 	}
 
 	&__profile-name {
 		font-size: 60px;
+		margin-bottom: 20px;
 	}
 
 	&__profile {
