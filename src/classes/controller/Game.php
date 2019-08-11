@@ -3,9 +3,7 @@
 
 namespace Router\src\classes\controller;
 
-use Router\Db;
 use Router\src\classes\model;
-
 
 
 class Game extends CommonController

@@ -11,6 +11,7 @@
   },
   "autoload": {
     "psr-4": {
+      "Router\\": "",
       "Router\\Controller\\": "src/classes/controller/",
       "Router\\Models\\": "src/classes/model/"
     }

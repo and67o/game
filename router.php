@@ -3,6 +3,7 @@
 namespace Router;
 
 
+
 Class Router
 {
 	const PATH_CONTROLLER = '\Router\src\classes\controller\\';
@@ -29,7 +30,7 @@ Class Router
 		$fullControllerName = self::PATH_CONTROLLER . $controllerName;
 		//параметр
 		$param = count($urlParts) ? array_shift($urlParts) : '';
-		if (class_exists($fullControllerName) && method_exists($fullControllerName, $methodName)){
+		if (class_exists($fullControllerName) && method_exists($fullControllerName, $methodName)) {
 			$Controller = new $fullControllerName($param);
 			$Controller->$methodName();
 			return;
