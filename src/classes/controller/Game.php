@@ -21,7 +21,8 @@ class Game extends CommonController
 	public function createGame() {
 		$this->locationRedirect('/', !$this->isAjax());
 		$gameId = model\Game::createGame();
-		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId) : false;
+		$userId = $this->userId ?: 0;
+		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId, $userId) : false;
 		$this->toJSON([
 			'gameId' => $createNumber ? $gameId : 0,
 		], true);

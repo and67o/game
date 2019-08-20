@@ -14,7 +14,6 @@ Class Router
 
 	/**
 	 *
-	 *
 	 * Роутер
 	 */
 	public function run()

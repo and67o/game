@@ -9,6 +9,7 @@ class GameField {
 	constructor() {
 		this.computerNumber = 3451;
 		this.countOfNumber = 4;
+		this.init();
 	}
 
 	addNewNumber() {
@@ -22,7 +23,7 @@ class GameField {
 			return;
 		}
 		const dataForAjax = {
-			url: 'GameField/addNewNumber',
+			url: '/GameField/addNewNumber',
 			type: 'POST',
 			dataType: 'json',
 			data: {
@@ -35,16 +36,18 @@ class GameField {
 	}
 
 	goodRequest(response, number) {
-		const {
-			rightPosition,
-			rightCount
-		} = response;
-		const result  = this.hangleResult(rightCount, rightPosition);
-		$('.game__fields').append(this.getNewNumberLineHTML(number, result));
+		if (response) {
+			const {
+				rightPosition,
+				rightCount
+			} = response;
+			const result  = this.hangleResult(rightCount, rightPosition);
+			$('.game__fields').append(this.getNewNumberLineHTML(number, result));
+		}
 	};
 
 	badRequest = () => {
-		// location.reload();
+		location.reload();
 	};
 
 	getNewNumberLineHTML = (number, result) => {

@@ -58,7 +58,7 @@ class Db
 	public function fetchFirstField($sql)
 	{
 		$result = self::$_instance->query($sql);
-		if ($result->num_rows) {
+		if ($result->num_rows > 0) {
 			$result = $result->fetch_assoc();
 			return array_shift($result);
 		}
@@ -70,7 +70,7 @@ class Db
 	 * @param $sql - запрос
 	 * @return array
 	 */
-	public function fetchAll($sql): array
+	public function fetchAll($sql) : array
 	{
 		$sqlRes = [];
 		$result = self::$_instance->query($sql);
@@ -79,7 +79,7 @@ class Db
 				$sqlRes[] = $row;
 			}
 		}
-		return array_shift($sqlRes);
+		return $sqlRes;
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Db
 	 * @param string $sql
 	 * @return bool
 	 */
-	public function query(string $sql): bool
+	public function query(string $sql) : bool
 	{
 		return mysqli_query(self::$_instance, $sql);
 	}
