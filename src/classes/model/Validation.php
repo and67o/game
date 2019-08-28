@@ -8,7 +8,7 @@ class Validation
 {
 	const MIN_LENGTH_OF_FIELD = 3;
 
-	static public function minLength($string, $minLength, $hardCheck = true)
+	static public function minLength($string, $minLength = self::MIN_LENGTH_OF_FIELD, $hardCheck = true)
 	{
 		if (!$string || !$minLength) {
 			return false;

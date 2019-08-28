@@ -4,7 +4,7 @@
 namespace Router\src\classes\interfaces;
 
 
-interface MainPageInterface
+interface BaseFacade
 {
 	public function index();
 }

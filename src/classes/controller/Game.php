@@ -3,10 +3,11 @@
 
 namespace Router\src\classes\controller;
 
+use Router\src\classes\interfaces\BaseFacade;
 use Router\src\classes\model;
 
 
-class Game extends CommonController
+class Game extends CommonController implements BaseFacade
 {
 
 	public function index()

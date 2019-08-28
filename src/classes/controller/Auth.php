@@ -3,13 +3,14 @@
 
 namespace Router\src\classes\controller;
 
+use Router\src\classes\interfaces\AuthInterface;
 use Router\src\classes\model;
 
 /**
  * Класс отвечающией за авторизацию
  * Class Auth
  */
-class Auth extends CommonController
+class Auth extends CommonController implements AuthInterface
 {
 	/**
 	 * Авторизация на сайте

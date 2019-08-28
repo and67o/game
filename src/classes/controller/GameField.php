@@ -3,13 +3,14 @@
 
 namespace Router\src\classes\controller;
 
+use Router\src\classes\interfaces\BaseFacade;
 use \Router\src\classes\model\Game;
 
 /**
  * Класс отвечающий за игру
  * Class GameField
  */
-class GameField extends CommonController
+class GameField extends CommonController implements BaseFacade
 {
 	/** @var int уникальный идентификатор игры*/
 	public $gameId;
