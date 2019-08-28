@@ -33,8 +33,10 @@ class User extends Model
 					LEFT JOIN images i ON i.i_id = u.profile_avatar
 				WHERE u.u_id = %s', $userId
 			);
-			$userData = self::_db()->fetchAll($sql);
-			$this->email = $userData['email'];
+			$sqlResult = self::_db()->fetchAll($sql);
+			$userData = array_shift($sqlResult);
+			
+			$this->email = !empty($userData['email']) ? $userData['email'] : '';
 			$this->userId = $userData['u_id'];
 			$this->profileAvatar = $userData['path'];
 			

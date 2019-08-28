@@ -8,9 +8,8 @@
 <body>
 <div class="main-page flex-center">
 	<ul class="main-page__variants">
-		<li class="main-page__variants-list flex-center"><a href="Game">Вход</a></li>
-		<li class="main-page__variants-list flex-center"><a href="">Регистрация</a></li>
-		<li class="main-page__variants-list flex-center js-create-new-game"><a href="GameField">Без регистрации</a></li>
+		<li class="main-page__variants-list flex-center"><a class="js-create-new-game" href="Game">Новая Игра</a></li>
+		<li class="main-page__variants-list flex-center"><a href="">Продолжить</a></li>
 	</ul>
 </div>
 </body>

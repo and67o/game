@@ -2,35 +2,29 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Главная</title>
+	<title><?php echo $title ?></title>
 	<link rel="stylesheet" href="../../../dist/gameField.css">
-
 </head>
 <body>
-<p>После закрытия этой страницы игра не сохранится</p>
 <div class="game flex-center">
 	<ul class="game__fields">
-		<li class="game__fields__line">
-			<p>1234</p>
-			<span class="line-field"></span>
-			<p>2x0</p>
-		</li>
-		<li class="game__fields__line">
-			<p>1234</p>
-			<span class="line-field"></span>
-			<p>2x0</p>
-		</li>
-		<li class="game__fields__line">
-			<p>1234</p>
-			<span class="line-field"></span>
-			<p>2x0</p>
-		</li>
+		<?php
+			foreach ($moves as $move) {
+				echo sprintf(
+			'<li class="game__fields__line">
+						<p>%s</p>
+						<span class="line-field"></span>
+						<p>%sx%s</p>
+					</li>'
+			, $move['move'], $move['right_count'], $move['right_position']
+				);
+			}
+		?>
 	</ul>
-
 	<div class="game__new-number flex-center">
 		<input type="text" class="game__new-number__field js-input-number" placeholder="Число" maxlength="4">
 		<p class="error-field"></p>
-		<button class="btn js-btn-go">Походить</button>
+		<button class="btn btn-go js-btn-go">Походить</button>
 	</div>
 
 </div>

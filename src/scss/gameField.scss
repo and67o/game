@@ -13,6 +13,9 @@
 		&__line {
 			display: flex;
 			justify-content: center;
+			p {
+				color: $white;
+			}
 		}
 	}
 
@@ -36,4 +39,8 @@
 		}
 	}
 
+}
+
+.btn-go {
+	color: #fff;
 }
