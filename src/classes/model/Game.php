@@ -35,7 +35,8 @@ class Game extends Model
 		}
 		return [
 			'rightPosition' => $rightPosition,
-			'rightCount' => $rightCount
+			'rightCount' => $rightCount,
+			'youWin' => $rightPosition + $rightCount == $this->maxCountNumber * 2
 		];
 	}
 	

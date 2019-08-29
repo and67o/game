@@ -15,7 +15,7 @@ class CommonController
 
 	function __construct()
 	{
-		$this->userId = $_COOKIE ? $_COOKIE['userId'] : 0;
+		$this->userId = isset($_COOKIE['userId']) ? $_COOKIE['userId'] : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
 	}
 

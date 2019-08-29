@@ -32,7 +32,7 @@ class GameField {
 		};
 		$.ajax(dataForAjax)
 			.done((response) => this.goodRequest(response, $number.val()))
-			// .fail(this.badRequest());
+			.fail(this.badRequest());
 	}
 
 	goodRequest(response, number) {
