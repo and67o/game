@@ -5,6 +5,8 @@ namespace Router\src\classes\controller;
 
 
 use Router\Models\User;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class CommonController
 {
@@ -20,15 +22,11 @@ class CommonController
 	}
 
 	public function render($file, $params = [], $return = false) {
-		$template  = 'src/templates/'. $file . '/' . $file .'.php';
-		extract($params);
-		ob_start();
-		include ($template);
-		if ($return) {
-			return ob_get_clean();
-		} else {
-			echo ob_get_clean();
-		}
+		$loader = new FilesystemLoader( 'src/templates/'. $file);
+		$twig = new Environment($loader);
+		echo $twig->render($file . '.php', [
+			'oleg' => 23
+		]);
 	}
 
 	public function redirectIfNotUser($isAdmin = false)
