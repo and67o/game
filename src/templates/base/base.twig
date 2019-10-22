@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="../../../dist/base.css">
+    {% block style %}{% endblock %}
+
+</head>
+<body>
+    {% include '/base/_elements/header.twig' %}
+
+    <div id="content">
+        {% block body %}{% endblock %}
+    </div>
+
+    {% block script %}{% endblock %}
+    <script src="/dist/base.js"></script>
+</body>
+
+{% include '/base/_elements/footer.twig' %}
+</html>

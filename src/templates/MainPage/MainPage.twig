@@ -1,0 +1,15 @@
+{% extends '/base/base.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+    <div class="main-page flex-center">
+        <ul class="main-page__variants">
+            <li class="main-page__variants-list flex-center"><a href="Game">Игра</a><span class="angle"></span></li>
+            <li class="main-page__variants-list flex-center"><a href="Statictics">Статистика</a></li>
+            <li class="main-page__variants-list flex-center"><a href="Profile">Профиль</a></li>
+        </ul>
+    </div>
+{% endblock %}

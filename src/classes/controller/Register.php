@@ -4,7 +4,6 @@
 namespace Router\src\classes\controller;
 
 
-
 use Router\Models\User;
 
 /**
@@ -18,10 +17,9 @@ class Register extends CommonController
 	 */
 	public function register()
 	{
-		$email = (string)$_POST['email'];
-		$password = (string)$_POST['password'];
-		$isEmailExist = User::isEmailExist($email);
-		if ($isEmailExist) {
+		$email = (string) $_POST['email'];
+		$password = (string) $_POST['password'];
+		if (User::isEmailExist($email)) {
 			$this->toJSON([
 				'result' => false,
 				'error' => 'Email занят'

@@ -1,0 +1,18 @@
+<header class="header">
+{#	if (isset($_COOKIE['userId']) && $email) {#}
+	{% if email  %}
+		<div class="authorized">
+			<div class="authorized__profile">
+				<a href="Profile" class="authorized__profile-name">{{ email }}</a>
+				<p class="authorized__field js-log-out">Выход</p>
+			</div>
+			<a href="Profile"><img src="{{ path }}" alt="profile-avatar" class="authorized__avatar"></a>
+		</div>
+	{% else %}
+		<div class="authorized">
+			<p class="authorized__field js-register">Регистрация</p>
+			<p class="authorized__field js-log-in">Вход</p>
+		</div>
+	{% endif %}
+</header>
+

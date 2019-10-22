@@ -1,0 +1,34 @@
+{% extends '/base/base.twig' %}
+
+{% block style %}
+	<link rel="stylesheet" href="../../../dist/gameField.css">
+{% endblock %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block body %}
+	<div class="game flex-center">
+		<ul class="game__fields">
+			{% for move in moves %}
+				<li class="game__fields__line">
+					<p>{{ move.move }}</p>
+					<span class="line-field"></span>
+					<p>{{ move.right_count }}x{{ move.right_position }}</p>
+				</li>
+			{% endfor %}
+		</ul>
+		<div class="game__new-number flex-center">
+			<label>
+				<input type="text" class="game__new-number__field js-input-number" placeholder="Число" maxlength="4">
+			</label>
+			<p class="error-field"></p>
+			<button class="btn btn-go js-btn-go">Походить</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="../../../dist/gameField.js"></script>
+{% endblock %}

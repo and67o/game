@@ -17,8 +17,8 @@ class Auth extends CommonController implements AuthInterface
 	 */
 	public function authorisation()
 	{
-		$email = (string)$_POST['email'];
-		$password = (string)$_POST['password'];
+		$email = (string) $_POST['email'];
+		$password = (string) $_POST['password'];
 		$userId = model\Auth::checkEmailAndPassword($email, $password);
 		if ($userId) {
 			$this->setAuthCookie($userId);

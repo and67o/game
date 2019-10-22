@@ -17,8 +17,13 @@ class MainPage extends CommonController implements BaseFacade
 	 */
 	public function index()
 	{
-		$permanentValues = $this->headerParams('Главная');
+		$permanentValues = $this->getBaseParam('Главная');
 		$paramsForPage = [];
-		$this->render('MainPage', array_merge($permanentValues, $paramsForPage));
+		$this->render('MainPage/MainPage',
+			array_merge(
+				$permanentValues,
+				$paramsForPage
+			)
+		);
 	}
 }

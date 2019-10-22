@@ -6,6 +6,9 @@ namespace Router\src\classes\controller;
 
 use Router\Models\User;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 class CommonController
@@ -20,20 +23,41 @@ class CommonController
 		$this->userId = isset($_COOKIE['userId']) ? $_COOKIE['userId'] : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
 	}
-
-	public function render($file, $params = [], $return = false) {
-		$loader = new FilesystemLoader( 'src/templates/'. $file);
+	
+	/**
+	 * Рендер Шаблона
+	 * @param $file
+	 * @param array $params
+	 * @param bool $return
+	 * @throws RuntimeError
+	 * @throws SyntaxError
+	 */
+	public function render($file, $params = []) {
+		$loader = new FilesystemLoader( 'src/templates/');
 		$twig = new Environment($loader);
-		echo $twig->render($file . '.php', [
-			'oleg' => 23
-		]);
+		try {
+			echo $twig->render($file . '.twig', $params);
+		} catch (LoaderError $e) {
+			var_dump($e);
+		} catch (RuntimeError $e) {
+			var_dump(3333333);exit;
+		} catch (SyntaxError $e) {
+			var_dump($e);exit;
+			
+		}
 	}
 
 	public function redirectIfNotUser($isAdmin = false)
 	{
 		return (bool) $_COOKIE && $_COOKIE['userId'];
 	}
-
+	
+	/**
+	 * Получить ответ в формате JSON
+	 * @param $var
+	 * @param bool $send
+	 * @return false|string
+	 */
 	public function toJSON($var, $send = false)
 	{
 		$result = json_encode($var);
@@ -44,7 +68,11 @@ class CommonController
 		}
 		return $result;
 	}
-
+	
+	/**
+	 * Проверка на то, что запрос отправлен AJAX
+	 * @return bool
+	 */
 	public function isAjax()
 	{
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
@@ -63,7 +91,7 @@ class CommonController
 	 * @param string $namePage
 	 * @return array
 	 */
-	public function headerParams(string $namePage) : array {
+	public function getBaseParam(string $namePage) : array {
 		$userData = [];
 		if ($this->User) {
 			$userData = [

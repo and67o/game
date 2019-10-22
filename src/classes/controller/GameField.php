@@ -29,11 +29,16 @@ class GameField extends CommonController implements BaseFacade
 	 */
 	public function index()
 	{
-		$permanentValues = $this->headerParams('Игра номер ' . $this->gameId);
+		$permanentValues = $this->getBaseParam('Игра номер ' . $this->gameId);
 		$paramsForPage = [
 			'moves' => Game::GetAllInformByGame($this->gameId) ?: []
 		];
-		$this->render('GameField', array_merge($permanentValues, $paramsForPage));
+		$this->render('GameField/GameField',
+			array_merge(
+				$permanentValues,
+				$paramsForPage
+			)
+		);
 	}
 	
 	/**

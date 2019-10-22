@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const conf = {
 	context: path.resolve(__dirname,'./src/js'),
 	entry: {
-		mainPage: './mainPage.js',
+		base: './base.js',
 		game: './game.js',
 		gameField: './gameField.js',
 		auth: './auth.js',

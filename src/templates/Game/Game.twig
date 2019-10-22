@@ -1,0 +1,22 @@
+{% extends '/base/base.twig' %}
+
+{% block style %}
+	<link rel="stylesheet" href="../../../dist/game.css">
+{% endblock %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block body %}
+	<div class="main-page flex-center">
+		<ul class="main-page__variants">
+			<li class="main-page__variants-list flex-center"><a class="js-create-new-game" href="Game">Новая Игра</a></li>
+			<li class="main-page__variants-list flex-center"><a href="">Продолжить</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+{% block body %}
+	<script src="../../../dist/game.js"></script>
+{% endblock %}
