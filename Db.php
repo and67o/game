@@ -4,43 +4,50 @@
 namespace Router;
 
 
+use PDO;
+use Router\Models\QueryBuilder;
+use Router\src\classes\model\Model;
+
 class Db
 {
 	private static $_instance = null;
-
+	
+	const USERNAME = 'admin';
+	const PASSWD = '123';
+	const HOST = 'localhost';
+	const DB_NAME = 'game';
+	const DB_OPTIONS = [
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+		PDO::ATTR_EMULATE_PREPARES => false,
+	];
+	
 	public function __construct()
 	{
-		$config = [
-			'title' => 'Game',
-			'db' => [
-				'server' => 'localhost',
-				'username' => 'admin',
-				'password' => '123',
-				'name' => 'game'
-			],
-		];
-		self::$_instance = mysqli_connect(
-			$config['db']['server'],
-			$config['db']['username'],
-			$config['db']['password'],
-			$config['db']['name']
-		);
-		self::$_instance->set_charset("utf8");
-		if (self::$_instance == false) {
-			echo "Соединения нет<br>";
-			echo mysqli_connect_error();
-			exit();
+		try {
+			self::$_instance = new PDO(
+				sprintf(
+					'mysql:host=%s;dbname=%s',
+					self::HOST,
+					self::DB_NAME
+				),
+				self::USERNAME,
+				self::PASSWD,
+				self::DB_OPTIONS
+			);
+		} catch (\PDOException $exception) {
+			echo 'Подключение не удалось: ' . $exception->getMessage();
 		}
 	}
-
+	
 	private function __wakeup()
 	{
 	}
-
+	
 	private function __clone()
 	{
 	}
-
+	
 	public static function getInstance()
 	{
 		if (self::$_instance != null) {
@@ -49,39 +56,75 @@ class Db
 		
 		return new self;
 	}
+	
+	public function bindValueRegEx($sql, $params)
+	{
+		if (count($params)) {
+			foreach ($params as $param) {
+				$sql = preg_replace('(\?\?|\?|\'|"|\\))', $param, $sql, 1);
+			}
+		}
+		return $sql;
+	}
+	
+	public function bindValue($sql, array $params = [])
+	{
+		for ($index = 0; $index < count($params); $index++) {
+			$sql->bindValue(
+				$index + 1,
+				$params[$index],
+				is_int($params) ? PDO::PARAM_INT : PDO::PARAM_STR
+			);
+		}
+
+		return $sql;
+	}
 
 	/**
 	 * получить первое значение из SELECT
 	 * @param $sql
-	 * @return mixed
+	 * @param array $params
+	 * @return string
 	 */
-	public function fetchFirstField($sql)
+	public function fetchFirstField($sql, $params = [])
 	{
-		$result = self::$_instance->query($sql);
-		if ($result->num_rows > 0) {
-			$result = $result->fetch_assoc();
-			return array_shift($result);
+		try {
+			$sql = $this->bindValue(
+				self::$_instance->prepare($sql),
+				$params
+			);
+			$sql->execute();
+		} catch (\PDOException $error) {
+			var_dump($error);
 		}
-		return false;
+		$result = $sql->fetch(PDO::FETCH_ASSOC);
+		return $result ? (string) array_shift($result) : '';
 	}
-
+	
 	/**
 	 * Получить все значения из SELECT
 	 * @param $sql - запрос
+	 * @param array $params
 	 * @return array
 	 */
-	public function fetchAll($sql) : array
+	public function fetchAll($sql, $params = []) : array
 	{
-		$sqlRes = [];
-		$result = self::$_instance->query($sql);
-		if (is_object($result) && $result->num_rows) {
-			while ($row = $result->fetch_assoc()) {
-				$sqlRes[] = $row;
-			}
+		$result = [];
+		try {
+			$sql = $this->bindValue(
+				self::$_instance->prepare($sql),
+				$params
+			);
+			$sql->execute();
+		} catch (\PDOException $error) {
+			var_dump($error);
 		}
-		return $sqlRes;
+		while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+			$result[] = $row;
+		}
+		return $result;
 	}
-
+	
 	/**
 	 * Выполнение запроса
 	 * @param string $sql
@@ -91,14 +134,15 @@ class Db
 	{
 		return mysqli_query(self::$_instance, $sql);
 	}
-
+	
 	public function getLastId()
 	{
 		return mysqli_insert_id(self::$_instance);
 	}
-
+	
 	public function closeConnection()
 	{
 		mysqli_close(self::$_instance);
 	}
+	
 }

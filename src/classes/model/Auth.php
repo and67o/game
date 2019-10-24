@@ -11,7 +11,8 @@ class Auth extends Model
 	 * @param string $email
 	 * @return bool
 	 */
-	public static function isEmailExist(string $email) : bool {
+	public static function isEmailExist(string $email) : bool
+	{
 		if (!$email) {
 			return false;
 		}
@@ -25,13 +26,19 @@ class Auth extends Model
 	 * @param string $password
 	 * @return bool
 	 */
-	public  static function checkEmailAndPassword(string $email, string $password) {
-		if (!$password || !$email) {
-			return false;
-		}
-		$sql = sprintf('SELECT u_id FROM users WHERE password = "%s" and email= "%s"', $password, $email);
-		return self::_db()->fetchFirstField($sql);
+	public function checkEmailAndPassword(string $email, string $password)
+	{
+		return self::_db()->fetchFirstField(
+			$this->select(['u_id'])
+				->from('users', 'u')
+				->where('password = ? AND email = ?')
+				->__toString(),
+			[
+				$password,
+				$email
+			]
+		);
 	}
-
-
+	
+	
 }
