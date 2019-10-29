@@ -5,12 +5,18 @@ namespace Router;
 
 
 use PDO;
-use Router\Models\QueryBuilder;
-use Router\src\classes\model\Model;
 
 class Db
 {
 	private static $_instance = null;
+	protected $query;
+	private $_pdo;
+	private $_result;
+	private $_count;
+	private $where;
+	private $table;
+	private $fields;
+	
 	
 	const USERNAME = 'admin';
 	const PASSWD = '123';
@@ -25,7 +31,7 @@ class Db
 	public function __construct()
 	{
 		try {
-			self::$_instance = new PDO(
+			$this->_pdo = new PDO(
 				sprintf(
 					'mysql:host=%s;dbname=%s',
 					self::HOST,
@@ -37,6 +43,7 @@ class Db
 			);
 		} catch (\PDOException $exception) {
 			echo 'Подключение не удалось: ' . $exception->getMessage();
+			die;
 		}
 	}
 	
@@ -61,88 +68,154 @@ class Db
 	{
 		if (count($params)) {
 			foreach ($params as $param) {
-				$sql = preg_replace('(\?\?|\?|\'|"|\\))', $param, $sql, 1);
+				$param = is_int($param) ? $param : ('"' . $param . '"');
+				$sql = preg_replace('/\?\?|\?|\'|"|\\//', $param, $sql, 1);
 			}
 		}
 		return $sql;
 	}
-	
-	public function bindValue($sql, array $params = [])
-	{
-		for ($index = 0; $index < count($params); $index++) {
-			$sql->bindValue(
-				$index + 1,
-				$params[$index],
-				is_int($params) ? PDO::PARAM_INT : PDO::PARAM_STR
-			);
-		}
-
-		return $sql;
-	}
-
-	/**
-	 * получить первое значение из SELECT
-	 * @param $sql
-	 * @param array $params
-	 * @return string
-	 */
-	public function fetchFirstField($sql, $params = [])
-	{
-		try {
-			$sql = $this->bindValue(
-				self::$_instance->prepare($sql),
-				$params
-			);
-			$sql->execute();
-		} catch (\PDOException $error) {
-			var_dump($error);
-		}
-		$result = $sql->fetch(PDO::FETCH_ASSOC);
-		return $result ? (string) array_shift($result) : '';
-	}
-	
-	/**
-	 * Получить все значения из SELECT
-	 * @param $sql - запрос
-	 * @param array $params
-	 * @return array
-	 */
-	public function fetchAll($sql, $params = []) : array
-	{
-		$result = [];
-		try {
-			$sql = $this->bindValue(
-				self::$_instance->prepare($sql),
-				$params
-			);
-			$sql->execute();
-		} catch (\PDOException $error) {
-			var_dump($error);
-		}
-		while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-			$result[] = $row;
-		}
-		return $result;
-	}
-	
 	/**
 	 * Выполнение запроса
-	 * @param string $sql
-	 * @return bool
+	 * @param $params
+	 * @return Db
 	 */
-	public function query(string $sql) : bool
+	public function query($params) : Db
 	{
-		return mysqli_query(self::$_instance, $sql);
+		if (!is_array($params)) {
+			$params = (array) $params;
+		}
+		$this->query = $this
+			->_pdo
+			->prepare($this->query);
+		var_dump($this->query);
+		$numberInList = 1;
+		foreach ($params as $param) {
+			$this->query->bindValue(
+				$numberInList,
+				$param,
+				is_int($params) ? PDO::PARAM_INT : PDO::PARAM_STR
+			);
+			$numberInList++;
+		}
+		if ($this->query->execute()) {
+			// разнести эти метода на селкт и инсерт
+			$this->_result = $this->query->fetchAll(PDO::FETCH_OBJ);
+			$this->_count = $this->query->rowCount();
+			return $this;
+		} else {
+			throw new \PDOException('Trouble with DB');
+		}
 	}
 	
+	/**
+	 * возвращает последний id
+	 * @return string
+	 */
 	public function getLastId()
 	{
-		return mysqli_insert_id(self::$_instance);
+		return $this->_pdo->lastInsertId();
 	}
 	
-	public function closeConnection()
+	
+	/**
+	 * Вернуть результат
+	 * @return mixed
+	 */
+	public function getResult()
 	{
-		mysqli_close(self::$_instance);
+		return $this->_result;
 	}
 	
+	/**
+	 * Вернуть кол-во
+	 * @return mixed
+	 */
+	public function count()
+	{
+		return $this->_count;
+	}
+	
+	/**
+	 * Параметры условия
+	 * @param $condition
+	 * @return Db
+	 */
+	public function where($condition) : Db
+	{
+		$this->where[] = $condition;
+		return $this;
+	}
+	
+	/**
+	 * Задать название таблицы
+	 * @param string $table
+	 * @param string $alias
+	 * @return Db
+	 */
+	public function table(string $table, string $alias = '') : Db
+	{
+		$addAlias = '';
+		if ($alias) {
+			$addAlias = ' AS ' . $alias;
+		}
+		$this->table[] = $table . $addAlias;
+		return $this;
+	}
+	
+	/**
+	 * Параметры выбора
+	 * @param array $fields
+	 * @return Db
+	 */
+	public function select(array $fields) : Db
+	{
+		$this->fields = $fields;
+		return $this;
+	}
+	
+	public function get($param)
+	{
+		$this->query = sprintf(
+			'SELECT %s FROM %s WHERE %s',
+			join(', ', $this->fields),
+			join(', ', $this->table),
+			join(' AND ', $this->where)
+		);
+		return $this
+			->query($param)
+			->getResult();
+	}
+	
+	/**
+	 * Вставка
+	 * @param $params
+	 * @return Db
+	 */
+	public function add($params)
+	{
+		
+		if (!is_array($params)) {
+			$params = (array) $params;
+		}
+		$keys = array_keys($params);
+		$countOfParam = count($params);
+		$values = '';
+		for ($numberOfList = 1; $numberOfList <= $countOfParam; $numberOfList++) {
+			$values .= '?';
+			if ($numberOfList < $countOfParam) {
+				$values .= ', ';
+			}
+		}
+		$this->query = sprintf(
+			'INSERT INTO %s (`%s`) VALUES (%s)',
+			join(', ', $this->table),
+			implode('`, `', $keys),
+			$values
+		);
+		$res = $this->query($params);
+		if (!$res) {
+			throw new \PDOException('123');
+		}
+		return $this->query($params);
+	}
 }

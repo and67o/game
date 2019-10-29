@@ -42,40 +42,33 @@ class User extends Model
 			
 		}
 	}
-
+	
 	/**
-	 *  Проверка на существоание email
+	 * Проверка на существоание email
 	 * @param string $email
 	 * @return bool
 	 */
-	public static function isEmailExist(string $email) : bool
+	public static function isEmailExist(string $email)
 	{
-		if (!$email) {
-			return false;
-		}
-		$sql = sprintf('
-			SELECT 1
-			FROM users WHERE email = "%s"
-		', $email);
-		return self::_db()->fetchFirstField($sql);
-		
+		return self::_db()
+			->select([1])
+			->table('users', 'u')
+			->where('email = ?')
+			->get($email);
 	}
-
+	
 	/**
-	 * Регистрация нового пользователя
-	 * @param string $email
-	 * @param string $password
-	 * @return int
+	 * Создание пользователя
+	 * @param array $param
 	 */
-	public static function createNewUser(string $email, string $password) : int
+	public function create(array $param = [])
 	{
-		if (!$email || !$password) {
-			return false;
+		
+		if (!self::_db()
+			->table('users')
+			->add($param)
+		) {
+			throw new \PDOException('There was a problem creating this account.');
 		}
-		$sql = sprintf('
-			INSERT INTO users (email, password) VALUES ("%s", "%s")
-		', $email, $password);
-		$result = self::_db()->query($sql);
-		return $result ? mysqli_insert_id(self::_db()) : 0;
 	}
 }
