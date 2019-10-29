@@ -1,10 +1,10 @@
 import './../scss/base.scss';
 import {
 	auth
-} from './moduls/autorization';
+} from './moduls/auth/autorization';
 import {
 	register
-} from "./moduls/register";
+} from "./moduls/register/register";
 
 export class Auth {
 	constructor() {
