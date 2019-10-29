@@ -12,4 +12,4 @@ export const fireAsync = (functionsArr, timeout = 0) => {
 
 export const addError = (error, elem = 'error-field') => {
 	document.querySelector(elem).innerHTML = error;
-}
+};

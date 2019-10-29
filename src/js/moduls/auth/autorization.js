@@ -1,15 +1,16 @@
 import {
 	validateEmail,
 	validatePassword
-} from "./validate";
+} from "../validate/validate";
 import {
 	addError
-} from './utils';
+} from '../utils';
+import modalAuth from '../modal-auth-register';
 
 export function auth () {
 	const modalContainer = $('.modal-container');
 	if (!modalContainer.length) {
-		$('.main-page').after(_modalAuth());
+		$('.main-page').after(modalAuth('Авторизация'));
 		bindEventsAuth();
 	} else {
 		modalContainer.remove();
@@ -20,35 +21,6 @@ function bindEventsAuth() {
 	$('.js-close-modal').on('click', () => closeModal());
 	$('.js-btn-submit').on('click', () => authorisation());
 }
-
-const _modalAuth = () => {
-	return `
-			<div class="modal-container ">
-				<div class="modal">
-					<div class="modal__header">
-						<p class="modal__title">Авторизация</p>
-						<button class="btn btn-close js-close-modal">X</button>
-					</div>
-					<div class="modal__content">
-						<div class="auth__email">
-							<p class="auth__text">Email</p>
-							<input class="auth__field js-auth-email" type="text" placeholder="Email" value="">
-							<p class="error-field js-error-email"></p>
-						</div>
-						<div class="auth__password">
-							<p class="auth__text">Пароль</p>
-							<input class="auth__field js-auth-password" type="password" placeholder="Пароль" value="">
-							<p class="error-field js-error-password"></p>
-						</div>
-					</div>
-					<div class="modal__footer">
-						<button class="btn js-btn-submit">Ок</button>
-					</div>
-				</div>
-				<div class="modal__mask"></div>
-			</div>
-		`;
-};
 
 function authorisation() {
 	const email = $('.js-auth-email').val();
