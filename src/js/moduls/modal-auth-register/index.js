@@ -14,15 +14,6 @@ const name = () => {
     return ``;
 };
 
-const header = (title) => {
-    return `
-        <div class="modal__header">
-            <p class="modal__title">${title}</p>
-            <button class="btn btn-close js-close-modal">X</button>
-        </div>
-    `;
-};
-
 const password = () => {
     return `
         <div class="auth__password">
@@ -31,12 +22,6 @@ const password = () => {
             <p class="error-field js-error-password"></p>
         </div>
     `;
-};
-
-const btnSubmit = () => {
-    return `
-        <button class="btn js-btn-submit">Ок</button>
-    `
 };
 
 const content = () => {

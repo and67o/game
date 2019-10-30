@@ -84,7 +84,7 @@ class Validation extends Model
 		return '';
 	}
 	
-	static public function password()
+	static public function password($password)
 	{
 		return true;
 	}

@@ -1,14 +1,14 @@
 import './../scss/base.scss';
 import './../scss/mainPage.scss';
-import { Auth } from "./../js/auth";
+import { Auth } from "./moduls/base/auth";
 import {
 	fireAsync,
 } from './moduls/utils';
 
-const page = () => new Auth();
+const auth = () => new Auth();
 
 const init = () => fireAsync([
-		page,
+		auth,
 	]
 );
 

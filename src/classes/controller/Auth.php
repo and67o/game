@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use Router\Models\Input;
 use Router\src\classes\interfaces\AuthInterface;
 use Router\src\classes\model;
 
@@ -17,8 +18,8 @@ class Auth extends CommonController implements AuthInterface
 	 */
 	public function authorisation()
 	{
-		$email = (string) $_POST['email'];
-		$password = (string) $_POST['password'];
+		$email = (string) Input::get('email');
+		$password = (string) Input::get('passworsd');
 		$Model = new model\Auth();
 		$userId = $Model->checkEmailAndPassword($email, $password);
 		if ($userId) {
