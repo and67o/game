@@ -1,3 +1,5 @@
+import Modal from "../modal";
+
 const email = () => {
     return `
         <div class="auth__email">
@@ -44,20 +46,13 @@ const content = () => {
     `;
 };
 const modalAuth = (title) => {
-    return `
-        <div class="modal-container ">
-            <div class="modal">
-                ${header(title)}
-                <div class="modal__content">
-                    ${content()}
-                </div>
-                <div class="modal__footer">
-                    ${btnSubmit()}
-                </div>
-            </div>
-            <div class="modal__mask"></div>
-        </div>
-    `;
+    const Modal = new Modal(
+    {
+        headerName: title,
+        content: content(),
+        needBtnClose: true
+    });
+    return Modal.init();
 };
 
 export default modalAuth;

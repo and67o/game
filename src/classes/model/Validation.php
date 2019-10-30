@@ -34,7 +34,13 @@ class Validation extends Model
 		$length = strlen($string);
 		return $hardCheck ? $length < $minLength : $length <= $minLength;
 	}
-	
+    /**
+     * проверка на максимальную длину
+     * @param $string
+     * @param int $minLength
+     * @param bool $hardCheck
+     * @return bool
+     */
 	public static function maxLength($string, $minLength = self::MAX_LENGTH_OF_FIELD, $hardCheck = true) {
 		if (!$string) {
 			return false;

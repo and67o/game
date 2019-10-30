@@ -87,7 +87,6 @@ class Db
 		$this->query = $this
 			->_pdo
 			->prepare($this->query);
-		var_dump($this->query);
 		$numberInList = 1;
 		foreach ($params as $param) {
 			$this->query->bindValue(
@@ -115,8 +114,7 @@ class Db
 	{
 		return $this->_pdo->lastInsertId();
 	}
-	
-	
+
 	/**
 	 * Вернуть результат
 	 * @return mixed

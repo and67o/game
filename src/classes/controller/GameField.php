@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use Router\Models\Input;
 use Router\src\classes\interfaces\BaseFacade;
 use \Router\src\classes\model\Game;
 
@@ -23,7 +24,7 @@ class GameField extends CommonController implements BaseFacade
 		}
 		$this->gameId = $param;
 	}
-	
+
 	/**
 	 * Главнаяс страница игры
 	 */
@@ -40,21 +41,39 @@ class GameField extends CommonController implements BaseFacade
 			)
 		);
 	}
-	
+
 	/**
 	 * Ajax Метод добавления нового числа
 	 */
 	public function addNewNumber() {
 		$this->locationRedirect('/', !$this->isAjax());
-		$newNumber = (int) $_POST['number'];
-		session_start();
+        $newNumber = Input::get('number');
+        session_start();
 		$gameId = isset($_SESSION['gameId']) ? (int) $_SESSION['gameId'] : '';
 		$rightPosition = [];
 		if ($gameId) {
 			$number = Game::getGameNumberByGameId($gameId);
 			$Game = new Game($number);
 			$rightPosition = $Game->checkNumber($newNumber, $gameId);
-			$Game->saveMove($gameId, $rightPosition, $newNumber);
+
+
+
+            //        $User->create([
+//            'email' => Input::get('email'),
+//            'password' => Hash::make(Input::get('password'), $salt),
+//            'salt' => $salt,
+//            'name' => 'oleg',
+////				'name' => Input::get('name') ,
+//            'reg_dt' => date('Y-m-d H:i:s'),
+//            'role_id' => Role::USER_ROLE,
+//        ]);
+
+			$Game->saveMove([
+			    'g_id' => $gameId,
+                'right_position' => $rightPosition['rightPosition'],
+                'right_count' => $rightPosition['rightCount'],
+                'move' => $newNumber
+            ]);
 		}
 		$this->toJSON($rightPosition, true);
 	}

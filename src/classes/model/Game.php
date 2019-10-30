@@ -10,14 +10,19 @@ class Game extends Model
 	protected $computerNumber;
 	protected $maxCountNumber;
 
-	const GAME_IS_RUNNING = 0;
+	const GAME_NEW = 0;
 	
 	public function __construct($computerNumber)
 	{
 		$this->computerNumber = $computerNumber;
 		$this->maxCountNumber = 4;
 	}
-	
+
+    /**
+     * Возвращает результат проверки числа
+     * @param $number
+     * @return array
+     */
 	public function checkNumber($number)
 	{
 		$rightCount = 0;
@@ -46,44 +51,55 @@ class Game extends Model
 	 */
 	public static function createGame()
 	{
-		$createGame = self::_db()->query(
-			'insert into games
-					(dt_start, dt_finish, game_status)
-				values (\'1970-01-01\', \'1970-01-01\', 0)
-		');
-		return $createGame ? mysqli_insert_id(self::_db()) : 0;
+        $res = !self::_db()
+            ->table('games')
+            ->add([
+                'dt_start' => '1970-01-01',
+                'dt_finish' => '1970-01-01',
+                'game_status' => self::GAME_NEW,
+            ])
+            ->getLastId();
+        if (!$res) {
+            throw new \PDOException('There was a problem creating this account.');
+        }
+		return $res ?: 0;
 	}
-	
+
+    /**
+     * Использовалось ли число в игре
+     * @param int $gameId
+     * @param int $number
+     * @return mixed
+     */
 	public function isNumberUsedInThisGame(int $gameId, int $number) {
-		$sql = sprintf('
-			SELECT 1
-			FROM game_process
-			WHERE g_id = %d
-			  AND move = %d
-			', $gameId, $number
-		);
-		if (Model::_db()) {
-			return Model::_db()->fetchFirstField($sql);
-		}
-//		return Model::_db()->fetchFirstField($sql);
-		return 222;
+        return self::_db()
+            ->select([1])
+            ->table('game_process')
+            ->where('g_id = ? AND move = ?')
+            ->get([
+                $gameId,
+                $number
+            ]);
 	}
 	
 	/**
-	 * Записывает загаднное число
+	 * Записывает загаданное число
 	 * @param int $gameId - уникальный идентификатор игры
 	 * @param int $userId - уникальный идентификатор пользователя
 	 * @return bool
 	 */
-	public static function writeNumber(int $gameId, int $userId = 0): bool
+	public static function writeNumber(int $gameId, int $userId = 0) : bool
 	{
-		$number = self::createNumber();
-		$sql = sprintf('
-			insert into game_numbers
-				(g_id, user_id, game_number)
-			VALUES (%d, %d, %d)
-		', $gameId, $userId, $number);
-		return Model::_db()->query($sql);
+        $res = !self::_db()
+            ->table('game_numbers')
+            ->add([
+                'g_id' => $gameId,
+                'user_id' => $userId,
+                'game_number' => self::createNumber()
+            ]);
+        if (!$res) {
+            throw new \PDOException('There was a problem creating this account.');
+        }
 	}
 	
 	/**
@@ -101,7 +117,6 @@ class Game extends Model
 			self::createNumber();
 		}
 		return implode('', $arr);
-	
 	}
 	
 	/**
@@ -109,41 +124,27 @@ class Game extends Model
 	 * @param int $gameId
 	 * @return int
 	 */
-	public static function qgetGameNumberByGameId(int $gameId) : int
-	{
-		if (!$gameId) {
-			return 0;
-		}
-		$sql = sprintf('SELECT game_number FROM game_numbers WHERE g_id = %d', $gameId);
-//		var_dump(Model::_db()->rff() ?: 0);exit;
-		return Model::_db()->fetchFirstField($sql) ?: 0;
-	}
-	
 	public static function getGameNumberByGameId(int $gameId) {
-		$sql = sprintf('
-			SELECT game_number FROM game_numbers WHERE g_id = %d
-			', $gameId
-		);
-		return Model::_db()->fetchFirstField($sql);
+		return self::_db()
+            ->select(['game_number'])
+            ->table('game_numbers')
+            ->where('g_id = ?')
+            ->get([$gameId]);
 	}
-	
-	
-	
-	/**`
-	 * сохранить информацию о ходе
-	 * @param int $gameId
-	 * @param array $rightPosition
-	 * @param int $number
-	 * @return bool
-	 */
-	public function saveMove(int $gameId, array $rightPosition, int $number) : bool {
-		$sql = sprintf(
-	'INSERT INTO game_process (g_id, dt, right_count, right_position, move)
-			VALUES (%d, "%s", %s, %s, %s)',
-			$gameId, date('Y-m-d H:i:s'), $rightPosition['rightCount'],
-			$rightPosition['rightPosition'], $number
-		);
-		return Model::_db()->query($sql);
+
+    /**`
+     * сохранить информацию о ходе
+     * @param array $moveParam
+     * @return bool
+     */
+	public function saveMove(array $moveParam) : bool {
+	    $res = !self::_db()
+            ->table('game_process')
+            ->add($moveParam);
+        if (!$res) {
+            throw new \PDOException('There was a problem creating this account.');
+        }
+        return $res;
 	}
 	
 	/**
@@ -152,10 +153,15 @@ class Game extends Model
 	 * @return array
 	 */
 	public static function GetAllInformByGame(int $gameId) : array {
-		$sql = sprintf(
-			'SELECT right_count, right_position, move FROM game_process WHERE g_id = %d
-		', $gameId);
-		return self::_db()->fetchAll($sql);
+        return self::_db()
+            ->select([
+                'right_count',
+                'right_position',
+                'move'
+            ])
+            ->table('game_process')
+            ->where('g_id = ?')
+            ->get([$gameId]);
 	}
 	
 	/**
@@ -164,10 +170,11 @@ class Game extends Model
 	 * @return array
 	 */
 	public static function getAllGamesByUserId(int $userId) :array {
-		$sql = sprintf(
-			'SELECT g_id FROM game_numbers WHERE user_id = %d
-		', $userId);
-		return self::_db()->fetchAll($sql);
+        return self::_db()
+            ->select(['g_id'])
+            ->table('game_numbers')
+            ->where('user_id = ?')
+            ->get([$userId]);
 	}
 	
 }

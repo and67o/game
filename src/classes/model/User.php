@@ -63,7 +63,6 @@ class User extends Model
 	 */
 	public function create(array $param = [])
 	{
-		
 		if (!self::_db()
 			->table('users')
 			->add($param)
