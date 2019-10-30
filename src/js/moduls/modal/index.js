@@ -1,3 +1,5 @@
+import {fireAsync} from "../utils";
+
 class Modal {
     constructor({headerName, content, needBtnClose}) {
         this.modalParams = {
@@ -9,7 +11,7 @@ class Modal {
     }
 
     init() {
-        return `
+        const html = `
             <div class="modal-container ">
                 <div class="modal">
                     <div class="modal__header">
@@ -30,6 +32,7 @@ class Modal {
                 <div class="modal__mask"></div>
             </div>
         `;
+        return html;
     }
 }
 

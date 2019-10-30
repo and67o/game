@@ -10,7 +10,6 @@ import modalAuth from '../modal-auth-register';
 export function auth () {
 	const modalContainer = $('.modal-container');
 	if (!modalContainer.length) {
-		console.log(modalAuth('Авторизация'));
 		$('.main-page').after(modalAuth('Авторизация'));
 		bindEventsAuth();
 	} else {

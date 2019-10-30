@@ -46,13 +46,13 @@ const content = () => {
     `;
 };
 const modalAuth = (title) => {
-    const Modal = new Modal(
+    const modal = new Modal(
     {
         headerName: title,
         content: content(),
         needBtnClose: true
     });
-    return Modal.init();
+    return modal.init();
 };
 
 export default modalAuth;

@@ -4,6 +4,7 @@
 namespace Router\src\classes\controller;
 
 
+use Router\Models\Cookie;
 use Router\Models\User;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -23,15 +24,12 @@ class CommonController
 		$this->userId = isset($_COOKIE['userId']) ? $_COOKIE['userId'] : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
 	}
-	
-	/**
-	 * Рендер Шаблона
-	 * @param $file
-	 * @param array $params
-	 * @param bool $return
-	 * @throws RuntimeError
-	 * @throws SyntaxError
-	 */
+
+    /**
+     * Рендер Шаблона
+     * @param $file
+     * @param array $params
+     */
 	public function render($file, $params = []) {
 		$loader = new FilesystemLoader( 'src/templates/');
 		$twig = new Environment($loader);
@@ -111,7 +109,7 @@ class CommonController
 	 */
 	public function setAuthCookie(int $userId)
 	{
-		setcookie('userId', $userId, strtotime( '+30 days' ), '/');
+        Cookie::put('userId', $userId, strtotime( '+30 days' ));
 	}
 
 }

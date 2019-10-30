@@ -16,8 +16,8 @@ class Cookie implements BaseStructureMethod
 		return $_COOKIE[$name];
 	}
 	
-	public static function put($name, $value, $expiry) {
-		if(setcookie($name, $value, time() + $expiry, '/')) {
+	public static function put($name, $value, $expiry, $path = '/') {
+		if(setcookie($name, $value, time() + $expiry, $path)) {
 			return true;
 		}
 		return false;
