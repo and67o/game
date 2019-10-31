@@ -12,8 +12,9 @@ class Game extends CommonController implements BaseFacade
 	
 	public function index()
 	{
-		$permanentValues = $this->getBaseParam('Игра');
-		$this->render('/Game/Game', $permanentValues);
+		$this->render('/Game/Game', [
+			'title' => 'Игра'
+		]);
 	}
 	
 	/**
@@ -22,6 +23,7 @@ class Game extends CommonController implements BaseFacade
 	 */
 	public function createGame()
 	{
+		var_dump(222);exit;
 		$this->locationRedirect('/', !$this->isAjax());
 		$gameId = model\Game::createGame();
 		$userId = $this->userId ? : 0;

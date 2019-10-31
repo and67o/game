@@ -6,10 +6,10 @@ namespace Router\src\classes\model;
 
 class Game extends Model
 {
-
+	
 	protected $computerNumber;
 	protected $maxCountNumber;
-
+	
 	const GAME_NEW = 0;
 	
 	public function __construct($computerNumber)
@@ -17,12 +17,12 @@ class Game extends Model
 		$this->computerNumber = $computerNumber;
 		$this->maxCountNumber = 4;
 	}
-
-    /**
-     * Возвращает результат проверки числа
-     * @param $number
-     * @return array
-     */
+	
+	/**
+	 * Возвращает результат проверки числа
+	 * @param $number
+	 * @return array
+	 */
 	public function checkNumber($number)
 	{
 		$rightCount = 0;
@@ -51,35 +51,36 @@ class Game extends Model
 	 */
 	public static function createGame()
 	{
-        $res = !self::_db()
-            ->table('games')
-            ->add([
-                'dt_start' => '1970-01-01',
-                'dt_finish' => '1970-01-01',
-                'game_status' => self::GAME_NEW,
-            ])
-            ->getLastId();
-        if (!$res) {
-            throw new \PDOException('There was a problem creating this account.');
-        }
-		return $res ?: 0;
+		$res = !self::_db()
+			->table('games')
+			->add([
+				'dt_start' => '1970-01-01',
+				'dt_finish' => '1970-01-01',
+				'game_status' => self::GAME_NEW,
+			])
+			->getLastId();
+		if (!$res) {
+			throw new \PDOException('There was a problem creating this account.');
+		}
+		return $res ? : 0;
 	}
-
-    /**
-     * Использовалось ли число в игре
-     * @param int $gameId
-     * @param int $number
-     * @return mixed
-     */
-	public function isNumberUsedInThisGame(int $gameId, int $number) {
-        return self::_db()
-            ->select([1])
-            ->table('game_process')
-            ->where('g_id = ? AND move = ?')
-            ->get([
-                $gameId,
-                $number
-            ]);
+	
+	/**
+	 * Использовалось ли число в игре
+	 * @param int $gameId
+	 * @param int $number
+	 * @return mixed
+	 */
+	public function isNumberUsedInThisGame(int $gameId, int $number)
+	{
+		return self::_db()
+			->select([1])
+			->table('game_process')
+			->where('g_id = ? AND move = ?')
+			->get([
+				$gameId,
+				$number
+			]);
 	}
 	
 	/**
@@ -90,16 +91,16 @@ class Game extends Model
 	 */
 	public static function writeNumber(int $gameId, int $userId = 0) : bool
 	{
-        $res = !self::_db()
-            ->table('game_numbers')
-            ->add([
-                'g_id' => $gameId,
-                'user_id' => $userId,
-                'game_number' => self::createNumber()
-            ]);
-        if (!$res) {
-            throw new \PDOException('There was a problem creating this account.');
-        }
+		$res = !self::_db()
+			->table('game_numbers')
+			->add([
+				'g_id' => $gameId,
+				'user_id' => $userId,
+				'game_number' => self::createNumber()
+			]);
+		if (!$res) {
+			throw new \PDOException('There was a problem creating this account.');
+		}
 	}
 	
 	/**
@@ -124,27 +125,29 @@ class Game extends Model
 	 * @param int $gameId
 	 * @return int
 	 */
-	public static function getGameNumberByGameId(int $gameId) {
+	public static function getGameNumberByGameId(int $gameId)
+	{
 		return self::_db()
-            ->select(['game_number'])
-            ->table('game_numbers')
-            ->where('g_id = ?')
-            ->get([$gameId]);
+			->select(['game_number'])
+			->table('game_numbers')
+			->where('g_id = ?')
+			->get([$gameId]);
 	}
-
-    /**`
-     * сохранить информацию о ходе
-     * @param array $moveParam
-     * @return bool
-     */
-	public function saveMove(array $moveParam) : bool {
-	    $res = !self::_db()
-            ->table('game_process')
-            ->add($moveParam);
-        if (!$res) {
-            throw new \PDOException('There was a problem creating this account.');
-        }
-        return $res;
+	
+	/**`
+	 * сохранить информацию о ходе
+	 * @param array $moveParam
+	 * @return bool
+	 */
+	public function saveMove(array $moveParam) : bool
+	{
+		$res = !self::_db()
+			->table('game_process')
+			->add($moveParam);
+		if (!$res) {
+			throw new \PDOException('There was a problem creating this account.');
+		}
+		return $res;
 	}
 	
 	/**
@@ -152,16 +155,17 @@ class Game extends Model
 	 * @param int $gameId
 	 * @return array
 	 */
-	public static function GetAllInformByGame(int $gameId) : array {
-        return self::_db()
-            ->select([
-                'right_count',
-                'right_position',
-                'move'
-            ])
-            ->table('game_process')
-            ->where('g_id = ?')
-            ->get([$gameId]);
+	public static function GetAllInformByGame(int $gameId) : array
+	{
+		return self::_db()
+			->select([
+				'right_count',
+				'right_position',
+				'move'
+			])
+			->table('game_process')
+			->where('g_id = ?')
+			->get([$gameId]);
 	}
 	
 	/**
@@ -169,12 +173,13 @@ class Game extends Model
 	 * @param int $userId
 	 * @return array
 	 */
-	public static function getAllGamesByUserId(int $userId) :array {
-        return self::_db()
-            ->select(['g_id'])
-            ->table('game_numbers')
-            ->where('user_id = ?')
-            ->get([$userId]);
+	public static function getAllGamesByUserId(int $userId) : array
+	{
+		return self::_db()
+			->select(['g_id'])
+			->table('game_numbers')
+			->where('user_id = ?')
+			->get([$userId]);
 	}
 	
 }

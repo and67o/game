@@ -41,7 +41,6 @@ class CommonController
 			var_dump(3333333);exit;
 		} catch (SyntaxError $e) {
 			var_dump($e);exit;
-			
 		}
 	}
 
