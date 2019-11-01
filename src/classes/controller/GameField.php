@@ -4,6 +4,7 @@
 namespace Router\src\classes\controller;
 
 use Router\Models\Input;
+use Router\Models\Session;
 use Router\src\classes\interfaces\BaseFacade;
 use \Router\src\classes\model\Game;
 
@@ -49,24 +50,12 @@ class GameField extends CommonController implements BaseFacade
 		$this->locationRedirect('/', !$this->isAjax());
         $newNumber = Input::get('number');
         session_start();
-		$gameId = isset($_SESSION['gameId']) ? (int) $_SESSION['gameId'] : '';
-		$rightPosition = [];
+        $gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
+        $rightPosition = [];
 		if ($gameId) {
 			$number = Game::getGameNumberByGameId($gameId);
 			$Game = new Game($number);
-			$rightPosition = $Game->checkNumber($newNumber, $gameId);
-
-
-
-            //        $User->create([
-//            'email' => Input::get('email'),
-//            'password' => Hash::make(Input::get('password'), $salt),
-//            'salt' => $salt,
-//            'name' => 'oleg',
-////				'name' => Input::get('name') ,
-//            'reg_dt' => date('Y-m-d H:i:s'),
-//            'role_id' => Role::USER_ROLE,
-//        ]);
+			$rightPosition = $Game->checkNumber($newNumber);
 
 			$Game->saveMove([
 			    'g_id' => $gameId,

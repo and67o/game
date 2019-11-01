@@ -30,7 +30,7 @@ class Session implements BaseStructureMethod
 		}
 	}
 	
-	public static function flash($name, $session, $string = '')
+	public static function flash($name, $string = '')
 	{
 		if (self::exists($name)) {
 			$session = self::get($name);

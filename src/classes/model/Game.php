@@ -101,6 +101,7 @@ class Game extends Model
 		if (!$res) {
 			throw new \PDOException('There was a problem creating this account.');
 		}
+		return $res;
 	}
 	
 	/**
