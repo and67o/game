@@ -1,6 +1,4 @@
-import Modal from "../modal";
-
-const email = () => {
+export const email = () => {
     return `
         <div class="auth__email">
             <p class="auth__text">Email</p>
@@ -10,11 +8,17 @@ const email = () => {
     `;
 };
 
-const name = () => {
-    return ``;
+export const name = () => {
+    return `
+        <div class="auth__name">
+            <p class="auth__text">Имя</p>
+            <input class="auth__field js-auth-name" type="text" placeholder="Имя" value="">
+            <p class="error-field js-error-name"></p>
+        </div>
+    `;
 };
 
-const password = () => {
+export const password = () => {
     return `
         <div class="auth__password">
             <p class="auth__text">Пароль</p>
@@ -23,21 +27,3 @@ const password = () => {
         </div>
     `;
 };
-
-const content = () => {
-    return `
-        ${email()}
-        ${password()}
-    `;
-};
-const modalAuth = (title) => {
-    const modal = new Modal(
-    {
-        headerName: title,
-        content: content(),
-        needBtnClose: true
-    });
-    return modal.init();
-};
-
-export default modalAuth;

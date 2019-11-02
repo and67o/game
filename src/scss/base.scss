@@ -105,6 +105,7 @@ h2 {
 	width: 250px;
 	font-size: 45px;
 	cursor: pointer;
+	border: 2px solid $backgroundsDark;
 
 	&:hover {
 		border: 2px solid $hoverTextColor;

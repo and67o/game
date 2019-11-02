@@ -1,6 +1,6 @@
 import {
 	auth
-} from '../auth/autorization';
+} from '../auth';
 import {
 	register
 } from "../register/register";

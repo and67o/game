@@ -18,32 +18,35 @@ class CommonController
 	public $userId;
 	/** @var int объект пользователя */
 	public $User;
-
+	
 	function __construct()
 	{
 		$this->userId = isset($_COOKIE['userId']) ? $_COOKIE['userId'] : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
 	}
-
-    /**
-     * Рендер Шаблона
-     * @param $file
-     * @param array $params
-     */
-	public function render($file, $params = []) {
-		$loader = new FilesystemLoader( 'src/templates/');
+	
+	/**
+	 * Рендер Шаблона
+	 * @param $file
+	 * @param array $params
+	 */
+	public function render($file, $params = [])
+	{
+		$loader = new FilesystemLoader('src/templates/');
 		$twig = new Environment($loader);
 		try {
 			echo $twig->render($file . '.twig', $params);
 		} catch (LoaderError $e) {
 			var_dump($e);
 		} catch (RuntimeError $e) {
-			var_dump(3333333);exit;
+			var_dump(3333333);
+			exit;
 		} catch (SyntaxError $e) {
-			var_dump($e);exit;
+			var_dump($e);
+			exit;
 		}
 	}
-
+	
 	public function redirectIfNotUser($isAdmin = false)
 	{
 		return (bool) $_COOKIE && $_COOKIE['userId'];
@@ -74,7 +77,7 @@ class CommonController
 	{
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
-
+	
 	protected function locationRedirect($location, $condition = true)
 	{
 		if ($condition) {
@@ -82,13 +85,14 @@ class CommonController
 			exit;
 		}
 	}
-
+	
 	/**
 	 * Формирование параметров для шапки сайта
 	 * @param string $namePage
 	 * @return array
 	 */
-	public function getBaseParam(string $namePage) : array {
+	public function getBaseParam(string $namePage) : array
+	{
 		$userData = [];
 		if ($this->User) {
 			$userData = [
@@ -108,7 +112,7 @@ class CommonController
 	 */
 	public function setAuthCookie(int $userId)
 	{
-        Cookie::put('userId', $userId, strtotime( '+30 days' ));
+		Cookie::put('userId', $userId, strtotime('+30 days'));
 	}
-
+	
 }

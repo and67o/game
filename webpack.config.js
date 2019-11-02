@@ -8,7 +8,6 @@ const conf = {
 		base: './base.js',
 		game: './game.js',
 		gameField: './gameField.js',
-		auth: './auth.js',
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),

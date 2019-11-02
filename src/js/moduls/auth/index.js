@@ -1,16 +1,18 @@
 import {
 	validateEmail,
 	validatePassword
-} from "../validate/validate";
+} from "../validate";
 import {
 	addError
 } from '../utils';
-import modalAuth from '../modal-auth-register';
+import {
+	getTemplate
+} from "./tmp";
 
 export function auth () {
 	const modalContainer = $('.modal-container');
 	if (!modalContainer.length) {
-		$('.main-page').after(modalAuth('Авторизация'));
+		$('.main-page').after(getTemplate());
 		bindEventsAuth();
 	} else {
 		modalContainer.remove();
@@ -22,9 +24,7 @@ function bindEventsAuth() {
 	$('.js-btn-submit').on('click', () => authorisation());
 }
 
-function authorisation() {
-	const email = $('.js-auth-email').val();
-	const password = $('.js-auth-password').val();
+const validate = (email, password) => {
 	const emailError = validateEmail(email);
 	const passwordError = validatePassword(password);
 	if (emailError) {
@@ -34,6 +34,15 @@ function authorisation() {
 		addError(passwordError, '.js-error-password');
 	}
 	if (!emailError && !passwordError) {
+		return true;
+	}
+};
+
+function authorisation() {
+	const email = $('.js-auth-email').val();
+	const password = $('.js-auth-password').val();
+	const error = validate();
+	if (error) {
 		const dataForAjax = {
 			url: 'auth/authorisation',
 			type: 'POST',
@@ -45,7 +54,6 @@ function authorisation() {
 		};
 		$.ajax(dataForAjax)
 			.done((response) => {
-				console.log(response);
 				if (response.result) {
 					location.reload()
 				}

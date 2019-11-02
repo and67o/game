@@ -5,12 +5,12 @@ import {
 import {
 	addError
 } from '../utils';
-import modalAuth from '../modal-auth-register';
+import {getTemplate} from "./tmp";
 
 export function register () {
 	const modalContainer = $('.modal-container');
 	if (!modalContainer.length) {
-		$('.main-page').after(modalAuth('Регистрация'));
+		$('.main-page').after(getTemplate);
 		bindEventsAuth();
 	} else {
 		modalContainer.remove();

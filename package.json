@@ -31,6 +31,7 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "drag-on-drop": "^3.3.2",
+    "email-validator": "^2.0.4",
     "lodash-es": "^4.17.11"
   }
 }
