@@ -1,9 +1,8 @@
-import './../scss/base.scss';
-import './../scss/gameField.scss';
+import '../../../scss/gameField.scss';
 import {
 	addError,
 	fireAsync
-} from './moduls/utils/';
+} from '../../moduls/utils';
 
 class GameField {
 	constructor() {

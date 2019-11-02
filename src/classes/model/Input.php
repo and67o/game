@@ -15,7 +15,7 @@ class Input
 	{
 		switch ($type) {
 			case 'post':
-				return (bool) $_POST;
+				return $_SERVER['REQUEST_METHOD'] == 'POST';
 				break;
 			case 'get':
 				return !$_GET ? true : false;
@@ -27,20 +27,12 @@ class Input
 	}
 	
 	/**
-	 * Получить значение
-	 * @param $item
-	 * @return string
+	 * Метод преобразования строки json в массив
+	 * @param string $jsonString
+	 * @return array
 	 */
-	public static function get($item)
+	public static function json($jsonString)
 	{
-		if (!$item) {
-			return '';
-		}
-		
-		if (isset($_POST[$item])) {
-			return $_POST[$item];
-		} else if (isset($_GET[$item])) {
-			return $_GET[$item];
-		}
+		return is_array($jsonString) ? $jsonString : json_decode($jsonString, JSON_OBJECT_AS_ARRAY); // Если там массив, то обработка не требуется
 	}
 }

@@ -6,8 +6,8 @@ const conf = {
 	context: path.resolve(__dirname,'./src/js'),
 	entry: {
 		base: './base.js',
-		game: './game.js',
-		gameField: './gameField.js',
+		gameField: './page/gameField/gameField.js',
+		// gameField: './gameField.js',
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),

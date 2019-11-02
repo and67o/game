@@ -14,9 +14,9 @@ use \Router\src\classes\model\Game;
  */
 class GameField extends CommonController implements BaseFacade
 {
-	/** @var int уникальный идентификатор игры*/
+	/** @var int уникальный идентификатор игры */
 	public $gameId;
-
+	
 	public function __construct($param = '')
 	{
 		if ($param) {
@@ -25,7 +25,7 @@ class GameField extends CommonController implements BaseFacade
 		}
 		$this->gameId = $param;
 	}
-
+	
 	/**
 	 * Главнаяс страница игры
 	 */
@@ -33,7 +33,7 @@ class GameField extends CommonController implements BaseFacade
 	{
 		$permanentValues = $this->getBaseParam('Игра номер ' . $this->gameId);
 		$paramsForPage = [
-			'moves' => Game::GetAllInformByGame($this->gameId) ?: []
+			'moves' => Game::GetAllInformByGame($this->gameId) ? : []
 		];
 		$this->render('GameField/GameField',
 			array_merge(
@@ -42,27 +42,28 @@ class GameField extends CommonController implements BaseFacade
 			)
 		);
 	}
-
+	
 	/**
 	 * Ajax Метод добавления нового числа
 	 */
-	public function addNewNumber() {
+	public function addNewNumber()
+	{
 		$this->locationRedirect('/', !$this->isAjax());
-        $newNumber = Input::get('number');
-        session_start();
-        $gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
-        $rightPosition = [];
+		$newNumber = Input::get('number');
+		session_start();
+		$gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
+		$rightPosition = [];
 		if ($gameId) {
 			$number = Game::getGameNumberByGameId($gameId);
 			$Game = new Game($number);
 			$rightPosition = $Game->checkNumber($newNumber);
-
+			
 			$Game->saveMove([
-			    'g_id' => $gameId,
-                'right_position' => $rightPosition['rightPosition'],
-                'right_count' => $rightPosition['rightCount'],
-                'move' => $newNumber
-            ]);
+				'g_id' => $gameId,
+				'right_position' => $rightPosition['rightPosition'],
+				'right_count' => $rightPosition['rightCount'],
+				'move' => $newNumber
+			]);
 		}
 		$this->toJSON($rightPosition, true);
 	}

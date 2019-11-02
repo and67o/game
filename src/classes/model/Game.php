@@ -4,6 +4,8 @@
 namespace Router\src\classes\model;
 
 
+use Router\Db;
+
 class Game extends Model
 {
 	
@@ -51,18 +53,17 @@ class Game extends Model
 	 */
 	public static function createGame()
 	{
-		$res = !self::_db()
+		$res = self::_db()
 			->table('games')
 			->add([
 				'dt_start' => '1970-01-01',
 				'dt_finish' => '1970-01-01',
 				'game_status' => self::GAME_NEW,
-			])
-			->getLastId();
+			]);
 		if (!$res) {
 			throw new \PDOException('There was a problem creating this account.');
 		}
-		return $res ? : 0;
+		return $res ?: 0;
 	}
 	
 	/**
@@ -87,11 +88,11 @@ class Game extends Model
 	 * Записывает загаданное число
 	 * @param int $gameId - уникальный идентификатор игры
 	 * @param int $userId - уникальный идентификатор пользователя
-	 * @return bool
+	 * @return Db
 	 */
-	public static function writeNumber(int $gameId, int $userId = 0) : bool
+	public static function writeNumber(int $gameId, int $userId = 0)
 	{
-		$res = !self::_db()
+		$res = self::_db()
 			->table('game_numbers')
 			->add([
 				'g_id' => $gameId,

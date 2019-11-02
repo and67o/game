@@ -23,14 +23,10 @@ class Game extends CommonController implements BaseFacade
 	 */
 	public function createGame()
 	{
-		var_dump(222);exit;
-		$this->locationRedirect('/', !$this->isAjax());
 		$gameId = model\Game::createGame();
 		$userId = $this->userId ? : 0;
 		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId, $userId) : false;
-		$this->toJSON([
-			'gameId' => $createNumber ? $gameId : 0,
-		], true);
+		$this->locationRedirect('/GameField/index/' . $createNumber);
 		
 	}
 }

@@ -74,32 +74,36 @@ class Db
 		}
 		return $sql;
 	}
+	
 	/**
 	 * Выполнение запроса
 	 * @param $params
+	 * @param string $query
 	 * @return Db
 	 */
-	public function query($params) : Db
+	public function queryExecute($params, $query = '') : Db
 	{
 		if (!is_array($params)) {
 			$params = (array) $params;
 		}
+//		var_dump($params);exit;
+		$sql = $query ?: $this->query;
 		$this->query = $this
 			->_pdo
-			->prepare($this->query);
+			->prepare($sql);
 		$numberInList = 1;
 		foreach ($params as $param) {
 			$this->query->bindValue(
 				$numberInList,
 				$param,
-				is_int($params) ? PDO::PARAM_INT : PDO::PARAM_STR
+				is_int($param) ? PDO::PARAM_INT : PDO::PARAM_STR
 			);
 			$numberInList++;
 		}
 		if ($this->query->execute()) {
 			// разнести эти метода на селкт и инсерт
 			$this->_result = $this->query->fetchAll(PDO::FETCH_OBJ);
-			$this->_count = $this->query->rowCount();
+//			$this->_count = $this->query->rowCount();
 			return $this;
 		} else {
 			throw new \PDOException('Trouble with DB');
@@ -180,7 +184,7 @@ class Db
 			join(' AND ', $this->where)
 		);
 		return $this
-			->query($param)
+			->queryExecute($param)
 			->getResult();
 	}
 	
@@ -210,10 +214,10 @@ class Db
 			implode('`, `', $keys),
 			$values
 		);
-		$res = $this->query($params);
+		$res = $this->queryExecute($params);
 		if (!$res) {
 			throw new \PDOException('123');
 		}
-		return $this->query($params);
+		return $res->getLastId();
 	}
 }

@@ -27,19 +27,20 @@ class User extends Model
 	public function __construct($userId = 0)
 	{
 		if ($userId) {
-			$sql = sprintf('
-				SELECT u.email, u.u_id, i.path
+			$sqlResult = self::_db()->queryExecute([
+				'u_id' => $userId
+			],
+				'SELECT u.email, u.u_id, i.path
 					FROM users u
 					LEFT JOIN images i ON i.i_id = u.profile_avatar
-				WHERE u.u_id = %s', $userId
-			);
-			$sqlResult = self::_db()->fetchAll($sql);
-			$userData = array_shift($sqlResult);
-			
-			$this->email = !empty($userData['email']) ? $userData['email'] : '';
-			$this->userId = $userData['u_id'];
-			$this->profileAvatar = $userData['path'];
-			
+				WHERE u.u_id = ?'
+			)->getResult();
+			if (is_array($sqlResult) && count($sqlResult)) {
+				$userData = array_shift($sqlResult);
+				$this->email = $userData->email;
+				$this->userId = $userData->u_id;
+				$this->profileAvatar = $userData->path;
+			}
 		}
 	}
 	
@@ -60,14 +61,16 @@ class User extends Model
 	/**
 	 * Создание пользователя
 	 * @param array $param
+	 * @return string
 	 */
 	public function create(array $param = [])
 	{
-		if (!self::_db()
+		$userId = self::_db()
 			->table('users')
-			->add($param)
-		) {
+			->add($param);
+		if (!$userId) {
 			throw new \PDOException('There was a problem creating this account.');
 		}
+		return $userId;
 	}
 }

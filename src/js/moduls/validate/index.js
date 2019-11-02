@@ -9,7 +9,7 @@ const minLength = (email, minLen = MIN_LENGTH) => {
 };
 
 const maxLength = (email, maxlength = MAX_LENGTH) => {
-	return email.length < maxlength;
+	return email.length > maxlength;
 };
 
 const isEmailCorrect = (email) => {

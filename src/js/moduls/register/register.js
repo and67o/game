@@ -1,69 +1,42 @@
-import {
-	validateEmail,
-	validatePassword
-} from "../validate/validate";
-import {
-	addError
-} from '../utils';
-import {getTemplate} from "./tmp";
+import {addError} from "../utils";
+import {validate} from "../auth/validate";
+import * as axios from "axios";
 
-export function register () {
-	const modalContainer = $('.modal-container');
-	if (!modalContainer.length) {
-		$('.main-page').after(getTemplate);
-		bindEventsAuth();
-	} else {
-		modalContainer.remove();
-	}
-}
+export const registerNewPerson = () => {
+	const email = $('.js-email').val();
+	const password = $('.js-password').val();
+	const name = $('.js-name').val();
 
-function bindEventsAuth() {
-	$('.js-close-modal').on('click', () => closeModal());
-	$('.js-btn-submit').on('click', () => registerNewPerson());
-}
-
-function registerNewPerson() {
-	const email = $('.js-register-email').val();
-	const password = $('.js-register-password').val();
-	const emailError = validateEmail(email);
-	const passwordError = validatePassword(password);
-	if (emailError) {
-		addError(emailError, '.js-error-email');
-	}
-	if (passwordError) {
-		addError(passwordError, '.js-error-password');
-	}
-	if (!emailError && !passwordError) {
-		const dataForAjax = {
-			url: 'register/register',
-			type: 'POST',
-			dataType: 'json',
+	const error = validate(email, password);
+	if (error) {
+		const dataForAxios = {
+			url: 'Register/register',
 			data: {
 				email: email,
-				password: password
+				password: password,
+				name: name,
 			}
 		};
-		$.ajax(dataForAjax)
-			.done((response) => {
+		axios
+			.post(
+				dataForAxios.url,
+				dataForAxios.data
+			)
+			.then(function (response) {
 				const {
 					result,
 					error
-				} = response;
+				} = response.data;
+				if (result) {
+					location.reload();
+				}
 				if (error) {
 					addError(error, '.js-error-email');
 					return;
 				}
-				if (result) {
-					location.reload()
-				}
 			})
-			.fail(() => {
-				// location.reload();
+			.catch(function (error) {
+				location.reload();
 			});
 	}
-}
-
-const closeModal = () => {
-	$('.modal-container').remove();
 };
-

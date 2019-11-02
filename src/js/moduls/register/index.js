@@ -3,19 +3,19 @@ import {
 } from "./tmp";
 import Modal from "../modal";
 import {
-	authorisation
-} from "./auth";
+	registerNewPerson
+} from "./register";
 
-export function auth() {
+export function register () {
 	const modalContainer = $('.modal-container');
 	if (!modalContainer.length) {
 		new Modal({
-			headerName: 'Авторизация',
+			headerName: 'Регистрация',
 			content: getTemplate(),
 			needBtnClose: true,
 			callbacks: {
 				btnSubmit: () => {
-					authorisation();
+					registerNewPerson();
 				}
 			},
 		}).init();
@@ -23,9 +23,3 @@ export function auth() {
 		modalContainer.remove();
 	}
 }
-
-export const logOut = () => {
-	document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-	location.reload();
-};
-

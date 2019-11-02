@@ -23,8 +23,6 @@ class Register extends CommonController
 	 */
 	public function register()
 	{
-		$this->locationRedirect('/', !$this->isAjax());
-		
 		if (!Input::isPostMethod()) {
 			exit;
 		}
@@ -33,21 +31,23 @@ class Register extends CommonController
 //		if ($errors['password'] || $errors['email']) {
 //			exit;
 //		}
+		$data = Input::json(file_get_contents('php://input'));
 		$User = new User();
 		$salt = Hash::salt(Hash::SALT_LENGTH);
 		try {
-			$User->create([
-				'email' => Input::get('email'),
-				'password' => Hash::make(Input::get('password'), $salt),
+			$userId = (int) $User->create([
+				'email' => $data['email'],
+				'password' => Hash::make($data['password'], $salt),
 				'salt' => $salt,
-				'name' => 'oleg',
-//				'name' => Input::get('name') ,
+				'name' => $data['name'],
 				'reg_dt' => date('Y-m-d H:i:s'),
 				'role_id' => Role::USER_ROLE,
 			]);
-			Session::flash('home', 'You have been registered and can now log in!');
-			header('Location: /');
-		} catch (Exception $e) {
+			$this->setAuthCookie($userId);
+			$this->toJSON([
+				'result' => (bool) $userId,
+			], true);
+		} catch (\PDOException $e) {
 			var_dump($e->getMessage());
 			exit;
 		}
