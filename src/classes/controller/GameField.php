@@ -19,15 +19,17 @@ class GameField extends CommonController implements BaseFacade
 	
 	public function __construct($param = '')
 	{
+		
 		if ($param) {
 			session_start();
 			$_SESSION['gameId'] = $param;
 		}
 		$this->gameId = $param;
+		parent::__construct();
 	}
 	
 	/**
-	 * Главнаяс страница игры
+	 * Главная страница игры
 	 */
 	public function index()
 	{
@@ -48,8 +50,8 @@ class GameField extends CommonController implements BaseFacade
 	 */
 	public function addNewNumber()
 	{
-		$this->locationRedirect('/', !$this->isAjax());
-		$newNumber = Input::get('number');
+		$data = Input::json(file_get_contents('php://input'));
+		$newNumber = $data['number'];
 		session_start();
 		$gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
 		$rightPosition = [];
@@ -57,9 +59,10 @@ class GameField extends CommonController implements BaseFacade
 			$number = Game::getGameNumberByGameId($gameId);
 			$Game = new Game($number);
 			$rightPosition = $Game->checkNumber($newNumber);
-			
+
 			$Game->saveMove([
 				'g_id' => $gameId,
+				'dt' => date('Y-m-d H:i:s'),
 				'right_position' => $rightPosition['rightPosition'],
 				'right_count' => $rightPosition['rightCount'],
 				'move' => $newNumber

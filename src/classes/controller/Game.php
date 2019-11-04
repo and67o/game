@@ -12,9 +12,14 @@ class Game extends CommonController implements BaseFacade
 	
 	public function index()
 	{
-		$this->render('/Game/Game', [
-			'title' => 'Игра'
-		]);
+		$permanentValues = $this->getBaseParam('Игра');
+		$paramsForPage = [];
+		$this->render('/Game/Game',
+			array_merge(
+				$permanentValues,
+				$paramsForPage
+			)
+		);
 	}
 	
 	/**
@@ -26,7 +31,7 @@ class Game extends CommonController implements BaseFacade
 		$gameId = model\Game::createGame();
 		$userId = $this->userId ? : 0;
 		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId, $userId) : false;
-		$this->locationRedirect('/GameField/index/' . $createNumber);
+		$this->locationRedirect('/GameField/index/' . $gameId);
 		
 	}
 }

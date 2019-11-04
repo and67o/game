@@ -3,6 +3,7 @@ const defaultParam = () => {
 		headerName: null,
 		content: null,
 		needBtnClose: null,
+		modalClass: null,
 		callbacks: {
 			btnClose: null,
 			btnSubmit: null

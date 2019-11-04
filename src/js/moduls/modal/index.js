@@ -39,18 +39,22 @@ class Modal {
 	};
 
 	getTemplate() {
+		const {
+			modalClass,
+			needBtnClose,
+			headerName,
+			content
+		} = this.modalParams;
 		return `
 			<div class="modal-container ">
-				<div class="modal">
+				<div class="modal ${modalClass ? modalClass : ''}">
 					<div class="modal__header">
-						<p class="modal__title">${this.modalParams.headerName}</p>
-							${this.modalParams.needBtnClose ?
-			`<button class="btn btn-close js-close-modal">X</button>` : ``
-		}
+						<p class="modal__title">${headerName}</p>
+						${needBtnClose ? `<button class="btn btn-close js-close-modal">X</button>` : ``}
 					</div>
 
 					<div class="modal__content">
-					    ${this.modalParams.content}
+					    ${content}
 					</div>
 
 					<div class="modal__footer">

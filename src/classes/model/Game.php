@@ -49,15 +49,14 @@ class Game extends Model
 	
 	/**
 	 * создание новой игры
-	 * @return bool
+	 * @return int
 	 */
 	public static function createGame()
 	{
 		$res = self::_db()
 			->table('games')
 			->add([
-				'dt_start' => '1970-01-01',
-				'dt_finish' => '1970-01-01',
+				'dt_start' => date('Y-m-d H:i:s'),
 				'game_status' => self::GAME_NEW,
 			]);
 		if (!$res) {
@@ -111,15 +110,15 @@ class Game extends Model
 	 */
 	public static function createNumber()
 	{
-		static $arr = [];
+		static $numbers = [];
 		$number = rand(0, 9);
-		if (count($arr) != 4 && !in_array($number, $arr)) {
-			array_push($arr, $number);
+		if (count($numbers) != 4 && !in_array($number, $numbers)) {
+			array_push($numbers, $number);
 		}
-		if (count($arr) != 4) {
+		if (count($numbers) != 4) {
 			self::createNumber();
 		}
-		return implode('', $arr);
+		return implode('', $numbers);
 	}
 	
 	/**
@@ -129,25 +128,26 @@ class Game extends Model
 	 */
 	public static function getGameNumberByGameId(int $gameId)
 	{
-		return self::_db()
+		$res = self::_db()
 			->select(['game_number'])
 			->table('game_numbers')
 			->where('g_id = ?')
 			->get([$gameId]);
+		return array_shift($res)->game_number;
 	}
 	
 	/**`
 	 * сохранить информацию о ходе
 	 * @param array $moveParam
-	 * @return bool
+	 * @return Db
 	 */
-	public function saveMove(array $moveParam) : bool
+	public function saveMove(array $moveParam)
 	{
-		$res = !self::_db()
+		$res = self::_db()
 			->table('game_process')
 			->add($moveParam);
 		if (!$res) {
-			throw new \PDOException('There was a problem creating this account.');
+			throw new \PDOException('Ход не сохранен');
 		}
 		return $res;
 	}

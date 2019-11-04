@@ -78,6 +78,11 @@ class CommonController
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
 	
+	/**
+	 * редирект
+	 * @param $location
+	 * @param bool $condition
+	 */
 	protected function locationRedirect($location, $condition = true)
 	{
 		if ($condition) {

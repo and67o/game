@@ -41,6 +41,11 @@
 
 	}
 
+	&-notice {
+		max-width: 370px;
+		min-height: 200px;
+	}
+
 	&__mask {
 		position: fixed;
 		top: 0;

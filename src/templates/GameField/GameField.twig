@@ -13,7 +13,7 @@
 		<ul class="game__fields">
 			{% for move in moves %}
 				<li class="game__fields__line">
-					<p>{{ move.move }}</p>
+					<p data-number="{{ move.move }}">{{ move.move }}</p>
 					<span class="line-field"></span>
 					<p>{{ move.right_count }}x{{ move.right_position }}</p>
 				</li>

@@ -3,6 +3,7 @@ import {
 	MAX_LENGTH,
 	MIN_LENGTH
 } from "./const";
+import isArray from "lodash-es/isArray";
 
 const minLength = (email, minLen = MIN_LENGTH) => {
 	return email.length < minLen;
@@ -38,4 +39,20 @@ export const validateEmail = (email) => {
 		error = 'Email набран некорректно';
 	}
 	return error;
+};
+
+export function haveRepeatValue(number) {
+	const numberValue = isArray(number) ? number : number.split('');
+	let countIteration = 0;
+	for (let numberIndex = 0; numberIndex < numberValue.length; numberIndex++) {
+		for (let numberList = 0; numberList < numberValue.length; numberList++) {
+			if (numberList !== countIteration) {
+				if (numberValue[numberIndex] === numberValue[numberList]) {
+					return true;
+				}
+			}
+		}
+		countIteration++;
+	}
+	return false;
 };
