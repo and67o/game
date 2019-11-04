@@ -26,7 +26,9 @@ class Register extends CommonController
 		if (!Input::isPostMethod()) {
 			exit;
 		}
-//		$errors = $this->_validateParam();
+		$data = Input::json(file_get_contents('php://input'));
+		$errors = $this->_validateParam($data);
+		var_dump($errors);exit;
 //		var_dump($errors);exit;
 //		if ($errors['password'] || $errors['email']) {
 //			exit;
@@ -56,11 +58,20 @@ class Register extends CommonController
 	/**
 	 * Валидация данных
 	 */
-	private function _validateParam()
+	private function _validateParam($data)
 	{
-		$errors = [];
-		$errors['email'] = Validation::email(Input::get('email')) ? : [];
-		$errors['password'] = Validation::password(Input::get('password')) ? : [];
-		return $errors;
+		$Validation = new Validation();
+		$Validation
+			->setName('email')
+			->setValue($data['email'])
+			->required()
+			->min()
+			->max()
+			->isExist();
+		
+//		$errors = [];
+//		$errors['email'] = Validation::email(Input::get('email')) ? : [];
+//		$errors['password'] = Validation::password(Input::get('password')) ? : [];
+//		return $errors;
 	}
 }

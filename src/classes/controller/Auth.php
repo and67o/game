@@ -18,8 +18,12 @@ class Auth extends CommonController implements AuthInterface
 	 */
 	public function authorisation()
 	{
-		$email = (string) Input::get('email');
-		$password = (string) Input::get('password');
+		if (!Input::isPostMethod()) {
+			exit;
+		}
+		$data = Input::json(file_get_contents('php://input'));
+		$email = $data['email'];
+		$password = $data['password'];
 		$Model = new model\Auth();
 		$userId = $Model->checkEmailAndPassword($email, $password);
 		if ($userId) {

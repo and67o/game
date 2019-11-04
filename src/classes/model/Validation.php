@@ -11,13 +11,19 @@ use Router\Models\User;
 class Validation extends Model
 {
 	
-//	public function __construct()
-//	{
-//		$this->_db = Db::getInstance();
-//	}
+	//	public function __construct()
+	//	{
+	//		$this->_db = Db::getInstance();
+	//	}
 	
 	const MIN_LENGTH_OF_FIELD = 3;
 	const MAX_LENGTH_OF_FIELD = 60;
+	private $value;
+	/**
+	 * @var array
+	 */
+	private $errors;
+	private $name;
 	
 	/**
 	 * проверка на минимальную длину
@@ -34,14 +40,16 @@ class Validation extends Model
 		$length = strlen($string);
 		return $hardCheck ? $length < $minLength : $length <= $minLength;
 	}
-    /**
-     * проверка на максимальную длину
-     * @param $string
-     * @param int $minLength
-     * @param bool $hardCheck
-     * @return bool
-     */
-	public static function maxLength($string, $minLength = self::MAX_LENGTH_OF_FIELD, $hardCheck = true) {
+	
+	/**
+	 * проверка на максимальную длину
+	 * @param $string
+	 * @param int $minLength
+	 * @param bool $hardCheck
+	 * @return bool
+	 */
+	public static function maxLength($string, $minLength = self::MAX_LENGTH_OF_FIELD, $hardCheck = true)
+	{
 		if (!$string) {
 			return false;
 		}
@@ -69,7 +77,8 @@ class Validation extends Model
 	 * @param $email
 	 * @return string
 	 */
-	public static function email($email) {
+	public static function email($email)
+	{
 		if (!$email) {
 			return 'Введите email';
 		} elseif (self::minLength($email)) {
@@ -88,4 +97,69 @@ class Validation extends Model
 	{
 		return true;
 	}
+	
+	public function setValue($value)
+	{
+		$this->value = $value;
+		return $this;
+		
+	}
+	
+	public function required()
+	{
+		
+		if ($this->value == '' || $this->value == null) {
+			$this->errors[] = 'Поле ' . $this->name . ' Пустое';
+		}
+		return $this;
+		
+	}
+	
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+		
+	}
+	
+	public function min($minLength = self::MIN_LENGTH_OF_FIELD)
+	{
+		if (is_string($this->value)) {
+			if (strlen($this->value) < $minLength) {
+				$this->errors[] = 'У поля ' . $this->name . ' маловато символов';
+			}
+		} else {
+			if ($this->value < $minLength) {
+				$this->errors[] = 'У поля ' . $this->name . ' маловато цифр';
+			}
+		}
+		return $this;
+		
+	}
+	
+	public function max($maxLength = self::MAX_LENGTH_OF_FIELD)
+	{
+		if (is_string($this->value)) {
+			
+			if (strlen($this->value) > $maxLength) {
+				$this->errors[] = 'У поля ' . $this->name . ' многовато мисволов';
+			}
+			
+		} else {
+			
+			if ($this->value > $maxLength) {
+				$this->errors[] = 'У поля ' . $this->name . ' многовато цифр';
+			}
+			
+		}
+		return $this;
+		
+	}
+	public function isExist() {
+		if (User::isEmailExist($this->value)) {
+			$this->errors[] = 'Email занят';
+		}
+		return $this;
+	}
+	
 }
