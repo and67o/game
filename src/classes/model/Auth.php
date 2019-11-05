@@ -14,14 +14,15 @@ class Auth extends Model
 	 */
 	public function checkEmailAndPassword(string $email, string $password)
 	{
-        return self::_db()
-            ->select(['u_id'])
-            ->table('users')
-            ->where('password = ? AND email = ?')
-            ->get([
-                $password,
-                $email
-            ]);
+		 $res = self::_db()
+			->select(['u_id'])
+			->table('users')
+			->where('password = ? AND email = ?')
+			->get([
+				$password,
+				$email
+			]);
+		return array_shift($res)->u_id;
 	}
 	
 	

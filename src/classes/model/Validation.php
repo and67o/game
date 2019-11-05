@@ -10,156 +10,131 @@ use Router\Models\User;
 
 class Validation extends Model
 {
-	
-	//	public function __construct()
-	//	{
-	//		$this->_db = Db::getInstance();
-	//	}
-	
 	const MIN_LENGTH_OF_FIELD = 3;
 	const MAX_LENGTH_OF_FIELD = 60;
+	
 	private $value;
-	/**
-	 * @var array
-	 */
 	private $errors;
 	private $name;
 	
 	/**
-	 * проверка на минимальную длину
-	 * @param $string
-	 * @param int $minLength
-	 * @param bool $hardCheck
-	 * @return bool
-	 */
-	public static function minLength($string, $minLength = self::MIN_LENGTH_OF_FIELD, $hardCheck = true)
-	{
-		if (!$string) {
-			return false;
-		}
-		$length = strlen($string);
-		return $hardCheck ? $length < $minLength : $length <= $minLength;
-	}
-	
-	/**
-	 * проверка на максимальную длину
-	 * @param $string
-	 * @param int $minLength
-	 * @param bool $hardCheck
-	 * @return bool
-	 */
-	public static function maxLength($string, $minLength = self::MAX_LENGTH_OF_FIELD, $hardCheck = true)
-	{
-		if (!$string) {
-			return false;
-		}
-		$length = strlen($string);
-		return $hardCheck ? $length > $minLength : $length >= $minLength;
-	}
-	
-	/**
 	 * Валидация email
-	 * @param string $email
-	 * @return bool
+	 * @return Validation
 	 */
-	public static function isValidateEmail($email) : bool
+	public function isValidateEmail() : Validation
 	{
-		if (!$email) {
-			return false;
-		}
 		$EmailValidator = new EmailValidator();
-		return $EmailValidator->isValid($email, new RFCValidation());
+		if (!$EmailValidator->isValid($this->value, new RFCValidation())) {
+			$this->errors[$this->name] = 'Email набран некорректно';
+		};
 		
+		return $this;
 	}
 	
 	/**
-	 * Валидация email
-	 * @param $email
-	 * @return string
+	 * записание значение
+	 * @param $value
+	 * @return $this
 	 */
-	public static function email($email)
-	{
-		if (!$email) {
-			return 'Введите email';
-		} elseif (self::minLength($email)) {
-			return 'Мало символов';
-		} elseif (self::maxLength($email)) {
-			return 'Много символов';
-		} elseif (User::isEmailExist($email)) {
-			return 'Email занят';
-		} elseif (self::isValidateEmail($email)) {
-			return 'Email набран некорректно';
-		}
-		return '';
-	}
-	
-	static public function password($password)
-	{
-		return true;
-	}
-	
 	public function setValue($value)
 	{
 		$this->value = $value;
 		return $this;
-		
 	}
 	
+	/**
+	 * Обязательное поле
+	 * @return $this
+	 */
 	public function required()
 	{
-		
 		if ($this->value == '' || $this->value == null) {
-			$this->errors[] = 'Поле ' . $this->name . ' Пустое';
+			$this->errors[$this->name] = 'Поле ' . $this->name . ' Пустое';
 		}
 		return $this;
 		
 	}
 	
+	/**
+	 * Записать поле
+	 * @param $name
+	 * @return $this
+	 */
 	public function setName($name)
 	{
 		$this->name = $name;
 		return $this;
-		
 	}
 	
+	/**
+	 * Минимальное кол-во символов
+	 * @param int $minLength
+	 * @return $this
+	 */
 	public function min($minLength = self::MIN_LENGTH_OF_FIELD)
 	{
 		if (is_string($this->value)) {
 			if (strlen($this->value) < $minLength) {
-				$this->errors[] = 'У поля ' . $this->name . ' маловато символов';
+				$this->errors[$this->name] = 'У поля маловато символов';
 			}
 		} else {
 			if ($this->value < $minLength) {
-				$this->errors[] = 'У поля ' . $this->name . ' маловато цифр';
+				$this->errors[$this->name] = 'У поля маловато цифр';
 			}
 		}
 		return $this;
 		
 	}
 	
+	/**
+	 * Максимальное кол-во символов
+	 * @param int $maxLength
+	 * @return $this
+	 */
 	public function max($maxLength = self::MAX_LENGTH_OF_FIELD)
 	{
 		if (is_string($this->value)) {
-			
 			if (strlen($this->value) > $maxLength) {
-				$this->errors[] = 'У поля ' . $this->name . ' многовато мисволов';
+				$this->errors[$this->name] = 'У поля ' . $this->name . ' многовато мисволов';
 			}
-			
 		} else {
-			
 			if ($this->value > $maxLength) {
-				$this->errors[] = 'У поля ' . $this->name . ' многовато цифр';
+				$this->errors[$this->name] = 'У поля ' . $this->name . ' многовато цифр';
 			}
-			
 		}
 		return $this;
-		
 	}
-	public function isExist() {
+	
+	/**
+	 * проверка на существование email
+	 * @return $this
+	 */
+	public function isExist()
+	{
 		if (User::isEmailExist($this->value)) {
-			$this->errors[] = 'Email занят';
+			$this->errors[$this->name] = 'Email занят';
 		}
 		return $this;
+	}
+	
+	/**
+	 * есть ли ошибки
+	 * @return bool
+	 */
+	public function isSuccess()
+	{
+		return empty($this->errors);
+	}
+	
+	/**
+	 * Получить ошибки
+	 * @return mixed
+	 */
+	public function getErrors()
+	{
+		if (!$this->isSuccess()) {
+			return $this->errors;
+		}
 	}
 	
 }

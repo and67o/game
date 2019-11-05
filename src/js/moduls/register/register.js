@@ -1,5 +1,9 @@
-import {addError} from "../utils";
-import {validate} from "../auth/validate";
+import {
+	addError
+} from "../utils";
+import {
+	validate
+} from "../auth/validate";
 import * as axios from "axios";
 
 export const registerNewPerson = () => {
@@ -25,14 +29,19 @@ export const registerNewPerson = () => {
 			.then(function (response) {
 				const {
 					result,
-					error
+					errors
 				} = response.data;
+				
 				if (result) {
 					location.reload();
 				}
-				if (error) {
-					addError(error, '.js-error-email');
-					return;
+				if (errors) {
+					console.log(errors);
+					
+					Object.keys(errors).forEach((errorName) => {
+						console.log(errors, errorName, errors[errorName],errors.errorName)
+						addError(errors[errorName], '.js-error-' + errorName);
+					}, errors);
 				}
 			})
 			.catch(function (error) {

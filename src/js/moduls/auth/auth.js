@@ -24,7 +24,10 @@ export const authorisation = () => {
 				dataForAxios.data
 			)
 			.then(function (response) {
-				console.log(response);
+				const {
+					result,
+				} = response.data;
+				console.log(result);
 			})
 			.catch(function (error) {
 				console.log(error);

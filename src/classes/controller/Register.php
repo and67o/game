@@ -24,23 +24,28 @@ class Register extends CommonController
 	public function register()
 	{
 		if (!Input::isPostMethod()) {
-			exit;
+			$this->toJSON([
+				'errors' => 'Ошибка',
+				'result' => false
+			], true);
 		}
 		$data = Input::json(file_get_contents('php://input'));
 		$errors = $this->_validateParam($data);
-		var_dump($errors);exit;
-//		var_dump($errors);exit;
-//		if ($errors['password'] || $errors['email']) {
-//			exit;
-//		}
+		$password = (string) $data['password'];
+		$hashes = Hash::passwordHash($password);
+		if ($errors) {
+			$this->toJSON([
+				'errors' => $errors,
+				'result' => false
+			], true);
+		}
 		$data = Input::json(file_get_contents('php://input'));
 		$User = new User();
-		$salt = Hash::salt(Hash::SALT_LENGTH);
 		try {
 			$userId = (int) $User->create([
 				'email' => $data['email'],
-				'password' => Hash::make($data['password'], $salt),
-				'salt' => $salt,
+				'password' => $hashes['hash'],
+				'salt' => $hashes['salt'],
 				'name' => $data['name'],
 				'reg_dt' => date('Y-m-d H:i:s'),
 				'role_id' => Role::USER_ROLE,
@@ -61,17 +66,16 @@ class Register extends CommonController
 	private function _validateParam($data)
 	{
 		$Validation = new Validation();
-		$Validation
-			->setName('email')
-			->setValue($data['email'])
-			->required()
-			->min()
-			->max()
-			->isExist();
-		
-//		$errors = [];
-//		$errors['email'] = Validation::email(Input::get('email')) ? : [];
-//		$errors['password'] = Validation::password(Input::get('password')) ? : [];
-//		return $errors;
+		$Validation->setName('email')->setValue($data['email'])->required()->min()
+			->max()->isExist()->isValidateEmail();
+		$Validation->setName('password')->setValue($data['password'])->required()->min()
+			->max();
+		$Validation->setName('name')->setValue($data['name'])->required()->min()
+			->max();
+		if ($Validation->isSuccess()) {
+			return false;
+		} else {
+			return $Validation->getErrors();
+		}
 	}
 }

@@ -35,7 +35,7 @@ export const validateEmail = (email) => {
 		error = 'Слишком мало символов';
 	} else if (maxLength(email)) {
 		error = 'Слишком много символов';
-	} else if (isEmailCorrect(email)) {
+	} else if (!isEmailCorrect(email)) {
 		error = 'Email набран некорректно';
 	}
 	return error;
