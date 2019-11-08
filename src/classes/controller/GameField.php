@@ -51,7 +51,7 @@ class GameField extends CommonController implements BaseFacade
 	public function addNewNumber()
 	{
 		$data = Input::json(file_get_contents('php://input'));
-		$newNumber = $data['number'];
+		$newNumber = (int) $data['number'];
 		session_start();
 		$gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
 		$rightPosition = [];

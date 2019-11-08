@@ -12,9 +12,9 @@ class Validation extends Model
 {
 	const MIN_LENGTH_OF_FIELD = 3;
 	const MAX_LENGTH_OF_FIELD = 60;
-	
+
 	private $value;
-	private $errors;
+	private $errors = [];
 	private $name;
 	
 	/**
@@ -27,10 +27,10 @@ class Validation extends Model
 		if (!$EmailValidator->isValid($this->value, new RFCValidation())) {
 			$this->errors[$this->name] = 'Email набран некорректно';
 		};
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * записание значение
 	 * @param $value
@@ -41,7 +41,7 @@ class Validation extends Model
 		$this->value = $value;
 		return $this;
 	}
-	
+
 	/**
 	 * Обязательное поле
 	 * @return $this
@@ -52,9 +52,9 @@ class Validation extends Model
 			$this->errors[$this->name] = 'Поле ' . $this->name . ' Пустое';
 		}
 		return $this;
-		
+
 	}
-	
+
 	/**
 	 * Записать поле
 	 * @param $name
@@ -65,7 +65,7 @@ class Validation extends Model
 		$this->name = $name;
 		return $this;
 	}
-	
+
 	/**
 	 * Минимальное кол-во символов
 	 * @param int $minLength
@@ -83,9 +83,9 @@ class Validation extends Model
 			}
 		}
 		return $this;
-		
+
 	}
-	
+
 	/**
 	 * Максимальное кол-во символов
 	 * @param int $maxLength
@@ -104,7 +104,7 @@ class Validation extends Model
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * проверка на существование email
 	 * @return $this
@@ -116,7 +116,7 @@ class Validation extends Model
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * есть ли ошибки
 	 * @return bool
@@ -125,7 +125,7 @@ class Validation extends Model
 	{
 		return empty($this->errors);
 	}
-	
+
 	/**
 	 * Получить ошибки
 	 * @return mixed
@@ -136,5 +136,5 @@ class Validation extends Model
 			return $this->errors;
 		}
 	}
-	
+
 }

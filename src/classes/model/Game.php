@@ -22,15 +22,22 @@ class Game extends Model
 	
 	/**
 	 * Возвращает результат проверки числа
-	 * @param $number
+	 * @param int $number
 	 * @return array
 	 */
-	public function checkNumber($number)
+	public function checkNumber(int $number)
 	{
+		if (!$number) {
+			return [
+				'youWin' => false
+			];
+		}
+
 		$rightCount = 0;
 		$rightPosition = 0;
 		$computerNumbers = str_split($this->computerNumber);
 		$myNumbers = str_split($number);
+
 		foreach ($myNumbers as $position => $myNumber) {
 			$isNumberHave = in_array($myNumber, $computerNumbers);
 			if ($isNumberHave) {
@@ -40,6 +47,7 @@ class Game extends Model
 				}
 			}
 		}
+
 		return [
 			'rightPosition' => $rightPosition,
 			'rightCount' => $rightCount,
