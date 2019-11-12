@@ -5,24 +5,23 @@ namespace Router\src\classes\controller;
 
 use Router\Models\Input;
 use Router\Models\Session;
-use Router\src\classes\interfaces\BaseFacade;
 use \Router\src\classes\model\Game;
 
 /**
  * Класс отвечающий за игру
  * Class GameField
  */
-class GameField extends CommonController implements BaseFacade
+class GameField extends CommonController
 {
 	/** @var int уникальный идентификатор игры */
 	public $gameId;
 	
 	public function __construct($param = '')
 	{
-		
 		if ($param) {
-			session_start();
-			$_SESSION['gameId'] = $param;
+			$Session = new Session($_SESSION);
+			$Session->start();
+			$Session->set('gameId', $param);
 		}
 		$this->gameId = $param;
 		parent::__construct();
@@ -52,8 +51,11 @@ class GameField extends CommonController implements BaseFacade
 	{
 		$data = Input::json(file_get_contents('php://input'));
 		$newNumber = (int) $data['number'];
-		session_start();
-		$gameId = Session::exists('gameId') ? (int) Session::get('gameId') : '';
+
+		$Session = new Session($_SESSION);
+		$Session->start();
+
+		$gameId = $Session->exists('gameId') ? (int) $Session->get('gameId') : '';
 		$rightPosition = [];
 		if ($gameId) {
 			$number = Game::getGameNumberByGameId($gameId);

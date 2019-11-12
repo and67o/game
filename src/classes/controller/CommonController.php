@@ -21,7 +21,8 @@ class CommonController
 	
 	function __construct()
 	{
-		$this->userId = isset($_COOKIE['userId']) ? $_COOKIE['userId'] : 0;
+		$Cookie = new Cookie();
+		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
 	}
 	
@@ -46,12 +47,7 @@ class CommonController
 			exit;
 		}
 	}
-	
-	public function redirectIfNotUser($isAdmin = false)
-	{
-		return (bool) $_COOKIE && $_COOKIE['userId'];
-	}
-	
+
 	/**
 	 * Получить ответ в формате JSON
 	 * @param $var
@@ -117,7 +113,7 @@ class CommonController
 	 */
 	public function setAuthCookie(int $userId)
 	{
-		Cookie::put('userId', $userId, strtotime('+30 days'));
+		Cookie::set('userId', $userId, strtotime('+30 days'));
 	}
 	
 }

@@ -4,11 +4,9 @@
 namespace Router\src\classes\controller;
 
 
-use PHPUnit\Runner\Exception;
 use Router\Models\Hash;
 use Router\Models\Input;
 use Router\Models\Role;
-use Router\Models\Session;
 use Router\Models\User;
 use Router\src\classes\model\Validation;
 

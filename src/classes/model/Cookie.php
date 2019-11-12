@@ -4,27 +4,17 @@
 namespace Router\Models;
 
 
-use Router\src\classes\interfaces\BaseStructureMethod;
+use Router\src\classes\interfaces\CrudEssence;
 
-class Cookie implements BaseStructureMethod
+class Cookie extends CrudEssence
 {
-	public static function exists($name) {
-		return isset($_COOKIE[$name]);
-	}
-	
-	public static function get($name) {
-		return $_COOKIE[$name];
-	}
-	
-	public static function put($name, $value, $expiry, $path = '/') {
-		if(setcookie($name, $value, time() + $expiry, $path)) {
+
+	public static function set($name, $value, $expiry, $path = '/')
+	{
+		if (setcookie($name, $value, time() + $expiry, $path)) {
 			return true;
 		}
 		return false;
 	}
-	
-	public static function delete($name) {
-		self::put($name, '', time() -1);
-	}
-	
+
 }

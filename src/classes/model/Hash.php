@@ -10,23 +10,27 @@ class Hash extends Model
 {
 	
 	const SALT_LENGTH = 32;
-	
-	public static function make($string, $salt = '') {
-		return hash('sha256', $string . $salt);
+	const MAX_COUNT_OF_ITERATION = 10;
+
+	/**
+	 * @param $password
+	 * @param string $salt
+	 * @return string
+	 */
+	public static function make($password, $salt = '') {
+		return md5(md5($password . md5(sha1($salt))));
 	}
-	
-	public static function salt($length) {
-		return random_bytes($length);
-	}
-	
-	public static function unique() {
-		return self::make(uniqid());
-	}
-	
-	public static function passwordHash($password, $salt = null, $iterations = 10)
+
+	/**
+	 * @param $password
+	 * @param null $salt
+	 * @param int $iterations
+	 * @return array
+	 */
+	public static function passwordHash($password, $salt = null, $iterations = self::MAX_COUNT_OF_ITERATION)
 	{
 		$salt || $salt = uniqid();
-		$hash = md5(md5($password . md5(sha1($salt))));
+		$hash = self::make($password, $salt);
 		for ($i = 0; $i < $iterations; ++$i) {
 			$hash = md5(md5(sha1($hash)));
 		}
@@ -35,7 +39,11 @@ class Hash extends Model
 			'salt' => $salt
 		];
 	}
-	
+
+	/**
+	 * @param $email
+	 * @return mixed
+	 */
 	public static function getSalt($email) {
 		 $res = self::_db()
 			->select(['salt'])

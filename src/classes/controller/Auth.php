@@ -5,7 +5,6 @@ namespace Router\src\classes\controller;
 
 use Router\Models\Hash;
 use Router\Models\Input;
-use Router\Models\Session;
 use Router\src\classes\interfaces\AuthInterface;
 use Router\src\classes\model;
 
