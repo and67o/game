@@ -9,16 +9,12 @@ use Router\src\classes\model;
 class Game extends CommonController
 {
 	
+	protected $tplName = '/Game/Game';
+	protected $pageTitle = 'Игра';
+	
 	public function index()
 	{
-		$permanentValues = $this->getBaseParam('Игра');
-		$paramsForPage = [];
-		$this->render('/Game/Game',
-			array_merge(
-				$permanentValues,
-				$paramsForPage
-			)
-		);
+		$this->render();
 	}
 	
 	/**

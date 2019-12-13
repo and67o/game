@@ -15,6 +15,8 @@ class GameField extends CommonController
 {
 	/** @var int уникальный идентификатор игры */
 	public $gameId;
+	protected $tplName = '/Game/Game';
+	protected $pageTitle = 'Игра номер';
 	
 	public function __construct($param = '')
 	{
@@ -24,6 +26,7 @@ class GameField extends CommonController
 			$Session->set('gameId', $param);
 		}
 		$this->gameId = $param;
+		$this->pageTitle = 'Игра номер ' . $this->gameId;
 		parent::__construct();
 	}
 	
@@ -32,16 +35,9 @@ class GameField extends CommonController
 	 */
 	public function index()
 	{
-		$permanentValues = $this->getBaseParam('Игра номер ' . $this->gameId);
-		$paramsForPage = [
-			'moves' => Game::GetAllInformByGame($this->gameId) ? : []
-		];
-		$this->render('GameField/GameField',
-			array_merge(
-				$permanentValues,
-				$paramsForPage
-			)
-		);
+		$this->render([
+			'moves' => Game::GetAllInformByGame($this->gameId) ?: []
+		]);
 	}
 	
 	/**

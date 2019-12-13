@@ -6,20 +6,15 @@ namespace Router\src\classes\controller;
 
 class PageNotFound extends CommonController
 {
-	
+	protected $tplName = 'pageNotFound/pageNotFound';
+	protected $pageTitle = 'Страница не найдена';
+
 	/**
 	 * Страница 404
 	 */
 	public function index()
 	{
-		$permanentValues = $this->getBaseParam('Страница не найдена');
-		$paramsForPage = [];
-		$this->render('pageNotFound/pageNotFound',
-			array_merge(
-				$permanentValues,
-				$paramsForPage
-			)
-		);
+		$this->render();
 	}
 	
 }

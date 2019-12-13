@@ -17,8 +17,15 @@ class CommonController
 {
 	/** @var int уникальный идентификатор пользователя */
 	public $userId;
-	/** @var int объект пользователя */
+	/** @var User объект пользователя */
 	public $User;
+	/** @var string назваине шаблона */
+	protected $tplName;
+	/** @var string название страницы*/
+	protected $pageTitle;
+
+	/** Путь до шаблонов*/
+	const BASE_TEMPLATE_PATH = 'src/templates/';
 	
 	function __construct()
 	{
@@ -29,24 +36,24 @@ class CommonController
 	
 	/**
 	 * Рендер Шаблона
-	 * @param $file
 	 * @param array $params
+	 * @throws RuntimeError
+	 * @throws SyntaxError
 	 */
-	public function render($file, $params = [])
+	public function render($params = [])
 	{
-		$loader = new FilesystemLoader('src/templates/');
+		$loader = new FilesystemLoader(self::BASE_TEMPLATE_PATH);
 		$twig = new Environment($loader);
 		try {
-			echo $twig->render($file . '.twig', $params);
+			echo $twig->render(
+				$this->tplName . '.twig',
+				array_merge(
+					$this->getBaseParam($this->pageTitle),
+					$params
+				)
+			);
 		} catch (LoaderError $e) {
 			Router::getPage404();
-//			var_dump($e);
-		} catch (RuntimeError $e) {
-//			var_dump(3333333);
-			exit;
-		} catch (SyntaxError $e) {
-//			var_dump($e);
-			exit;
 		}
 	}
 

@@ -9,18 +9,16 @@ namespace Router\src\classes\controller;
  */
 class MainPage extends CommonController
 {
+	
+	protected $tplName = 'MainPage/MainPage';
+	protected $pageTitle = 'Главная';
+	
 	/**
 	 * Главная страницы
 	 */
 	public function index()
 	{
-		$permanentValues = $this->getBaseParam('Главная');
-		$paramsForPage = [];
-		$this->render('MainPage/MainPage',
-			array_merge(
-				$permanentValues,
-				$paramsForPage
-			)
-		);
+		$this->render();
 	}
+
 }
