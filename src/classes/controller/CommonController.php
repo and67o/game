@@ -6,6 +6,7 @@ namespace Router\src\classes\controller;
 
 use Router\Models\Cookie;
 use Router\Models\User;
+use Router\Router;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -38,12 +39,13 @@ class CommonController
 		try {
 			echo $twig->render($file . '.twig', $params);
 		} catch (LoaderError $e) {
-			var_dump($e);
+			Router::getPage404();
+//			var_dump($e);
 		} catch (RuntimeError $e) {
-			var_dump(3333333);
+//			var_dump(3333333);
 			exit;
 		} catch (SyntaxError $e) {
-			var_dump($e);
+//			var_dump($e);
 			exit;
 		}
 	}

@@ -10,7 +10,7 @@ Class Router
 
 	private static $defaultControllerName = 'MainPage';
 	private static $defaultMethodName = 'index';
-	private static $controller404 = 'Controller404';
+	private static $controller404 = 'PageNotFound';
 
 	/**
 	 *
@@ -40,7 +40,7 @@ Class Router
 	/**
 	 * Показать 404
 	 */
-	public function getPage404() {
+	public static function getPage404() {
 		$fullControllerName = self::PATH_CONTROLLER . self::$controller404;
 		$Controller = new $fullControllerName();
 		$methodName = self::$defaultMethodName;
