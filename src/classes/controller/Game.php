@@ -3,7 +3,8 @@
 
 namespace Router\src\classes\controller;
 
-use Router\src\classes\model;
+use Router\Models\Session;
+use Router\src\classes\model\GameNumbers;
 
 
 class Game extends CommonController
@@ -23,10 +24,14 @@ class Game extends CommonController
 	 */
 	public function createGame()
 	{
-		$gameId = model\Game::createGame();
+		$gameId = \Router\src\classes\model\Game::createGame();
 		$userId = $this->userId ? : 0;
-		$createNumber = $gameId > 0 ? model\Game::writeNumber($gameId, $userId) : false;
+		$createNumber = $gameId > 0 ? GameNumbers::writeNumber($gameId, $userId) : false;
+		if ($createNumber) {
+			$Session = new Session();
+			$Session->start();
+			$Session->set('gameId', $gameId);
+		}
 		$this->locationRedirect('/GameField/index/' . $gameId);
-		
 	}
 }

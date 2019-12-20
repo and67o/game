@@ -6,8 +6,6 @@ import {
 } from "../../moduls/utils";
 import * as axios from "axios";
 import Modal from "../../moduls/modal";
-import {getTemplate} from "../../moduls/register/tmp";
-import {registerNewPerson} from "../../moduls/register/register";
 
 const goodRequest = (response, number) => {
 	if (response) {
@@ -44,11 +42,11 @@ const getNewNumberLineHTML = (number, result) => {
 };
 
 export const addNewNumber = (countOfNumber) => {
-	const $errorField = document.querySelector('.error-field');
-	const $number = $('.js-input-number');
-	const numberVal = $number.val();
-	console.log(numberVal);
-	const error = validateField(numberVal, countOfNumber);
+	const
+		$errorField = document.querySelector('.error-field'),
+		$number = $('.js-input-number'),
+		numberVal = $number.val(),
+		error = validateField(numberVal, countOfNumber);
 	$errorField.innerHTML = '';
 	
 	if (error) {
