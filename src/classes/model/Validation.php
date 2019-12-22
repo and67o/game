@@ -6,7 +6,6 @@ namespace Router\src\classes\model;
 
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
-use Router\Models\User;
 
 class Validation extends Model
 {

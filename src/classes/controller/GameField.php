@@ -3,10 +3,10 @@
 
 namespace Router\src\classes\controller;
 
-use Router\Models\Input;
 use \Router\src\classes\model\Game;
 use Router\src\classes\model\GameNumbers;
 use Router\src\classes\model\GameProcess;
+use Router\src\classes\model\Input;
 use Router\src\classes\model\services\Session;
 
 /**
@@ -20,14 +20,14 @@ class GameField extends CommonController
 	protected $tplName = '/GameField/GameField';
 	protected $pageTitle = 'Игра номер';
 	
-	public function __construct($param = '')
+	public function __construct($gameId = '')
 	{
-		if ($param) {
+		if ($gameId) {
 			$Session = new Session();
 			$Session->start();
-			$Session->set('gameId', $param);
+			$Session->set('gameId', $gameId);
 		}
-		$this->gameId = $param;
+		$this->gameId = $gameId;
 		$this->pageTitle = 'Игра номер ' . $this->gameId;
 		parent::__construct();
 	}

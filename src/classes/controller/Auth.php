@@ -3,8 +3,8 @@
 
 namespace Router\src\classes\controller;
 
-use Router\Models\Input;
 use Router\src\classes\model;
+use Router\src\classes\model\Input;
 use Router\src\classes\model\services\Hash;
 
 /**

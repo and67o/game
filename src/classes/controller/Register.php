@@ -4,10 +4,10 @@
 namespace Router\src\classes\controller;
 
 
-use Router\Models\Input;
-use Router\Models\Role;
-use Router\Models\User;
+use Router\src\classes\model\Input;
+use Router\src\classes\model\Role;
 use Router\src\classes\model\services\Hash;
+use Router\src\classes\model\User;
 use Router\src\classes\model\Validation;
 
 /**
@@ -53,7 +53,7 @@ class Register extends CommonController
 				'result' => (bool) $userId,
 			], true);
 		} catch (\PDOException $e) {
-			var_dump($e->getMessage());
+			echo $e->getMessage();
 			exit;
 		}
 	}

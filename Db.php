@@ -86,7 +86,6 @@ class Db
 		if (!is_array($params)) {
 			$params = (array) $params;
 		}
-//		var_dump($params);exit;
 		$sql = $query ?: $this->query;
 		$this->query = $this
 			->_pdo

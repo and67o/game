@@ -4,9 +4,9 @@
 namespace Router\src\classes\controller;
 
 
-use Router\Models\User;
 use Router\Router;
 use Router\src\classes\model\services\Cookie;
+use Router\src\classes\model\User;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
