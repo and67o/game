@@ -3,16 +3,15 @@
 
 namespace Router\src\classes\controller;
 
-use Router\Models\Hash;
 use Router\Models\Input;
-use Router\src\classes\interfaces\AuthInterface;
 use Router\src\classes\model;
+use Router\src\classes\model\services\Hash;
 
 /**
  * Класс отвечающией за авторизацию
  * Class Auth
  */
-class Auth extends CommonController implements AuthInterface
+class Auth extends CommonController
 {
 	/**
 	 * Авторизация на сайте

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\Models;
+namespace Router\src\classes\model\services;
 
 
 use Router\src\classes\model\Model;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\Models;
+namespace Router\src\classes\model\services;
 
 
 class Session
@@ -21,7 +21,7 @@ class Session
 	 */
 	public function set($name, $value)
 	{
-		return $this->essence[$name] = $value;
+		return $_SESSION[$name] = $value;
 	}
 	
 	/**

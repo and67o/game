@@ -4,10 +4,10 @@
 namespace Router\src\classes\controller;
 
 
-use Router\Models\Hash;
 use Router\Models\Input;
 use Router\Models\Role;
 use Router\Models\User;
+use Router\src\classes\model\services\Hash;
 use Router\src\classes\model\Validation;
 
 /**

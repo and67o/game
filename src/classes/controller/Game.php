@@ -3,8 +3,8 @@
 
 namespace Router\src\classes\controller;
 
-use Router\Models\Session;
 use Router\src\classes\model\GameNumbers;
+use Router\src\classes\model\services\Session;
 
 
 class Game extends CommonController

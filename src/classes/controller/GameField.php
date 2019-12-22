@@ -4,10 +4,10 @@
 namespace Router\src\classes\controller;
 
 use Router\Models\Input;
-use Router\Models\Session;
 use \Router\src\classes\model\Game;
 use Router\src\classes\model\GameNumbers;
 use Router\src\classes\model\GameProcess;
+use Router\src\classes\model\services\Session;
 
 /**
  * Класс отвечающий за игру
