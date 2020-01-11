@@ -9,6 +9,7 @@ use Router\src\classes\model\Role;
 use Router\src\classes\model\services\Hash;
 use Router\src\classes\model\User;
 use Router\src\classes\model\Validation;
+use Router\src\classes\model\Auth;
 
 /**
  * Класс отвечающий за регистрацию
@@ -48,7 +49,7 @@ class Register extends CommonController
 				'reg_dt' => date('Y-m-d H:i:s'),
 				'role_id' => Role::USER_ROLE,
 			]);
-			$this->setAuthCookie($userId);
+			Auth::setAuthCookie($userId);
 			$this->toJSON([
 				'result' => (bool) $userId,
 			], true);
@@ -60,20 +61,26 @@ class Register extends CommonController
 	
 	/**
 	 * Валидация данных
+	 * @param $data
+	 * @return bool|mixed
 	 */
 	private function _validateParam($data)
 	{
 		$Validation = new Validation();
-		$Validation->setName('email')->setValue($data['email'])->required()->min()
-			->max()->isExist()->isValidateEmail();
-		$Validation->setName('password')->setValue($data['password'])->required()->min()
+		$this->_baseValidate($data['email'], 'email')->isExist()->isValidateEmail();
+		$this->_baseValidate($data['password'], 'password');
+		$this->_baseValidate($data['name'], 'name');
+		return $Validation->isSuccess() ? false : $Validation->getErrors();
+	}
+	
+	private function _baseValidate($data, $nameField)
+	{
+		$Validation = new Validation();
+		return $Validation
+			->setName($nameField)
+			->setValue($data)
+			->required()
+			->min()
 			->max();
-		$Validation->setName('name')->setValue($data['name'])->required()->min()
-			->max();
-		if ($Validation->isSuccess()) {
-			return false;
-		} else {
-			return $Validation->getErrors();
-		}
 	}
 }

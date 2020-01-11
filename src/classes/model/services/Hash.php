@@ -9,18 +9,18 @@ use Router\src\classes\model\Model;
 class Hash extends Model
 {
 	
-	const SALT_LENGTH = 32;
 	const MAX_COUNT_OF_ITERATION = 10;
-
+	
 	/**
 	 * @param $password
 	 * @param string $salt
 	 * @return string
 	 */
-	public static function make($password, $salt = '') {
+	public static function make($password, $salt = '')
+	{
 		return md5(md5($password . md5(sha1($salt))));
 	}
-
+	
 	/**
 	 * @param $password
 	 * @param null $salt
@@ -39,17 +39,18 @@ class Hash extends Model
 			'salt' => $salt
 		];
 	}
-
+	
 	/**
-	 * @param $email
-	 * @return mixed
+	 * @param string $email
+	 * @return string
 	 */
-	public static function getSalt($email) {
-		 $res = self::_db()
+	public static function getSalt(string $email)
+	{
+		return self::_db()
 			->select(['salt'])
 			->table('users')
 			->where('email = ?')
-			->get([$email]);
-		return array_shift($res)->salt;
+			->get([$email])
+			->single();
 	}
 }

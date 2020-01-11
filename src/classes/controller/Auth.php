@@ -26,13 +26,14 @@ class Auth extends CommonController
 		$password = (string) $data['password'];
 		$salt = Hash::getSalt($email);
 		if (!$salt) {
-			$this->toJSON(['result' => false,], true);
+			$this->toJSON([
+				'result' => false,
+			], true);
 		}
 		$hashes = Hash::passwordHash($password, $salt);
-		$Model = new model\Auth();
-		$userId = $Model->checkEmailAndPassword($email, $hashes['hash']);
+		$userId = model\Auth::checkEmailAndPassword($email, $hashes['hash']);
 		if ($userId) {
-			$this->setAuthCookie($userId);
+			model\Auth::setAuthCookie($userId);
 		}
 		$this->toJSON([
 			'result' => (bool) $userId,

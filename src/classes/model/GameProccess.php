@@ -12,7 +12,7 @@ class GameProcess extends Model
 	/**`
 	 * сохранить информацию о ходе
 	 * @param array $moveParam
-	 * @return Db
+	 * @return string
 	 */
 	public static function saveMove(array $moveParam)
 	{
@@ -40,7 +40,8 @@ class GameProcess extends Model
 			])
 			->table('game_process')
 			->where('g_id = ?')
-			->get([$gameId]);
+			->get([$gameId])
+			->getResult();
 	}
 	
 	/**
@@ -58,7 +59,8 @@ class GameProcess extends Model
 			->get([
 				$gameId,
 				$number
-			]);
+			])
+			->getResult();
 	}
 	
 }

@@ -21,9 +21,9 @@ class CommonController
 	public $User;
 	/** @var string назваине шаблона */
 	protected $tplName;
-	/** @var string название страницы*/
+	/** @var string название страницы */
 	protected $pageTitle;
-
+	
 	/** Путь до шаблонов*/
 	const BASE_TEMPLATE_PATH = 'src/templates/';
 	
@@ -56,7 +56,7 @@ class CommonController
 			Router::getPage404();
 		}
 	}
-
+	
 	/**
 	 * Получить ответ в формате JSON
 	 * @param $var
@@ -114,15 +114,6 @@ class CommonController
 			'title' => $namePage,
 		];
 		return array_merge($html, $userData);
-	}
-	
-	/**
-	 * Задает авторизационные куки
-	 * @param int $userId
-	 */
-	public function setAuthCookie(int $userId)
-	{
-		Cookie::set('userId', $userId, strtotime('+30 days'));
 	}
 	
 }

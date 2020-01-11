@@ -5,6 +5,7 @@ namespace Router;
 
 
 use PDO;
+use PDOStatement;
 
 class Db
 {
@@ -27,6 +28,8 @@ class Db
 		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 		PDO::ATTR_EMULATE_PREPARES => false,
 	];
+	
+	const FIRST_ELEMENT = 1;
 	
 	public function __construct()
 	{
@@ -64,33 +67,19 @@ class Db
 		return new self;
 	}
 	
-	public function bindValueRegEx($sql, $params)
-	{
-		if (count($params)) {
-			foreach ($params as $param) {
-				$param = is_int($param) ? $param : ('"' . $param . '"');
-				$sql = preg_replace('/\?\?|\?|\'|"|\\//', $param, $sql, 1);
-			}
-		}
-		return $sql;
-	}
-	
 	/**
 	 * Выполнение запроса
 	 * @param $params
 	 * @param string $query
 	 * @return Db
 	 */
-	public function queryExecute($params, $query = '') : Db
+	public function queryPrepare($params, $query = '')
 	{
-		if (!is_array($params)) {
-			$params = (array) $params;
-		}
-		$sql = $query ?: $this->query;
-		$this->query = $this
-			->_pdo
-			->prepare($sql);
-		$numberInList = 1;
+		$params = is_array($params) ? $params : (array) $params;
+		$sql = $query ? : $this->query;
+		$this->query = $this->_pdo->prepare($sql);
+		$numberInList = self::FIRST_ELEMENT;
+		
 		foreach ($params as $param) {
 			$this->query->bindValue(
 				$numberInList,
@@ -101,12 +90,33 @@ class Db
 		}
 		if ($this->query->execute()) {
 			// разнести эти метода на селкт и инсерт
-			$this->_result = $this->query->fetchAll(PDO::FETCH_OBJ);
-//			$this->_count = $this->query->rowCount();
+			$this->_result = $this->query->fetchAll(PDO::FETCH_ASSOC);
+			//			$this->_count = $this->query->rowCount();
 			return $this;
 		} else {
 			throw new \PDOException('Trouble with DB');
 		}
+	}
+	
+	/**
+	 * Получить первое значение в результате
+	 * @return string
+	 */
+	public function single() : string
+	{
+		return count($this->_result)
+			? array_shift($this->_result[0])
+			: '';
+	}
+	
+	/**
+	 * Получить первое значение
+	 * @return array
+	 */
+	public function first() :array {
+		return count($this->_result)
+			? $this->_result[0]
+			: [];
 	}
 	
 	/**
@@ -117,7 +127,7 @@ class Db
 	{
 		return $this->_pdo->lastInsertId();
 	}
-
+	
 	/**
 	 * Вернуть результат
 	 * @return mixed
@@ -134,6 +144,21 @@ class Db
 	public function count()
 	{
 		return $this->_count;
+	}
+	
+	public function beginTransaction()
+	{
+		return $this->_pdo->beginTransaction();
+	}
+	
+	public function endTransaction()
+	{
+		return $this->_pdo->commit();
+	}
+	
+	public function cancelTransaction()
+	{
+		return $this->_pdo->rollBack();
 	}
 	
 	/**
@@ -174,7 +199,11 @@ class Db
 		return $this;
 	}
 	
-	public function get($param)
+	/**
+	 * @param array $param
+	 * @return Db
+	 */
+	public function get(array $param)
 	{
 		$this->query = sprintf(
 			'SELECT %s FROM %s WHERE %s',
@@ -182,19 +211,16 @@ class Db
 			join(', ', $this->table),
 			join(' AND ', $this->where)
 		);
-		return $this
-			->queryExecute($param)
-			->getResult();
+		return $this->queryPrepare($param);
 	}
 	
 	/**
 	 * Вставка
 	 * @param $params
-	 * @return Db
+	 * @return string
 	 */
 	public function add($params)
 	{
-		
 		if (!is_array($params)) {
 			$params = (array) $params;
 		}
@@ -213,9 +239,9 @@ class Db
 			implode('`, `', $keys),
 			$values
 		);
-		$res = $this->queryExecute($params);
+		$res = $this->queryPrepare($params);
 		if (!$res) {
-			throw new \PDOException('123');
+			throw new \PDOException('not add');
 		}
 		return $res->getLastId();
 	}

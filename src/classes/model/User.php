@@ -4,7 +4,7 @@
 namespace Router\src\classes\model;
 
 
-use Router\src\classes\model\Model;
+use Router\Db;
 
 /**
  * Класс пользователя
@@ -27,19 +27,20 @@ class User extends Model
 	public function __construct($userId = 0)
 	{
 		if ($userId) {
-			$sqlResult = self::_db()->queryExecute([
-				'u_id' => $userId
-			],
-				'SELECT u.email, u.u_id, i.path
+			$userData = self::_db()
+				->queryPrepare([
+					'u_id' => $userId
+				],
+			'SELECT u.email, u.u_id, i.path
 					FROM users u
 					LEFT JOIN images i ON i.i_id = u.profile_avatar
 				WHERE u.u_id = ?'
-			)->getResult();
-			if (is_array($sqlResult) && count($sqlResult)) {
-				$userData = array_shift($sqlResult);
-				$this->email = $userData->email;
-				$this->userId = $userData->u_id;
-				$this->profileAvatar = $userData->path;
+			)
+			->first();
+			if (is_array($userData) && count($userData)) {
+				$this->email = $userData['email'];
+				$this->userId = $userData['u_id'];
+				$this->profileAvatar = $userData['path'];
 			}
 		}
 	}
@@ -47,7 +48,7 @@ class User extends Model
 	/**
 	 * Проверка на существоание email
 	 * @param string $email
-	 * @return bool
+	 * @return Db
 	 */
 	public static function isEmailExist(string $email)
 	{
@@ -55,7 +56,7 @@ class User extends Model
 			->select([1])
 			->table('users', 'u')
 			->where('email = ?')
-			->get($email);
+			->get((array) $email);
 	}
 	
 	/**

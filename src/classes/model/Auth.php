@@ -4,6 +4,8 @@
 namespace Router\src\classes\model;
 
 
+use Router\src\classes\model\services\Cookie;
+
 class Auth extends Model
 {
 	/**
@@ -12,18 +14,26 @@ class Auth extends Model
 	 * @param string $password
 	 * @return bool
 	 */
-	public function checkEmailAndPassword(string $email, string $password)
+	public static function checkEmailAndPassword(string $email, string $password)
 	{
-		 $res = self::_db()
+		return self::_db()
 			->select(['u_id'])
 			->table('users')
 			->where('password = ? AND email = ?')
 			->get([
 				$password,
 				$email
-			]);
-		return array_shift($res)->u_id;
+			])
+			->single();
 	}
 	
+	/**
+	 * Задает авторизационные куки
+	 * @param int $userId
+	 */
+	public static function setAuthCookie(int $userId)
+	{
+		Cookie::set('userId', $userId, strtotime('+30 days'));
+	}
 	
 }

@@ -33,6 +33,9 @@ class Input
 	 */
 	public static function json($jsonString)
 	{
-		return is_array($jsonString) ? $jsonString : json_decode($jsonString, JSON_OBJECT_AS_ARRAY); // Если там массив, то обработка не требуется
+		// Если там массив, то обработка не требуется
+		return is_array($jsonString)
+			? $jsonString
+			: json_decode($jsonString, JSON_OBJECT_AS_ARRAY);
 	}
 }

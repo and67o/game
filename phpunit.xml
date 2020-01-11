@@ -1,8 +1,12 @@
-<phpunit bootstrap="vendor/autoload.php">
-<testsuites>
-    <testsuite name="My Tests">
-        <directory>src/test</directory>
-        <file>ValidationTest.php</file>
-    </testsuite>
-</testsuites>
+<phpunit
+        bootstrap="vendor/autoload.php"
+        colors="true"
+>
+    <testsuites>
+        <testsuite name="My Tests">
+            <directory>src/test</directory>
+            <file>ValidationTest.php</file>
+            <file>GameTest.php</file>
+        </testsuite>
+    </testsuites>
 </phpunit>

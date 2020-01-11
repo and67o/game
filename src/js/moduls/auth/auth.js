@@ -27,7 +27,6 @@ export const authorisation = () => {
 				const {
 					result,
 				} = response.data;
-				console.log(result);
 			})
 			.catch(function (error) {
 				console.log(error);

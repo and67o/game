@@ -12,7 +12,7 @@ class GameNumbers extends Model
 	 * Записывает загаданное число
 	 * @param int $gameId - уникальный идентификатор игры
 	 * @param int $userId - уникальный идентификатор пользователя
-	 * @return Db
+	 * @return string
 	 */
 	public static function writeNumber(int $gameId, int $userId = 0)
 	{
@@ -30,7 +30,7 @@ class GameNumbers extends Model
 	}
 	
 	/**
-	 * возвращет случайное число компьютера
+	 * Формирует случайное число компьютера
 	 * @return int
 	 */
 	public static function createNumber()
@@ -53,12 +53,12 @@ class GameNumbers extends Model
 	 */
 	public static function getGameNumberByGameId(int $gameId)
 	{
-		$res = self::_db()
+		return self::_db()
 			->select(['game_number'])
 			->table('game_numbers')
 			->where('g_id = ?')
-			->get([$gameId]);
-		return array_shift($res)->game_number;
+			->get([$gameId])
+			->single();
 	}
 	
 	/**
