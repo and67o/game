@@ -17,9 +17,13 @@
       "Router\\": "",
       "Router\\Controller\\": "src/classes/controller/",
       "Router\\Models\\": "src/classes/model/"
-    }
+    },
+    "files": [
+      "router.php"
+    ]
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.0"
+    "phpunit/phpunit": "^6.0",
+    "codeception/codeception": "^4.0"
   }
 }
