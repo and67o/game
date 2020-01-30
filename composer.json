@@ -10,7 +10,8 @@
     "twig/twig": "^2.0",
     "ext-json": "*",
     "ext-pdo": "*",
-    "egulias/email-validator": "^2.1"
+    "egulias/email-validator": "^2.1",
+    "vlucas/phpdotenv": "^4.1"
   },
   "autoload": {
     "psr-4": {

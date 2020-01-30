@@ -6,6 +6,7 @@ namespace Router;
 
 use PDO;
 use PDOStatement;
+use function Couchbase\defaultDecoder;
 
 class Db
 {
@@ -18,11 +19,6 @@ class Db
 	private $table;
 	private $fields;
 	
-	
-	const USERNAME = 'admin';
-	const PASSWD = '123';
-	const HOST = 'localhost';
-	const DB_NAME = 'game';
 	const DB_OPTIONS = [
 		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -37,11 +33,11 @@ class Db
 			$this->_pdo = new PDO(
 				sprintf(
 					'mysql:host=%s;dbname=%s',
-					self::HOST,
-					self::DB_NAME
+					getenv('HOST'),
+					getenv('DB_NAME')
 				),
-				self::USERNAME,
-				self::PASSWD,
+				getenv('USERNAME'),
+				getenv('PASSWD'),
 				self::DB_OPTIONS
 			);
 		} catch (\PDOException $exception) {
@@ -113,7 +109,8 @@ class Db
 	 * Получить первое значение
 	 * @return array
 	 */
-	public function first() :array {
+	public function first() : array
+	{
 		return count($this->_result)
 			? $this->_result[0]
 			: [];

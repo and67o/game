@@ -4,8 +4,6 @@
 namespace Router\src\classes\model;
 
 
-use Router\Db;
-
 class GameProcess extends Model
 {
 	
