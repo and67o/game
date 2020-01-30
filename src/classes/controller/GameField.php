@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use Router\src\classes\interfaces\BaseTwigController;
 use \Router\src\classes\model\Game;
 use Router\src\classes\model\GameNumbers;
 use Router\src\classes\model\GameProcess;
@@ -13,7 +14,7 @@ use Router\src\classes\model\services\Session;
  * Класс отвечающий за игру
  * Class GameField
  */
-class GameField extends CommonController
+class GameField extends BaseTwigController
 {
 	/** @var int уникальный идентификатор игры */
 	public $gameId;

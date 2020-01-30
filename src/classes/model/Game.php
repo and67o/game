@@ -4,7 +4,9 @@
 namespace Router\src\classes\model;
 
 
+use PHPUnit\Runner\Exception;
 use Router\Db;
+use Router\src\classes\model\services\Session;
 
 class Game extends Model
 {
@@ -14,10 +16,22 @@ class Game extends Model
 	
 	const GAME_NEW = 0;
 	
-	public function __construct($computerNumber)
+	public function __construct($computerNumber = 0)
+	{
+		if ($computerNumber) {
+			$this->computerNumber = $computerNumber;
+			$this->maxCountNumber = 4;
+		}
+	}
+	
+	public function getActualNumber()
+	{
+		return $this->computerNumber;
+	}
+	
+	public function setActualNumber($computerNumber)
 	{
 		$this->computerNumber = $computerNumber;
-		$this->maxCountNumber = 4;
 	}
 	
 	/**
@@ -32,12 +46,12 @@ class Game extends Model
 				'youWin' => false
 			];
 		}
-
+		
 		$rightCount = 0;
 		$rightPosition = 0;
 		$computerNumbers = str_split($this->computerNumber);
 		$myNumbers = str_split($number);
-
+		
 		foreach ($myNumbers as $position => $myNumber) {
 			$isNumberHave = in_array($myNumber, $computerNumbers);
 			if ($isNumberHave) {
@@ -47,19 +61,19 @@ class Game extends Model
 				}
 			}
 		}
-
+		
 		return [
 			'rightPosition' => $rightPosition,
 			'rightCount' => $rightCount,
 			'youWin' => $rightPosition + $rightCount == $this->maxCountNumber * 2
 		];
 	}
-
+	
 	/**
 	 * создание новой игры
 	 * @return int
 	 */
-	public static function createGame()
+	public function createGame()
 	{
 		$res = self::_db()
 			->table('games')
@@ -70,7 +84,32 @@ class Game extends Model
 		if (!$res) {
 			throw new \PDOException('There was a problem creating this account.');
 		}
-		return $res ?: 0;
+		return $res ? : 0;
 	}
 	
+	/**
+	 * @param $userId
+	 * @return int
+	 */
+	public function createFullGame($userId)
+	{
+		try {
+			$gameId = $this->createGame();
+			if (!$gameId) {
+				throw new Exception('Game not created');
+			}
+			if (GameNumbers::writeNumber($gameId, $userId)) {
+				$Session = new Session();
+				$Session->start();
+				$Session->set('gameId', $gameId);
+			} else {
+				throw new Exception('Not create number of game');
+			}
+		} catch (Exception $message) {
+			exit;
+		}
+		return $gameId;
+		
+		
+	}
 }

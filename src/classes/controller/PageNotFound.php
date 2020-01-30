@@ -4,7 +4,9 @@
 namespace Router\src\classes\controller;
 
 
-class PageNotFound extends CommonController
+use Router\src\classes\interfaces\BaseTwigController;
+
+class PageNotFound extends BaseTwigController
 {
 	protected $tplName = 'pageNotFound/pageNotFound';
 	protected $pageTitle = 'Страница не найдена';

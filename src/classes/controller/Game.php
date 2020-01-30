@@ -3,12 +3,13 @@
 
 namespace Router\src\classes\controller;
 
+use Router\src\classes\interfaces\BaseTwigController;
 use Router\src\classes\model\GameNumbers;
 use Router\src\classes\model\services\Session;
-use \Router\src\classes;
+use \Router\src\classes\model;
 
 
-class Game extends CommonController
+class Game extends BaseTwigController
 {
 	
 	protected $tplName = '/Game/Game';
@@ -25,14 +26,8 @@ class Game extends CommonController
 	 */
 	public function createGame()
 	{
-		$gameId = classes\model\Game::createGame();
-		$userId = $this->userId ? : 0;
-		$createNumber = $gameId > 0 ? GameNumbers::writeNumber($gameId, $userId) : false;
-		if ($createNumber) {
-			$Session = new Session();
-			$Session->start();
-			$Session->set('gameId', $gameId);
-		}
-		$this->locationRedirect('/GameField/index/' . $gameId);
+		$Game = new model\Game();
+		$gameId = $Game->createFullGame($this->userId);
+		$this->locationRedirect('/GameField/index/' . $gameId, $gameId);
 	}
 }

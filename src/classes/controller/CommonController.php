@@ -7,11 +7,6 @@ namespace Router\src\classes\controller;
 use Router\Router;
 use Router\src\classes\model\services\Cookie;
 use Router\src\classes\model\User;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-use Twig\Loader\FilesystemLoader;
 
 class CommonController
 {
@@ -19,10 +14,6 @@ class CommonController
 	public $userId;
 	/** @var User объект пользователя */
 	public $User;
-	/** @var string назваине шаблона */
-	protected $tplName;
-	/** @var string название страницы */
-	protected $pageTitle;
 	
 	/** Путь до шаблонов*/
 	const BASE_TEMPLATE_PATH = 'src/templates/';
@@ -32,29 +23,6 @@ class CommonController
 		$Cookie = new Cookie();
 		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
-	}
-	
-	/**
-	 * Рендер Шаблона
-	 * @param array $params
-	 * @throws RuntimeError
-	 * @throws SyntaxError
-	 */
-	public function render($params = [])
-	{
-		$loader = new FilesystemLoader(self::BASE_TEMPLATE_PATH);
-		$twig = new Environment($loader);
-		try {
-			echo $twig->render(
-				$this->tplName . '.twig',
-				array_merge(
-					$this->getBaseParam($this->pageTitle),
-					$params
-				)
-			);
-		} catch (LoaderError $e) {
-			Router::getPage404();
-		}
 	}
 	
 	/**
@@ -94,6 +62,7 @@ class CommonController
 			header('Location: ' . $location);
 			exit;
 		}
+		header('Location: /');
 	}
 	
 	/**
