@@ -6,6 +6,7 @@ namespace Router;
 
 use PDO;
 use PDOStatement;
+use Router\Models\services\SqlHelper;
 use function Couchbase\defaultDecoder;
 
 class Db
@@ -195,19 +196,47 @@ class Db
 		$this->fields = $fields;
 		return $this;
 	}
-	
+    
+    /**
+     * @phpunit
+     * @return string
+     */
+	public function setSelectQuery() {
+        return sprintf(
+            'SELECT %s FROM %s WHERE %s',
+            join(', ', $this->getFields()),
+            join(', ', $this->getTable()),
+            join(' AND ', $this->getWhere())
+        );
+    }
+    
+    /**
+     * @return array
+     */
+    protected function getFields() : array {
+	    return $this->fields;
+    }
+    
+    /**
+     * @return array
+     */
+    protected function getTable() : array  {
+        return $this->table;
+    }
+    
+    /**
+     * @return array
+     */
+    protected function getWhere() : array  {
+        return $this->where;
+    }
 	/**
 	 * @param array $param
 	 * @return Db
 	 */
 	public function get(array $param)
 	{
-		$this->query = sprintf(
-			'SELECT %s FROM %s WHERE %s',
-			join(', ', $this->fields),
-			join(', ', $this->table),
-			join(' AND ', $this->where)
-		);
+		$this->query = $this->setSelectQuery();
 		return $this->queryPrepare($param);
 	}
 	
@@ -218,28 +247,36 @@ class Db
 	 */
 	public function add($params)
 	{
-		if (!is_array($params)) {
-			$params = (array) $params;
-		}
-		$keys = array_keys($params);
-		$countOfParam = count($params);
-		$values = '';
-		for ($numberOfList = 1; $numberOfList <= $countOfParam; $numberOfList++) {
-			$values .= '?';
-			if ($numberOfList < $countOfParam) {
-				$values .= ', ';
-			}
-		}
-		$this->query = sprintf(
-			'INSERT INTO %s (`%s`) VALUES (%s)',
-			join(', ', $this->table),
-			implode('`, `', $keys),
-			$values
-		);
+		$this->query = $this->setInsertQuery($params);
 		$res = $this->queryPrepare($params);
 		if (!$res) {
 			throw new \PDOException('not add');
 		}
 		return $res->getLastId();
 	}
+    
+    /**
+     * @param $params
+     * @return string
+     */
+    public function setInsertQuery($params) {
+        $params = is_array($params) ? $params : (array) $params;
+        $keys = array_keys($params);
+        $countOfParam = count($params);
+        $values = '';
+
+        for ($numberOfList = 1; $numberOfList <= $countOfParam; $numberOfList++) {
+            $values .= '?';
+            if ($numberOfList < $countOfParam) {
+                $values .= ', ';
+            }
+        }
+
+        return sprintf(
+            'INSERT INTO %s (`%s`) VALUES (%s)',
+            SqlHelper::sqlArrayToIn($this->getTable()),
+            implode('`, `', $keys),
+            $values
+        );
+    }
 }

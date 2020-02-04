@@ -64,9 +64,9 @@ class GameNumbers extends Model
 	/**
 	 * Получить все игры пользователя
 	 * @param int $userId
-	 * @return array
+	 * @return Db
 	 */
-	public static function getAllGamesByUserId(int $userId) : array
+	public static function getAllGamesByUserId(int $userId) : Db
 	{
 		return self::_db()
 			->select(['g_id'])
