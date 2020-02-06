@@ -1,15 +1,12 @@
 <?php
 
+namespace Router\Controller;
 
-namespace Router\src\classes\controller;
-
-
-use Router\src\classes\model\Input;
-use Router\src\classes\model\Role;
-use Router\src\classes\model\services\Hash;
-use Router\src\classes\model\User;
-use Router\src\classes\model\Validation;
-use Router\src\classes\model\Auth;
+use Router\Model\Auth;
+use Router\Model\Role;
+use Router\Model\User;
+use Router\Models\Services\Hash;
+use Router\Models\Services\Input;
 
 /**
  * Класс отвечающий за регистрацию

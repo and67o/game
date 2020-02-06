@@ -1,10 +1,8 @@
 <?php
 
+namespace Router\Controller;
 
-namespace Router\src\classes\controller;
-
-
-use Router\src\classes\interfaces\BaseTwigController;
+use Router\Interfaces\BaseTwigController;
 
 class PageNotFound extends BaseTwigController
 {

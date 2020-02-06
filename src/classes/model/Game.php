@@ -5,8 +5,8 @@ namespace Router\src\classes\model;
 
 
 use PHPUnit\Runner\Exception;
-use Router\Db;
-use Router\src\classes\model\services\Session;
+use Router\Models\Model;
+use Router\Models\Services\Session;
 
 class Game extends Model
 {

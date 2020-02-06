@@ -1,13 +1,8 @@
 <?php
 
-
 namespace Router;
 
-
 use PDO;
-use PDOStatement;
-use Router\Models\services\SqlHelper;
-use function Couchbase\defaultDecoder;
 
 class Db
 {
@@ -274,7 +269,7 @@ class Db
 
         return sprintf(
             'INSERT INTO %s (`%s`) VALUES (%s)',
-            SqlHelper::sqlArrayToIn($this->getTable()),
+	        join(', ', $this->getTable()),
             implode('`, `', $keys),
             $values
         );

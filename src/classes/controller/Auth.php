@@ -1,11 +1,12 @@
 <?php
 
 
-namespace Router\src\classes\controller;
+namespace Router\Controller;
 
-use Router\src\classes\model;
-use Router\src\classes\model\Input;
-use Router\src\classes\model\services\Hash;
+use Router\Models\Services\Hash;
+use Router\Models\Services\Input;
+use Router\Model\Auth as AuthModel;
+
 
 /**
  * Класс отвечающией за авторизацию
@@ -31,9 +32,9 @@ class Auth extends CommonController
 			], true);
 		}
 		$hashes = Hash::passwordHash($password, $salt);
-		$userId = model\Auth::checkEmailAndPassword($email, $hashes['hash']);
+		$userId = AuthModel::checkEmailAndPassword($email, $hashes['hash']);
 		if ($userId) {
-			model\Auth::setAuthCookie($userId);
+			AuthModel::setAuthCookie($userId);
 		}
 		$this->toJSON([
 			'result' => (bool) $userId,

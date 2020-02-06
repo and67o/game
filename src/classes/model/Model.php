@@ -1,8 +1,6 @@
 <?php
 
-
-namespace Router\src\classes\model;
-
+namespace Router\Models;
 
 use Router\Db;
 

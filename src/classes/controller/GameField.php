@@ -1,14 +1,12 @@
 <?php
 
 
-namespace Router\src\classes\controller;
+namespace Router\Controller;
 
-use Router\src\classes\interfaces\BaseTwigController;
-use \Router\src\classes\model\Game;
-use Router\src\classes\model\GameNumbers;
-use Router\src\classes\model\GameProcess;
-use Router\src\classes\model\Input;
-use Router\src\classes\model\services\Session;
+use Router\Interfaces\BaseTwigController;
+use Router\Model\GameNumbers;
+use Router\Models\GameProcess;
+use Router\Models\Services\Session;
 
 /**
  * Класс отвечающий за игру
@@ -38,6 +36,7 @@ class GameField extends BaseTwigController
 	 */
 	public function index()
 	{
+		var_dump(GameProcess::getAllInformByGame(22));
 		$this->render([
 			'moves' => GameProcess::getAllInformByGame($this->gameId) ?: []
 		]);

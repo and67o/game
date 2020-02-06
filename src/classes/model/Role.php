@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\src\classes\model;
+namespace Router\Model;
 
 
 class Role

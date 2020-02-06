@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Router\src\classes\model;
+namespace Router\Model;
 
 
 use Router\Db;
+use Router\Models\Model;
 
 /**
  * Класс пользователя
