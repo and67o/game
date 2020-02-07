@@ -10,7 +10,7 @@ class ValidationTest extends TestCase
 	 * @param $expected
 	 * @param $value
 	 * @param $name
-	 * @dataProvider minIsValidateEmail
+	 * @dataProvider providerIsValidateEmail
 	 */
 	public function testIsValidateEmail($expected, $value, $name)
 	{
@@ -20,7 +20,7 @@ class ValidationTest extends TestCase
 		);
 	}
 
-	public function minIsValidateEmail()
+	public function providerIsValidateEmail()
 	{
 		return [
 			[['' => 'Email набран некорректно'], '', null, []],

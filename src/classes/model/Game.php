@@ -19,7 +19,7 @@ class Game extends Model
 	public function __construct($computerNumber = 0)
 	{
 		if ($computerNumber) {
-			$this->computerNumber = $computerNumber;
+		    $this->setActualNumber($computerNumber);
 			$this->maxCountNumber = 4;
 		}
 	}
@@ -49,7 +49,7 @@ class Game extends Model
 		
 		$rightCount = 0;
 		$rightPosition = 0;
-		$computerNumbers = str_split($this->computerNumber);
+		$computerNumbers = str_split($this->getActualNumber());
 		$myNumbers = str_split($number);
 		
 		foreach ($myNumbers as $position => $myNumber) {
@@ -95,9 +95,11 @@ class Game extends Model
 	{
 		try {
 			$gameId = $this->createGame();
+
 			if (!$gameId) {
 				throw new Exception('Game not created');
 			}
+
 			if (GameNumbers::writeNumber($gameId, $userId)) {
 				$Session = new Session();
 				$Session->start();
@@ -105,6 +107,7 @@ class Game extends Model
 			} else {
 				throw new Exception('Not create number of game');
 			}
+
 		} catch (Exception $message) {
 			exit;
 		}

@@ -31,7 +31,8 @@ class GameNumbers extends Model
 	
 	/**
 	 * Формирует случайное число компьютера
-	 * @return int
+     * @phpunit
+     * @return int
 	 */
 	public static function createNumber()
 	{

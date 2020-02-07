@@ -28,7 +28,8 @@ class Input
 	
 	/**
 	 * Метод преобразования строки json в массив
-	 * @param string $jsonString
+     * @phpunit
+     * @param string $jsonString
 	 * @return array
 	 */
 	public static function json($jsonString)
