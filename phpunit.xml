@@ -5,6 +5,9 @@
         <testsuite name="My Tests">
             <directory>src/test</directory>
             <file>ValidationTest.php</file>
+            <file>DbTest.php</file>
+            <file>SqlHelperTest.php</file>
+            <file>InputTest.php</file>
             <file>GameTest.php</file>
         </testsuite>
     </testsuites>
