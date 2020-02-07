@@ -20,6 +20,7 @@ class CommonController
 	
 	function __construct()
 	{
+	    //TODO убрать исправить на сессию
 		$Cookie = new Cookie();
 		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];

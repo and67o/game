@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use PHPUnit\Runner\Exception;
 use Router\src\classes\interfaces\BaseTwigController;
 use \Router\src\classes\model\Game;
 use Router\src\classes\model\GameNumbers;
@@ -48,26 +49,33 @@ class GameField extends BaseTwigController
 	 */
 	public function addNewNumber()
 	{
-		$data = Input::json(file_get_contents('php://input'));
-		$newNumber = (int) $data['number'];
+        try {
+            $data = Input::json(file_get_contents('php://input'));
+            if (!$data) throw new Exception('Нет данных');
 
-		$Session = new Session();
-		$Session->start();
-		
-		$gameId = $Session->exists('gameId') ? (int) $Session->get('gameId') : '';
-		
-		$rightPosition = [];
-		if ($gameId) {
-			$number = GameNumbers::getGameNumberByGameId($gameId);
-			$rightPosition = (new Game($number))->checkNumber($newNumber);
-			GameProcess::saveMove([
-				'g_id' => $gameId,
-				'dt' => date('Y-m-d H:i:s'),
-				'right_position' => $rightPosition['rightPosition'],
-				'right_count' => $rightPosition['rightCount'],
-				'move' => $newNumber
-			]);
-		}
-		$this->toJSON($rightPosition, true);
+            $newNumber = (int) $data['number'];
+    
+            $Session = new Session();
+            $Session->start();
+    
+            $gameId = $Session->exists('gameId') ? (int) $Session->get('gameId') : '';
+            if (!$gameId) throw new Exception('Нет игры');
+    
+            $resultOfMove = [];
+            
+            $number = GameNumbers::getGameNumberByGameId($gameId);
+            $resultOfMove = (new Game($number))->checkNumber($newNumber);
+            GameProcess::saveMove([
+                'g_id' => $gameId,
+                'dt' => date('Y-m-d H:i:s'),
+                'right_position' => $resultOfMove['rightPosition'],
+                'right_count' => $resultOfMove['rightCount'],
+                'move' => $newNumber
+            ]);
+            //TODO один шаблон ответа
+            $this->toJSON($resultOfMove, true);
+        } catch (Exception $exception) {
+        
+        }
 	}
 }

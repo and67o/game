@@ -51,7 +51,6 @@ class Validation extends Model
 			$this->errors[$this->name] = 'Поле ' . $this->name . ' Пустое';
 		}
 		return $this;
-
 	}
 
 	/**
@@ -94,7 +93,7 @@ class Validation extends Model
 	{
 		if (is_string($this->value)) {
 			if (strlen($this->value) > $maxLength) {
-				$this->errors[$this->name] = 'У поля ' . $this->name . ' многовато мисволов';
+				$this->errors[$this->name] = 'У поля ' . $this->name . ' многовато символов';
 			}
 		} else {
 			if ($this->value > $maxLength) {
@@ -110,6 +109,7 @@ class Validation extends Model
 	 */
 	public function isExist()
 	{
+	    //TODO один ответ
 		if (User::isEmailExist($this->value)) {
 			$this->errors[$this->name] = 'Email занят';
 		}

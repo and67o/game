@@ -38,12 +38,19 @@ class User extends Model
 			)
 			->first();
 			if (is_array($userData) && count($userData)) {
-				$this->email = $userData['email'];
-				$this->userId = $userData['u_id'];
-				$this->profileAvatar = $userData['path'];
+				$this->setUser($userData);
 			}
 		}
 	}
+    
+    /**
+     * @param $userData
+     */
+	public function setUser($userData) {
+        $this->email = $userData['email'];
+        $this->userId = $userData['u_id'];
+        $this->profileAvatar = $userData['path'];
+    }
 	
 	/**
 	 * Проверка на существоание email

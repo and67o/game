@@ -3,6 +3,7 @@
 
 namespace Router\src\classes\controller;
 
+use PHPUnit\Runner\Exception;
 use Router\src\classes\model;
 use Router\src\classes\model\Input;
 use Router\src\classes\model\services\Hash;
@@ -18,25 +19,34 @@ class Auth extends CommonController
 	 */
 	public function authorisation()
 	{
-		if (!Input::isPostMethod()) {
-			exit;
-		}
-		$data = Input::json(file_get_contents('php://input'));
-		$email = (string) $data['email'];
-		$password = (string) $data['password'];
-		$salt = Hash::getSalt($email);
-		if (!$salt) {
-			$this->toJSON([
-				'result' => false,
-			], true);
-		}
-		$hashes = Hash::passwordHash($password, $salt);
-		$userId = model\Auth::checkEmailAndPassword($email, $hashes['hash']);
-		if ($userId) {
-			model\Auth::setAuthCookie($userId);
-		}
-		$this->toJSON([
-			'result' => (bool) $userId,
-		], true);
+        try {
+            if (!Input::isPostMethod()) throw new Exception('не тот метод');
+    
+            $data = Input::json(file_get_contents('php://input'));
+
+            $email = (string) $data['email'];
+            $password = (string) $data['password'];
+            $salt = Hash::getSalt($email);
+            if (!$salt) {
+                throw new Exception('Нет соли');
+            }
+
+            $hashes = Hash::passwordHash($password, $salt);
+
+            $userId = model\Auth::checkEmailAndPassword($email, $hashes['hash']);
+            if (!$userId) {
+                throw new Exception('Пользователь не найден');
+            }
+            model\Auth::setAuthCookie($userId);
+            $this->toJSON([
+                'errors' => [],
+                'result' => (bool) $userId,
+            ], true);
+        } catch (Exception $exception) {
+            $this->toJSON([
+                'errors' => $exception->getMessage(),
+                'result' => false,
+            ], true);
+        }
 	}
 }
