@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Router\src\classes\interfaces;
+namespace Router\Interfaces;
 
 
+use Router\Controller\CommonController;
 use Router\Router;
-use Router\src\classes\controller\CommonController;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

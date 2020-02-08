@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\src\classes\model\services;
+namespace Router\Models\Services;
 
 
 class Session

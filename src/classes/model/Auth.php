@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Router\src\classes\model;
+namespace Router\Model;
 
-
-use Router\src\classes\model\services\Cookie;
+use Router\Models\Model;
+use Router\Models\Services\Cookie;
 
 class Auth extends Model
 {

@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Router\src\classes\model\services;
+namespace Router\Models\Services;
 
-
-use Router\src\classes\model\Model;
+use Router\Models\Model;
 
 class Hash extends Model
 {

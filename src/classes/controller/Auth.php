@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Router\src\classes\controller;
+namespace Router\Controller;
 
-use PHPUnit\Runner\Exception;
-use Router\src\classes\model;
-use Router\src\classes\model\Input;
-use Router\src\classes\model\services\Hash;
+use Router\Models\Services\Hash;
+use Router\Models\Services\Input;
+use Router\Model\Auth as AuthModel;
+
 
 /**
  * Класс отвечающией за авторизацию

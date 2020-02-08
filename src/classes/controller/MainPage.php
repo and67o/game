@@ -1,8 +1,9 @@
 <?php
 
-namespace Router\src\classes\controller;
+namespace Router\Controller;
 
-use Router\src\classes\interfaces\BaseTwigController;
+
+use Router\Interfaces\BaseTwigController;
 
 /**
  * Главная страница

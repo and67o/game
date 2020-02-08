@@ -1,11 +1,9 @@
 <?php
 
 
-namespace Router\src\classes\controller;
+namespace Router\Controller;
 
-use Router\src\classes\interfaces\BaseTwigController;
-use Router\src\classes\model\GameNumbers;
-use Router\src\classes\model\services\Session;
+use Router\Interfaces\BaseTwigController;
 use \Router\src\classes\model;
 
 
