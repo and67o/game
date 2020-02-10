@@ -3,7 +3,7 @@
 namespace Router\Models;
 
 use PHPUnit\Framework\TestCase;
-use Router\src\classes\model\Input;
+use Router\Models\Services\Input;
 
 class InputTest extends TestCase
 {

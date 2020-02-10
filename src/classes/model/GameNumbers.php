@@ -1,11 +1,10 @@
 <?php
 
 
-namespace Router\Model;
+namespace Router\Models;
 
 
 use Router\Db;
-use Router\Models\Model;
 
 class GameNumbers extends Model
 {

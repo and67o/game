@@ -2,13 +2,14 @@
 
 namespace Router\Models;
 
-use Router\src\classes\model\GameNumbers;
 use PHPUnit\Framework\TestCase;
 
 
 class GameNumbersTest extends TestCase
 {
-
+    /**
+     *
+     */
     public function testCreateNumber()
     {
         $newNumber = GameNumbers::createNumber();

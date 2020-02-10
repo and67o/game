@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Router\src\classes\model\Validation;
+use Router\Models\Validation;
 
 
 class ValidationTest extends TestCase
