@@ -2,11 +2,13 @@
 
 namespace Router\Controller;
 
-use Router\Model\Auth;
-use Router\Model\Role;
-use Router\Model\User;
+use Exception;
+use Router\Models\Auth;
+use Router\Models\Role;
+use Router\Models\User;
 use Router\Models\Services\Hash;
 use Router\Models\Services\Input;
+use Router\Models\Validation;
 
 /**
  * Класс отвечающий за регистрацию

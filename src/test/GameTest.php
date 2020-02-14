@@ -1,9 +1,8 @@
 <?php
 
-namespace Router\Models;
 
 use PHPUnit\Framework\TestCase;
-use Router\src\classes\model\Game;
+use Router\Models\Game;
 
 class GameTest extends TestCase
 {

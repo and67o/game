@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\Model;
+namespace Router\Models;
 
 use Router\Models\Model;
 use Router\Models\Services\Cookie;

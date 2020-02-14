@@ -77,7 +77,7 @@ class DbTest extends TestCase
     {
         return [
             [
-                'INSERT INTO "table" (`g_id`, `user_id`) VALUES (?, ?)',
+                'INSERT INTO table (`g_id`, `user_id`) VALUES (?, ?)',
                 ['g_id'=>1, 'user_id'=>2,], ['table']
             ]
         ];

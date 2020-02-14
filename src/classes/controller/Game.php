@@ -4,7 +4,7 @@
 namespace Router\Controller;
 
 use Router\Interfaces\BaseTwigController;
-use \Router\src\classes\model;
+use Router\Models\Game as GameModel;
 
 
 class Game extends BaseTwigController
@@ -24,7 +24,7 @@ class Game extends BaseTwigController
 	 */
 	public function createGame()
 	{
-		$Game = new model\Game();
+		$Game = new GameModel();
 		$gameId = $Game->createFullGame($this->userId);
 		$this->locationRedirect('/GameField/index/' . $gameId, $gameId);
 	}

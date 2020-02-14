@@ -4,9 +4,8 @@
 namespace Router\Controller;
 
 
-use Router\Router;
-use Router\src\classes\model\services\Cookie;
-use Router\src\classes\model\User;
+use Router\Models\User;
+use Router\Models\Services\Cookie;
 
 class CommonController
 {

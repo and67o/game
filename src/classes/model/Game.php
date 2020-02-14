@@ -1,11 +1,10 @@
 <?php
 
 
-namespace Router\src\classes\model;
+namespace Router\Models;
 
 
 use PHPUnit\Runner\Exception;
-use Router\Models\Model;
 use Router\Models\Services\Session;
 
 class Game extends Model

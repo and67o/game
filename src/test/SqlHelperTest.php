@@ -1,6 +1,6 @@
 <?php
 
-use Router\Models\services\SqlHelper;
+use Router\Models\Services\SqlHelper;
 use PHPUnit\Framework\TestCase;
 
 

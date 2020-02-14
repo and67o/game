@@ -1,12 +1,11 @@
 <?php
 
 
-namespace Router\Model;
+namespace Router\Models;
 
 
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
-use Router\Models\Model;
 
 class Validation extends Model
 {

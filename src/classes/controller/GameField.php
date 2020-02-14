@@ -3,10 +3,13 @@
 
 namespace Router\Controller;
 
+use Exception;
 use Router\Interfaces\BaseTwigController;
-use Router\Model\GameNumbers;
+use Router\Models\GameNumbers;
 use Router\Models\GameProcess;
+use Router\Models\Services\Input;
 use Router\Models\Services\Session;
+use Router\Models\Game as GameModel;
 
 /**
  * Класс отвечающий за игру
@@ -58,10 +61,8 @@ class GameField extends BaseTwigController
             $gameId = $Session->exists('gameId') ? (int) $Session->get('gameId') : '';
             if (!$gameId) throw new Exception('Нет игры');
     
-            $resultOfMove = [];
-            
             $number = GameNumbers::getGameNumberByGameId($gameId);
-            $resultOfMove = (new Game($number))->checkNumber($newNumber);
+            $resultOfMove = (new GameModel($number))->checkNumber($newNumber);
             GameProcess::saveMove([
                 'g_id' => $gameId,
                 'dt' => date('Y-m-d H:i:s'),

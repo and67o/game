@@ -3,9 +3,10 @@
 
 namespace Router\Controller;
 
+use Exception;
 use Router\Models\Services\Hash;
 use Router\Models\Services\Input;
-use Router\Model\Auth as AuthModel;
+use Router\Models\Auth as AuthModel;
 
 
 /**
@@ -33,11 +34,11 @@ class Auth extends CommonController
 
             $hashes = Hash::passwordHash($password, $salt);
 
-            $userId = model\Auth::checkEmailAndPassword($email, $hashes['hash']);
+            $userId = AuthModel::checkEmailAndPassword($email, $hashes['hash']);
             if (!$userId) {
                 throw new Exception('Пользователь не найден');
             }
-            model\Auth::setAuthCookie($userId);
+	        AuthModel::setAuthCookie($userId);
             $this->toJSON([
                 'errors' => [],
                 'result' => (bool) $userId,

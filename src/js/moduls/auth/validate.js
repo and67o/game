@@ -1,3 +1,4 @@
+//TODO одинаковая валидация при регитсрации и email
 import {
 	validateEmail,
 	validatePassword

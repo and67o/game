@@ -1,8 +1,6 @@
 <?php
 
-namespace Router\Models;
-
-use Router\src\classes\model\GameNumbers;
+use Router\Models\GameNumbers;
 use PHPUnit\Framework\TestCase;
 
 
