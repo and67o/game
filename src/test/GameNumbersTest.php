@@ -6,7 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 class GameNumbersTest extends TestCase
 {
-
+    /**
+     *
+     */
     public function testCreateNumber()
     {
         $newNumber = GameNumbers::createNumber();
