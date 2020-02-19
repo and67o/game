@@ -21,41 +21,41 @@ class Register extends CommonController
 	 */
 	public function register()
 	{
-        try {
-            if (!Input::isPostMethod()) throw new Exception('не тот метод');
-    
-            $data = Input::json(file_get_contents('php://input'));
-
-            $errors = $this->_validateParam($data);
-            if ($errors) throw new Exception($errors);
-    
-            $hashes = Hash::passwordHash((string) $data['password']);
-
-            $User = new User();
-            $userId = (int) $User->create([
-                'email' => $data['email'],
-                'password' => $hashes['hash'],
-                'salt' => $hashes['salt'],
-                'name' => $data['name'],
-                'reg_dt' => date('Y-m-d H:i:s'),
-                'role_id' => Role::USER_ROLE,
-            ]);
-            if (!$userId) throw new \PDOException('Проблемы с регистрацией');
-            Auth::setAuthCookie($userId);
-
-            $this->toJSON([
-                'result' => (bool) $userId,
-            ], true);
-
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        } catch (Exception $exception) {
-            $this->toJSON([
-                'errors' => $exception->getMessage(),
-                'result' => false
-            ], true);
-        }
+		try {
+			if (!Input::isPostMethod()) throw new Exception('не тот метод');
+			
+			$data = Input::json(file_get_contents('php://input'));
+			
+			$errors = $this->_validateParam($data);
+			if ($errors) throw new Exception($errors);
+			
+			$hashes = Hash::passwordHash((string) $data['password']);
+			
+			$User = new User();
+			$userId = (int) $User->create([
+				'email' => $data['email'],
+				'password' => $hashes['hash'],
+				'salt' => $hashes['salt'],
+				'name' => $data['name'],
+				'reg_dt' => date('Y-m-d H:i:s'),
+				'role_id' => Role::USER_ROLE,
+			]);
+			if (!$userId) throw new \PDOException('Проблемы с регистрацией');
+			Auth::setAuthCookie('userId', $userId);
+			
+			$this->toJSON([
+				'result' => (bool) $userId,
+			], true);
+			
+		} catch (\PDOException $e) {
+			echo $e->getMessage();
+			exit;
+		} catch (Exception $exception) {
+			$this->toJSON([
+				'errors' => $exception->getMessage(),
+				'result' => false
+			], true);
+		}
 	}
 	
 	/**
@@ -71,12 +71,12 @@ class Register extends CommonController
 		$this->_baseValidate($data['name'], 'name');
 		return $Validation->isSuccess() ? false : $Validation->getErrors();
 	}
-    
-    /**
-     * @param $data
-     * @param $nameField
-     * @return Validation
-     */
+	
+	/**
+	 * @param $data
+	 * @param $nameField
+	 * @return Validation
+	 */
 	private function _baseValidate($data, $nameField)
 	{
 		$Validation = new Validation();

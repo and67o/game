@@ -3,7 +3,6 @@
 
 namespace Router\Models;
 
-use Router\Models\Model;
 use Router\Models\Services\Cookie;
 
 class Auth extends Model
@@ -30,11 +29,12 @@ class Auth extends Model
 	
 	/**
 	 * Задает авторизационные куки
-	 * @param int $userId
+	 * @param $name
+	 * @param $value
 	 */
-	public static function setAuthCookie(int $userId)
+	public static function setAuthCookie($name, $value)
 	{
-		Cookie::set('userId', $userId, strtotime('+30 days'));
+		Cookie::set($name, $value, strtotime('+30 days'));
 	}
 	
 }

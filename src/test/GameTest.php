@@ -2,6 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
+use Router\Models\Game;
 
 
 class GameTest extends TestCase

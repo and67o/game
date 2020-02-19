@@ -7,6 +7,7 @@ use Exception;
 use Router\Models\Services\Hash;
 use Router\Models\Services\Input;
 use Router\Models\Auth as AuthModel;
+use Router\Models\Services\Session;
 
 
 /**
@@ -25,21 +26,28 @@ class Auth extends CommonController
     
             $data = Input::json(file_get_contents('php://input'));
 
-            $email = (string) $data['email'];
-            $password = (string) $data['password'];
+            $email = (string) trim($data['email']);
+            $password = (string) trim($data['password']);
             $salt = Hash::getSalt($email);
             if (!$salt) {
-                throw new Exception('Нет соли');
+                throw new Exception('Ошибка авторизации');
             }
 
             $hashes = Hash::passwordHash($password, $salt);
+            
+            if ($password !== $hashes['hash']) {
+	            throw new Exception('Пользователь не найден');
+            }
 
             $userId = AuthModel::checkEmailAndPassword($email, $hashes['hash']);
             if (!$userId) {
                 throw new Exception('Пользователь не найден');
             }
-	        AuthModel::setAuthCookie($userId);
-            $this->toJSON([
+	        Session::set('user', $userId);
+	        AuthModel::setAuthCookie('userId', $userId);
+	        AuthModel::setAuthCookie('hash', $hashes['salt']);
+	
+	        $this->toJSON([
                 'errors' => [],
                 'result' => (bool) $userId,
             ], true);

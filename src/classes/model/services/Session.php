@@ -19,7 +19,7 @@ class Session
 	 * @param $value
 	 * @return mixed
 	 */
-	public function set($name, $value)
+	public static function set($name, $value)
 	{
 		return $_SESSION[$name] = $value;
 	}

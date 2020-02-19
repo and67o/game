@@ -15,28 +15,41 @@ class Hash extends Model
 	 * @param string $salt
 	 * @return string
 	 */
-	public static function make($password, $salt = '')
+	public static function makeHash(string $password, string $salt = '') : string
 	{
-		return md5(md5($password . md5(sha1($salt))));
+		return md5(md5($password . md5($salt)));
 	}
 	
 	/**
-	 * @param $password
-	 * @param null $salt
+	 * @param string $password
+	 * @param string $salt
 	 * @param int $iterations
 	 * @return array
 	 */
-	public static function passwordHash($password, $salt = null, $iterations = self::MAX_COUNT_OF_ITERATION)
+	public static function passwordHash(
+		string $password,
+		string $salt = '',
+		int $iterations = self::MAX_COUNT_OF_ITERATION
+	) : array
 	{
-		$salt || $salt = uniqid();
-		$hash = self::make($password, $salt);
+		$salt || $salt = self::makeSalt();
+		$hash = self::makeHash($password, $salt);
 		for ($i = 0; $i < $iterations; ++$i) {
-			$hash = md5(md5(sha1($hash)));
+			$hash = md5(md5($hash));
 		}
 		return [
 			'hash' => $hash,
 			'salt' => $salt
 		];
+	}
+	
+	/**
+	 * Генерирует соль
+	 * @return string
+	 */
+	public static function makeSalt()
+	{
+		return uniqid();
 	}
 	
 	/**
