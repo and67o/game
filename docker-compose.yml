@@ -35,3 +35,9 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
+  composer:
+    restart: 'no'
+    image: composer
+    command: install
+    volumes:
+      - .:/app
