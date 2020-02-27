@@ -7,32 +7,21 @@ services:
       - "8001:80"
     volumes:
       - .:/var/www/html/
+      - ./conf/httpd.conf:/etc/httpd/httpd.conf
     links:
       - db
     networks:
       - default
-#  nginx:
-#    image: nginx:latest
-#    ports:
-#      - "8001:80"
+#  php:
+#    image: php:7.1.10-fpm
 #    volumes:
-#      - ./conf:/etc/nginx/conf.d
-#      - .:/var/www
-#      - ./logs:/var/log/nginx
+#      - .:/var/www/html/
+#  apache:
+#    image:
+#    links:
+#      - php
 #    depends_on:
 #      - php
-#    links:
-#      - php
-#  php:
-#    build:
-#      context: ./php
-#    links:
-#      - db
-#    volumes:
-#      - .:/var/www/
-#    environment:
-#      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
-#      PHP_IDE_CONFIG: "serverName=Docker"
   db:
     image: mysql:8.0
     ports:
