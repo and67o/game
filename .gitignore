@@ -6,3 +6,5 @@ package-lock.json
 vendor/
 .idea/
 .env
+logs/access.log
+logs/error.log

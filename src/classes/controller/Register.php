@@ -21,6 +21,7 @@ class Register extends CommonController
 	 */
 	public function register()
 	{
+		var_dump(222);exit;
 		try {
 			if (!Input::isPostMethod()) throw new Exception('не тот метод');
 			

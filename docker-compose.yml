@@ -1,15 +1,28 @@
 version: "3.1"
 services:
-  www:
-    build: .
+  nginx:
+    image: nginx:latest
     ports:
       - "8001:80"
+      - "443:443"
     volumes:
-      - .:/var/www/html/
+      - ./conf:/etc/nginx/conf.d
+      - .:/var/www
+      - ./logs:/var/log/nginx
+    depends_on:
+      - php
+    links:
+      - php
+  php:
+    build:
+      context: ./php
     links:
       - db
-    networks:
-      - default
+    volumes:
+      - .:/var/www/
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
   db:
     image: mysql:8.0
     ports:
