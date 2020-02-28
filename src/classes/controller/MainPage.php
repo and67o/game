@@ -13,7 +13,7 @@ use Router\Interfaces\BaseTwigController;
 class MainPage extends BaseTwigController
 {
 	
-	protected $tplName = 'MainPage/MainPage';
+	protected $tplName = 'MainPage';
 	protected $pageTitle = 'Главная';
 	
 	/**

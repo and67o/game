@@ -21,7 +21,7 @@ abstract class BaseTwigController extends CommonController
 	protected $pageTitle;
 	
 	/**
-	 * Рендер Шаблона
+	 * Рендер шаблона
 	 * @param array $params
 	 * @throws RuntimeError
 	 * @throws SyntaxError
@@ -32,7 +32,7 @@ abstract class BaseTwigController extends CommonController
 		$twig = new Environment($loader);
 		try {
 			echo $twig->render(
-				$this->tplName . '.twig',
+				$this->_getTemplatePath(),
 				array_merge(
 					$this->getBaseParam($this->pageTitle),
 					$params
@@ -42,4 +42,33 @@ abstract class BaseTwigController extends CommonController
 			Router::getPage404();
 		}
 	}
+
+    /**
+     * Получить путь к шаблону
+     * @return string
+     */
+	private function _getTemplatePath() {
+	   return $this->tplName . '/index.twig';
+    }
+
+    /**
+     * Формирование параметров для шапки сайта
+     * @param string $namePage
+     * @return array
+     */
+    public function getBaseParam(string $namePage) : array
+    {
+        $userData = [];
+        if ($this->User) {
+            $userData = [
+                'email' => $this->User->email,
+                'path' => $this->User->profileAvatar,
+            ];
+        }
+        $html = [
+            'title' => $namePage,
+        ];
+        return array_merge($html, $userData);
+    }
+    
 }

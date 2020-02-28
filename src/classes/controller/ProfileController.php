@@ -14,7 +14,7 @@ use Router\Interfaces\BaseTwigController;
 class Profile extends BaseTwigController
 {
 	
-	protected $tplName = 'Profile/profile';
+	protected $tplName = 'Profile';
 	protected $pageTitle = 'Профиль';
 	
 	/**

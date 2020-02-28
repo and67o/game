@@ -10,7 +10,7 @@ use Router\Models\Game as GameModel;
 class Game extends BaseTwigController
 {
 	
-	protected $tplName = '/Game/Game';
+	protected $tplName = 'Game';
 	protected $pageTitle = 'Игра';
 	
 	public function index()

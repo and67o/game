@@ -19,7 +19,8 @@ class GameField extends BaseTwigController
 {
 	/** @var int уникальный идентификатор игры */
 	public $gameId;
-	protected $tplName = '/GameField/GameField';
+
+	protected $tplName = 'GameField';
 	protected $pageTitle = 'Игра номер';
 	
 	public function __construct($gameId = '')

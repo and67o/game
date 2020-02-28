@@ -6,7 +6,7 @@ use Router\Interfaces\BaseTwigController;
 
 class PageNotFound extends BaseTwigController
 {
-	protected $tplName = 'pageNotFound/pageNotFound';
+	protected $tplName = 'pageNotFound';
 	protected $pageTitle = 'Страница не найдена';
 
 	/**

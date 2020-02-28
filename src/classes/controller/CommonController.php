@@ -52,7 +52,7 @@ class CommonController
 	}
 	
 	/**
-	 * редирект
+	 * Редирект
 	 * @param $location
 	 * @param bool $condition
 	 */
@@ -64,25 +64,19 @@ class CommonController
 		}
 		header('Location: /');
 	}
-	
-	/**
-	 * Формирование параметров для шапки сайта
-	 * @param string $namePage
-	 * @return array
-	 */
-	public function getBaseParam(string $namePage) : array
-	{
-		$userData = [];
-		if ($this->User) {
-			$userData = [
-				'email' => $this->User->email,
-				'path' => $this->User->profileAvatar,
-			];
-		}
-		$html = [
-			'title' => $namePage,
-		];
-		return array_merge($html, $userData);
-	}
-	
+
+    /**
+     * @param array $errors
+     * @param bool $result
+     * @param array $data
+     * @return array
+     */
+	protected function response(array $errors, bool $result, array $data = []) :array
+    {
+	   return [
+	       'errors' => $errors,
+           'result' => $result,
+           'data' => $data
+       ];
+    }
 }
