@@ -7,7 +7,7 @@ namespace Router\Models;
 class GameProcess extends Model
 {
 	
-	/**`
+	/**
 	 * сохранить информацию о ходе
 	 * @param array $moveParam
 	 * @return string
@@ -24,7 +24,7 @@ class GameProcess extends Model
 	}
 	
 	/**
-	 * Получить все ходы по одно игре
+	 * Получить все ходы по одной игре
 	 * @param int $gameId
 	 * @return array
 	 */

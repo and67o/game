@@ -22,13 +22,18 @@ class GameField extends BaseTwigController
 
 	protected $tplName = 'GameField';
 	protected $pageTitle = 'Игра номер';
-	
-	public function __construct($gameId = '')
+
+    /**
+     * @var Session
+     */
+    private $Session;
+    
+    public function __construct($gameId = '')
 	{
+	    $this->Session = new Session();
 		if ($gameId) {
-			$Session = new Session();
-			$Session->start();
-			$Session->set('gameId', $gameId);
+            $this->Session->start();
+            $this->Session->set('gameId', $gameId);
 		}
 		$this->gameId = $gameId;
 		$this->pageTitle = 'Игра номер ' . $this->gameId;
@@ -51,15 +56,19 @@ class GameField extends BaseTwigController
 	public function addNewNumber()
 	{
         try {
-            $data = Input::json(file_get_contents('php://input'));
-            if (!$data) throw new Exception('Нет данных');
+            //TODO это проверку вынести в конструктор или в общий контроллер
+            $Input = new Input(
+                file_get_contents('php://input'),
+                Input::METHOD_REQUEST_POST
+            );
+            
+            if (!$Input->checkRequestMethod()) throw new Exception('Нет данных');
 
-            $newNumber = (int) $data['number'];
+            $newNumber = $Input->get('number', 'int');
     
-            $Session = new Session();
-            $Session->start();
+            $this->Session->start();
     
-            $gameId = $Session->exists('gameId') ? (int) $Session->get('gameId') : '';
+            $gameId = $this->Session->exists('gameId') ? (int) $this->Session->get('gameId') : '';
             if (!$gameId) throw new Exception('Нет игры');
     
             $number = GameNumbers::getGameNumberByGameId($gameId);

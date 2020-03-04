@@ -14,7 +14,7 @@ class DbTest extends TestCase
      */
     public function testSetSelectQuery($expected, $select, $table, $where)
     {
-        $observer=$this->getMockBuilder(Db::class)
+        $observer = $this->getMockBuilder(Db::class)
             ->setMethods(['getFields', 'getTable', 'getWhere'])
             ->disableOriginalConstructor()
             ->getMock();

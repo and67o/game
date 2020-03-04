@@ -4,21 +4,30 @@
 namespace Router\Controller;
 
 
+use Router\Models\Services\Input;
 use Router\Models\User;
 use Router\Models\Services\Cookie;
+use Router\Models\Validation;
 
 class CommonController
 {
 	/** @var int уникальный идентификатор пользователя */
 	public $userId;
 	/** @var User объект пользователя */
-	public $User;
-	
+	protected $User;
+    /** @var Input */
+    protected $Input;
+    /** @var Validation*/
+    protected $Validation;
+
 	/** Путь до шаблонов*/
 	const BASE_TEMPLATE_PATH = 'src/templates/';
-	
-	function __construct()
+    
+    function __construct()
 	{
+	    $this->Input = new Input();
+	    $this->Validation = new Validation();
+
 	    //TODO убрать исправить на сессию
 		$Cookie = new Cookie();
 		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;

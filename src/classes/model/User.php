@@ -5,7 +5,6 @@ namespace Router\Models;
 
 
 use Router\Db;
-use Router\Models\Model;
 
 /**
  * Класс пользователя

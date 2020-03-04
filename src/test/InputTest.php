@@ -6,21 +6,85 @@ use Router\Models\Services\Input;
 
 class InputTest extends TestCase
 {
+    /**
+     * @param $expected
+     * @param $key
+     * @param $data
+     * @dataProvider providerGet
+     */
+    public function testGet($expected, $key, $data)
+    {
+        $observer = $this->getMockBuilder(Input::class)
+            ->setMethods(['getData'])
+            ->disableOriginalConstructor()
+            ->getMock();
+    
+        $observer->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
+        
+        /* @var $observer Input */
+        $this->assertSame(
+            $expected,
+            $observer->get($key)
+        );
+    }
 
+    public function providerGet()
+    {
+        return [
+            ['oleg', 0, ['oleg']],
+            [
+                [ 0 => "html", ],
+                'courses',
+                ['courses' => [ 0 => 'html', ],]
+            ],
+            [
+                false,
+                'wife',
+                ['wife' => false]
+            ],
+            [
+                475,
+                'oleg',
+                ['oleg' => 475]
+            ],
+            ['', 'oleg', []],
+            ['', false, []],
+            ['', 0, []],
+            ['', true, []],
+            [123, 0, [123]],
+            ['', 0, null],
+        ];
+    }
+    
     /**
      * @param $expected
      * @param $jsonString
-     * @dataProvider providerJson
+     * @dataProvider providerJsonParams
      */
-    public function testJson($expected, $jsonString)
+    public function testSetParams($expected, $jsonString)
     {
-        $this->assertSame($expected, Input::json($jsonString));
+        $observer = $this->getMockBuilder(Input::class)
+            ->setMethods(['getData'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $observer->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($jsonString));
+
+        /* @var $observer Input */
+        $this->assertSame($expected, $observer->jsonParams());
     }
-    
-    public function providerJson()
+
+    public function providerJsonParams()
     {
         return [
-            [null, ''],
+            [[], false],
+            [0, 0],
+            [[], null],
+            [[], []],
             [123456789, '123456789'],
             [[], []],
             [['oleg'], ['oleg']],
@@ -31,7 +95,7 @@ class InputTest extends TestCase
                     "wife" => null
                 ], '{"name": "John","courses": ["html"],"wife": null}'
             ],
-            [null, '{"name": John["html"],"wife": null}'],
+            [[], '{"name": John["html"],"wife": null}'],
         ];
     }
 }

@@ -22,12 +22,15 @@ class Auth extends CommonController
 	public function authorisation()
 	{
         try {
-            if (!Input::isPostMethod()) throw new Exception('не тот метод');
+            $Input = new Input(
+                file_get_contents('php://input'),
+                Input::METHOD_REQUEST_POST
+            );
+            
+            if (!$Input->checkRequestMethod()) throw new Exception('не тот метод');
     
-            $data = Input::json(file_get_contents('php://input'));
-
-            $email = (string) trim($data['email']);
-            $password = (string) trim($data['password']);
+            $email = $Input->get('email', 'string');
+            $password = $Input->get('password', 'string');
             $salt = Hash::getSalt($email);
             if (!$salt) {
                 throw new Exception('Ошибка авторизации');
