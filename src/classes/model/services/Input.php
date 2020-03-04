@@ -17,9 +17,13 @@ class Input
      * @var string
      */
     public $type;
-    
+
+    /**
+     * @param string $data
+     * @param string $type
+     */
     public function setInputParam($data = '', $type = self::METHOD_REQUEST_POST) {
-                $this->setData($data);
+        $this->setData($data);
         $this->setType($type);
 
         $this->jsonParams();

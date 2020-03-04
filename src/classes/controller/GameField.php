@@ -30,6 +30,7 @@ class GameField extends BaseTwigController
     
     public function __construct($gameId = '')
 	{
+	    //TODO Здесь нужен фасад
 	    $this->Session = new Session();
 		if ($gameId) {
             $this->Session->start();
@@ -56,15 +57,14 @@ class GameField extends BaseTwigController
 	public function addNewNumber()
 	{
         try {
-            //TODO это проверку вынести в конструктор или в общий контроллер
-            $Input = new Input(
+            $this->Input->setInputParam(
                 file_get_contents('php://input'),
                 Input::METHOD_REQUEST_POST
             );
             
-            if (!$Input->checkRequestMethod()) throw new Exception('Нет данных');
+            if (!$this->Input->checkRequestMethod()) throw new Exception('Нет данных');
 
-            $newNumber = $Input->get('number', 'int');
+            $newNumber = $this->Input->get('number', 'int');
     
             $this->Session->start();
     
@@ -73,17 +73,28 @@ class GameField extends BaseTwigController
     
             $number = GameNumbers::getGameNumberByGameId($gameId);
             $resultOfMove = (new GameModel($number))->checkNumber($newNumber);
-            GameProcess::saveMove([
-                'g_id' => $gameId,
-                'dt' => date('Y-m-d H:i:s'),
-                'right_position' => $resultOfMove['rightPosition'],
-                'right_count' => $resultOfMove['rightCount'],
-                'move' => $newNumber
-            ]);
+            
+            $this->_saveMove($gameId, $resultOfMove, $newNumber);
+            
             //TODO один шаблон ответа
             $this->toJSON($resultOfMove, true);
         } catch (Exception $exception) {
         
         }
 	}
+    
+    /**
+     * @param $gameId
+     * @param $resultOfMove
+     * @param $newNumber
+     */
+	private function _saveMove($gameId, $resultOfMove, $newNumber) {
+        GameProcess::saveMove([
+            'g_id' => $gameId,
+            'dt' => date('Y-m-d H:i:s'),
+            'right_position' => $resultOfMove['rightPosition'],
+            'right_count' => $resultOfMove['rightCount'],
+            'move' => $newNumber
+        ]);
+    }
 }

@@ -10,9 +10,10 @@ class InputTest extends TestCase
      * @param $expected
      * @param $key
      * @param $data
+     * @param $dataType
      * @dataProvider providerGet
      */
-    public function testGet($expected, $key, $data)
+    public function testGet($expected, $key, $data, $dataType)
     {
         $observer = $this->getMockBuilder(Input::class)
             ->setMethods(['getData'])
@@ -26,35 +27,40 @@ class InputTest extends TestCase
         /* @var $observer Input */
         $this->assertSame(
             $expected,
-            $observer->get($key)
+            $observer->get($key, $dataType)
         );
     }
 
     public function providerGet()
     {
         return [
-            ['oleg', 0, ['oleg']],
+            [0, 0, ['oleg'], 'int'],
+            [123, 0, ['123oleg'], 'int'],
+            ['oleg', 0, ['oleg'], 'string'],
             [
                 [ 0 => "html", ],
                 'courses',
-                ['courses' => [ 0 => 'html', ],]
+                ['courses' => [ 0 => 'html', ],],
+                'array'
             ],
             [
                 false,
                 'wife',
-                ['wife' => false]
+                ['wife' => false],
+                'bool'
             ],
             [
                 475,
                 'oleg',
-                ['oleg' => 475]
+                ['oleg' => 475],
+                'int'
             ],
-            ['', 'oleg', []],
-            ['', false, []],
-            ['', 0, []],
-            ['', true, []],
-            [123, 0, [123]],
-            ['', 0, null],
+            ['', 'oleg', [], 'string'],
+            ['', false, [], 'string'],
+            ['', 0, [], 'string'],
+            ['', true, [], 'string'],
+            [123, 0, [123], 'int'],
+            ['', 0, null, 'string'],
         ];
     }
     

@@ -22,15 +22,15 @@ class Auth extends CommonController
 	public function authorisation()
 	{
         try {
-            $Input = new Input(
+            $this->Input->setInputParam(
                 file_get_contents('php://input'),
                 Input::METHOD_REQUEST_POST
             );
             
-            if (!$Input->checkRequestMethod()) throw new Exception('не тот метод');
+            if (!$this->Input->checkRequestMethod()) throw new Exception('не тот метод');
     
-            $email = $Input->get('email', 'string');
-            $password = $Input->get('password', 'string');
+            $email = $this->Input->get('email', 'string');
+            $password = $this->Input->get('password', 'string');
             $salt = Hash::getSalt($email);
             if (!$salt) {
                 throw new Exception('Ошибка авторизации');
@@ -50,15 +50,15 @@ class Auth extends CommonController
 	        AuthModel::setAuthCookie('userId', $userId);
 	        AuthModel::setAuthCookie('hash', $hashes['salt']);
 	
-	        $this->toJSON([
-                'errors' => [],
-                'result' => (bool) $userId,
-            ], true);
+	        $this->toJSON(
+	            $this->response([],(bool) $userId),
+                true
+            );
         } catch (Exception $exception) {
-            $this->toJSON([
-                'errors' => $exception->getMessage(),
-                'result' => false,
-            ], true);
+            $this->toJSON($this->response([
+                $exception->getMessage()],
+                (bool) false), true
+            );
         }
 	}
 }
