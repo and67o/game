@@ -14,4 +14,14 @@ class Model
 	{
 		return Db::getInstance();
 	}
+    
+    /**
+     * Возвращает текущее время для БД
+     * @return string
+     * @throws \Exception
+     */
+    public static function now()
+    {
+        return (new \DateTime('now'))->format('Y-m-d H:i:s');
+    }
 }

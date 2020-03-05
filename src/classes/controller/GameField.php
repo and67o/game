@@ -7,6 +7,7 @@ use Exception;
 use Router\Interfaces\BaseTwigController;
 use Router\Models\GameNumbers;
 use Router\Models\GameProcess;
+use Router\Models\Model;
 use Router\Models\Services\Input;
 use Router\Models\Services\Session;
 use Router\Models\Game as GameModel;
@@ -87,11 +88,12 @@ class GameField extends BaseTwigController
      * @param $gameId
      * @param $resultOfMove
      * @param $newNumber
+     * @throws Exception
      */
 	private function _saveMove($gameId, $resultOfMove, $newNumber) {
         GameProcess::saveMove([
             'g_id' => $gameId,
-            'dt' => date('Y-m-d H:i:s'),
+            'dt' => Model::now(),
             'right_position' => $resultOfMove['rightPosition'],
             'right_count' => $resultOfMove['rightCount'],
             'move' => $newNumber
