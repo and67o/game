@@ -23,10 +23,8 @@ class Input
      * @param string $type
      */
     public function setInputParam($data = '', $type = self::METHOD_REQUEST_POST) {
-        $this->setData($data);
+	    $this->setData($data);
         $this->setType($type);
-
-        $this->jsonParams();
     }
     
     /**
@@ -35,7 +33,7 @@ class Input
      */
     public function setData($data)
     {
-        $this->data = $data;
+        $this->data = $this->jsonParams($data);;
     }
     
     /**
@@ -117,20 +115,18 @@ class Input
         }
         return $param;
     }
-    
-    /**
-     * Метод преобразования строки массив
-     * @phpunit
-     * @return array|int
-     */
-    public function jsonParams()
+	
+	/**
+	 * Метод преобразования строки массив
+	 * @phpunit
+	 * @param $data
+	 * @return array|int
+	 */
+    public function jsonParams($data)
     {
-        $data = $this->getData();
-        
         if (is_array($data)) {
             return $data;
         }
-        
         return json_decode(
                 (string)$data,
                 true,

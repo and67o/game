@@ -51,13 +51,17 @@ class Auth extends CommonController
 	        AuthModel::setAuthCookie('hash', $hashes['salt']);
 	
 	        $this->toJSON(
-	            $this->response([],(bool) $userId),
+	            $this->response(
+	            	[], (bool) $userId
+	            ),
                 true
             );
         } catch (Exception $exception) {
-            $this->toJSON($this->response([
-                $exception->getMessage()],
-                (bool) false), true
+            $this->toJSON(
+            	$this->response(
+	                [$exception->getMessage()],
+                    (bool) false
+                ), true
             );
         }
 	}

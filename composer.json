@@ -1,11 +1,12 @@
 {
-  "name": "oleg",
+  "name": "oandreenkov/game",
   "authors": [
     {
       "name": "Oleg Andreenkov",
       "email": "green67and@gmail.com"
     }
   ],
+  "license": "MIT",
   "require": {
     "twig/twig": "^2.0",
     "ext-json": "*",

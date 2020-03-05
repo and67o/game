@@ -31,7 +31,7 @@ class Register extends CommonController
 			
 			$errors = $this->_validateParam();
 			//TODO errors или error вывод одной ошибки или всех
-			if ($errors) throw new Exception($errors);
+			if ($errors) throw new Exception(array_shift($errors));
 			
 			$userId = $this->createUser();
 			if (!$userId) throw new \PDOException('Проблемы с регистрацией');
