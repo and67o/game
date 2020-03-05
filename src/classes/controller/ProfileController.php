@@ -18,7 +18,7 @@ class Profile extends BaseTwigController
 	protected $pageTitle = 'Профиль';
 	
 	/**
-	 * Главная профиля
+	 * страница профиля
 	 */
 	public function index()
 	{

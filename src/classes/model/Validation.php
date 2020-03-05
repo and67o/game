@@ -124,16 +124,16 @@ class Validation extends Model
 	{
 		return empty($this->errors);
 	}
-
-	/**
-	 * Получить ошибки
-	 * @return mixed
-	 */
+    
+    /**
+     * @return array
+     */
 	public function getErrors()
 	{
 		if (!$this->isSuccess()) {
 			return $this->errors;
 		}
+		return [];
 	}
 
 }

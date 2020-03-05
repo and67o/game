@@ -55,7 +55,7 @@ class Game extends Model
 			$isNumberHave = in_array($myNumber, $computerNumbers);
 			if ($isNumberHave) {
 				$rightCount++;
-				if ($myNumber == $computerNumbers[$position]) {
+				if ($myNumber === $computerNumbers[$position]) {
 					$rightPosition++;
 				}
 			}
@@ -64,20 +64,21 @@ class Game extends Model
 		return [
 			'rightPosition' => $rightPosition,
 			'rightCount' => $rightCount,
-			'youWin' => $rightPosition + $rightCount == $this->maxCountNumber * 2
+			'youWin' => $rightPosition + $rightCount === $this->maxCountNumber * 2
 		];
 	}
-	
-	/**
-	 * создание новой игры
-	 * @return int
-	 */
+
+    /**
+     * создание новой игры
+     * @return int
+     * @throws \Exception
+     */
 	public function createGame()
 	{
 		$res = self::_db()
 			->table('games')
 			->add([
-				'dt_start' => date('Y-m-d H:i:s'),
+				'dt_start' => self::now(),
 				'game_status' => self::GAME_NEW,
 			]);
 		if (!$res) {
@@ -85,13 +86,15 @@ class Game extends Model
 		}
 		return $res ? : 0;
 	}
-	
-	/**
-	 * @param $userId
-	 * @return int
-	 */
+    
+    /**
+     * @param $userId
+     * @return int
+     * @throws \Exception
+     */
 	public function createFullGame($userId)
 	{
+	    //TODO нужна транзакция
 		try {
 			$gameId = $this->createGame();
 

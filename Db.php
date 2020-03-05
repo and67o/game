@@ -26,21 +26,28 @@ class Db
 	public function __construct()
 	{
 		try {
-			$this->_pdo = new PDO(
-				sprintf(
-					'mysql:host=%s;dbname=%s',
-					getenv('HOST'),
-					getenv('DB_NAME')
-				),
-				getenv('USERNAME'),
-				getenv('PASSWD'),
-				self::DB_OPTIONS
-			);
+			$this->setPDO();
 		} catch (\PDOException $exception) {
 			echo 'Подключение не удалось: ' . $exception->getMessage();
 			die;
 		}
 	}
+    
+    /**
+     * @return void
+     */
+	public function setPDO() {
+        $this->_pdo = new PDO(
+            sprintf(
+                'mysql:host=%s;dbname=%s',
+                getenv('HOST'),
+                getenv('DB_NAME')
+            ),
+            getenv('USERNAME'),
+            getenv('PASSWD'),
+            self::DB_OPTIONS
+        );
+    }
 	
 	private function __wakeup()
 	{
@@ -68,33 +75,43 @@ class Db
 	public function queryPrepare($params, $query = '')
 	{
 		$params = is_array($params) ? $params : (array) $params;
-		$sql = $query ? : $this->query;
-		$this->query = $this->_pdo->prepare($sql);
+		$sql = $query ? : $this->getQuery();
+        $this->setQuery($this->getPDO()->prepare($sql));
 		$numberInList = self::FIRST_ELEMENT;
 		
 		foreach ($params as $param) {
-			$this->query->bindValue(
+            $this->getQuery()->bindValue(
 				$numberInList,
 				$param,
 				is_int($param) ? PDO::PARAM_INT : PDO::PARAM_STR
 			);
 			$numberInList++;
 		}
-		if ($this->query->execute()) {
+		if ($this->getQuery()->execute()) {
 			// разнести эти метода на селкт и инсерт
-			$this->_result = $this->query->fetchAll(PDO::FETCH_ASSOC);
-			//			$this->_count = $this->query->rowCount();
+            $this->setResult($this->getQuery()->fetchAll(PDO::FETCH_ASSOC));
 			return $this;
 		} else {
 			throw new \PDOException('Trouble with DB');
 		}
 	}
+
+    /**
+     * @return mixed
+     */
+	public function getQuery() {
+	    return $this->query;
+    }
+    
+    public function setQuery($query) {
+	   $this->query = $query;
+    }
 	
 	/**
 	 * Получить первое значение в результате
 	 * @return string
 	 */
-	public function single() : string
+	public function single()
 	{
 		return count($this->_result)
 			? array_shift($this->_result[0])
@@ -105,11 +122,11 @@ class Db
 	 * Получить первое значение
 	 * @return array
 	 */
-	public function first() : array
+	public function first()
 	{
-		return count($this->_result)
-			? $this->_result[0]
-			: [];
+        $result = $this->getResult();
+        reset($result);
+        return current($result);
 	}
 	
 	/**
@@ -118,7 +135,7 @@ class Db
 	 */
 	public function getLastId()
 	{
-		return $this->_pdo->lastInsertId();
+		return $this->getPDO()->lastInsertId();
 	}
 	
 	/**
@@ -129,7 +146,17 @@ class Db
 	{
 		return $this->_result;
 	}
-	
+
+    /**
+     * @param $result
+     * @return $this
+     */
+    public function setResult($result)
+    {
+        $this->_result = $result;
+        return $this;
+    }
+    
 	/**
 	 * Вернуть кол-во
 	 * @return mixed
@@ -141,17 +168,21 @@ class Db
 	
 	public function beginTransaction()
 	{
-		return $this->_pdo->beginTransaction();
+		return $this->getPDO()->beginTransaction();
 	}
+	
+	public function getPDO() {
+	    return $this->_pdo;
+    }
 	
 	public function endTransaction()
 	{
-		return $this->_pdo->commit();
+		return $this->getPDO()->commit();
 	}
 	
 	public function cancelTransaction()
 	{
-		return $this->_pdo->rollBack();
+		return $this->getPDO()->rollBack();
 	}
 	
 	/**
@@ -242,7 +273,7 @@ class Db
 	 */
 	public function add($params)
 	{
-		$this->query = $this->setInsertQuery($params);
+		$this->setQuery($this->setInsertQuery($params));
 		$res = $this->queryPrepare($params);
 		if (!$res) {
 			throw new \PDOException('not add');

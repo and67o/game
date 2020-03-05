@@ -4,8 +4,8 @@ namespace Router\Controller;
 
 use Exception;
 use Router\Models\Auth;
+use Router\Models\Model;
 use Router\Models\Role;
-use Router\Models\User;
 use Router\Models\Services\Hash;
 use Router\Models\Services\Input;
 use Router\Models\Validation;
@@ -56,6 +56,7 @@ class Register extends CommonController
     /**
      * Создать пользователя
      * @return int
+     * @throws Exception
      */
     private function createUser()
     {
@@ -66,7 +67,7 @@ class Register extends CommonController
             'password' => $hashes['hash'],
             'salt' => $hashes['salt'],
             'name' => $this->Input->get('name', 'string'),
-            'reg_dt' => date('Y-m-d H:i:s'),
+            'reg_dt' => Model::now(),
             'role_id' => Role::USER_ROLE,
         ]) ?? 0;
 	}

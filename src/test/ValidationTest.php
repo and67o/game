@@ -25,9 +25,9 @@ class ValidationTest extends TestCase
 		return [
 			[['' => 'Email набран некорректно'], '', null, []],
 			[['name' => 'Email набран некорректно'], 'email', 'name'],
-			[null, 'email@mail.ru', 'email'],
-			[null, 'email@mail', 'email'],
-			[null, 'email@mail', ''],
+			[[], 'email@mail.ru', 'email'],
+			[[], 'email@mail', 'email'],
+			[[], 'email@mail', ''],
 			[['' => 'Email набран некорректно'], 'emailmail.ru', ''],
 			[['email' => 'Email набран некорректно'], '\\email@mail', 'email'],
 			[['email' => 'Email набран некорректно'], 'emai!@#$%^&*()l@mail', 'email'],

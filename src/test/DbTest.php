@@ -60,7 +60,7 @@ class DbTest extends TestCase
      */
     public function testSetInsertQuery($expected, $params, $table)
     {
-        $observer=$this->getMockBuilder(Db::class)
+        $observer = $this->getMockBuilder(Db::class)
             ->setMethods(['getTable'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -78,7 +78,35 @@ class DbTest extends TestCase
         return [
             [
                 'INSERT INTO table (`g_id`, `user_id`) VALUES (?, ?)',
-                ['g_id'=>1, 'user_id'=>2,], ['table']
+                ['g_id' => 1, 'user_id' => 2,], ['table']
+            ]
+        ];
+    }
+    
+    /**
+     * @param $expected
+     * @param $result
+     * @dataProvider providerSingle
+     */
+    public function testSingle($expected, $result) {
+        $observer = $this->getMockBuilder(Db::class)
+            ->setMethods(['getResult'])
+            ->disableOriginalConstructor()
+            ->getMock();
+    
+        $observer->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue($result));
+    
+        /* @var $observer Db */
+        $this->assertSame($expected, $observer->single());
+    }
+    
+    public function providerSingle()
+    {
+        return [
+            [
+                '23', [['oleg' => 23], 'oleg1' => 24],
             ]
         ];
     }
