@@ -76,12 +76,8 @@ class InputTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $observer->expects($this->once())
-            ->method('getData')
-            ->will($this->returnValue($jsonString));
-
         /* @var $observer Input */
-        $this->assertSame($expected, $observer->jsonParams());
+        $this->assertSame($expected, $observer->jsonParams($jsonString));
     }
 
     public function providerJsonParams()

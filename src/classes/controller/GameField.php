@@ -31,8 +31,6 @@ class GameField extends BaseTwigController
     
     public function __construct($gameId = '')
 	{
-	    //TODO Здесь нужен фасад
-	    $this->Session = new Session();
 		if ($gameId) {
             $this->Session->start();
             $this->Session->set('gameId', $gameId);
@@ -69,18 +67,27 @@ class GameField extends BaseTwigController
     
             $this->Session->start();
     
-            $gameId = $this->Session->exists('gameId') ? (int) $this->Session->get('gameId') : '';
+            $gameId = $this->Session->exists('gameId')
+                ? (int) $this->Session->get('gameId')
+                : 0;
             if (!$gameId) throw new Exception('Нет игры');
     
             $number = GameNumbers::getGameNumberByGameId($gameId);
-            $resultOfMove = (new GameModel($number))->checkNumber($newNumber);
+            $GameModel = new GameModel($number);
+            $resultOfMove = $GameModel->checkNumber($newNumber);
             
             $this->_saveMove($gameId, $resultOfMove, $newNumber);
             
-            //TODO один шаблон ответа
-            $this->toJSON($resultOfMove, true);
+            $this->toJSON($this->response(
+                [],
+                true,
+                $resultOfMove
+            ),true);
         } catch (Exception $exception) {
-        
+            $this->toJSON($this->response(
+                $exception->getMessage(),
+                false
+            ),true);
         }
 	}
     

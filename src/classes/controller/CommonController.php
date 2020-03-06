@@ -75,12 +75,12 @@ class CommonController
 	}
 
     /**
-     * @param array $errors
+     * @param $errors
      * @param bool $result
      * @param array $data
      * @return array
      */
-	protected function response(array $errors, bool $result, array $data = []) :array
+	protected function response($errors, bool $result, array $data = []) :array
     {
 	   return [
 	       'errors' => $errors,

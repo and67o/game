@@ -20,7 +20,8 @@
       "Router\\Controller\\": "src/classes/controller/",
       "Router\\Interfaces\\": "src/classes/interfaces/",
       "Router\\Models\\": "src/classes/model/",
-      "Router\\Models\\Services\\": "src/classes/model/services/"
+      "Router\\Models\\Services\\": "src/classes/model/services/",
+      "Router\\Facades\\": "src/classes/facades"
     },
     "files": [
       "router.php"

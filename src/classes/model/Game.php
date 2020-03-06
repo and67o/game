@@ -17,6 +17,7 @@ class Game extends Model
 	
 	public function __construct($computerNumber = 0)
 	{
+	    // TODO Получить число игры или id игры
 		if ($computerNumber) {
 		    $this->setActualNumber($computerNumber);
 			$this->maxCountNumber = 4;

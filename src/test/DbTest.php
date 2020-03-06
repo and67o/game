@@ -10,6 +10,7 @@ class DbTest extends TestCase
      * @param $select
      * @param $table
      * @param $where
+     * @phpunit
      * @dataProvider providerSetQuery
      */
     public function testSetSelectQuery($expected, $select, $table, $where)
@@ -79,6 +80,14 @@ class DbTest extends TestCase
             [
                 'INSERT INTO table (`g_id`, `user_id`) VALUES (?, ?)',
                 ['g_id' => 1, 'user_id' => 2,], ['table']
+            ],
+            [
+                'INSERT INTO table (`oleg`, `gelo`) VALUES (?, ?)',
+                ['oleg' => 'jghjh', 'gelo' => 2,], ['table']
+            ],
+            [
+                '',
+                [], ['table']
             ]
         ];
     }
@@ -106,7 +115,7 @@ class DbTest extends TestCase
     {
         return [
             [
-                '23', [['oleg' => 23], 'oleg1' => 24],
+                23, [['oleg' => 23], 'oleg1' => 24],
             ]
         ];
     }

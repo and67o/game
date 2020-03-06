@@ -113,8 +113,9 @@ class Db
 	 */
 	public function single()
 	{
-		return count($this->_result)
-			? array_shift($this->_result[0])
+	    $res = $this->getResult();
+		return count($res)
+			? array_shift($res[0])
 			: '';
 	}
 	
@@ -161,25 +162,45 @@ class Db
 	 * Вернуть кол-во
 	 * @return mixed
 	 */
-	public function count()
+	public function getCount()
 	{
 		return $this->_count;
 	}
-	
+    
+    /**
+     * @param $count
+     */
+	public function setCount($count)
+    {
+        $this->_count = $count;
+    }
+    
+    /**
+     * @return mixed
+     */
 	public function beginTransaction()
 	{
 		return $this->getPDO()->beginTransaction();
 	}
-	
+    
+    /**
+     * @return mixed
+     */
 	public function getPDO() {
 	    return $this->_pdo;
     }
-	
+    
+    /**
+     * @return mixed
+     */
 	public function endTransaction()
 	{
 		return $this->getPDO()->commit();
 	}
-	
+    
+    /**
+     * @return mixed
+     */
 	public function cancelTransaction()
 	{
 		return $this->getPDO()->rollBack();
@@ -274,7 +295,8 @@ class Db
 	public function add($params)
 	{
 		$this->setQuery($this->setInsertQuery($params));
-		$res = $this->queryPrepare($params);
+        $this->setQuery($this->setInsertQuery($params));
+        $res = $this->queryPrepare($params);
 		if (!$res) {
 			throw new \PDOException('not add');
 		}
@@ -283,12 +305,17 @@ class Db
     
     /**
      * @param $params
+     * @phpunit
      * @return string
      */
     public function setInsertQuery($params) {
         $params = is_array($params) ? $params : (array) $params;
         $keys = array_keys($params);
         $countOfParam = count($params);
+        $table = $this->getTable();
+        if (!$countOfParam) {
+            return '';
+        }
         $values = '';
 
         for ($numberOfList = 1; $numberOfList <= $countOfParam; $numberOfList++) {
@@ -300,7 +327,7 @@ class Db
 
         return sprintf(
             'INSERT INTO %s (`%s`) VALUES (%s)',
-	        join(', ', $this->getTable()),
+	        join(', ', $table),
             implode('`, `', $keys),
             $values
         );
