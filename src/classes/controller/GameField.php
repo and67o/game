@@ -9,7 +9,6 @@ use Router\Models\GameNumbers;
 use Router\Models\GameProcess;
 use Router\Models\Model;
 use Router\Models\Services\Input;
-use Router\Models\Services\Session;
 use Router\Models\Game as GameModel;
 
 /**
@@ -23,21 +22,16 @@ class GameField extends BaseTwigController
 
 	protected $tplName = 'GameField';
 	protected $pageTitle = 'Игра номер';
-
-    /**
-     * @var Session
-     */
-    private $Session;
-    
-    public function __construct($gameId = '')
+	
+	public function __construct($gameId = '')
 	{
+		parent::__construct();
 		if ($gameId) {
             $this->Session->start();
             $this->Session->set('gameId', $gameId);
 		}
 		$this->gameId = $gameId;
 		$this->pageTitle = 'Игра номер ' . $this->gameId;
-		parent::__construct();
 	}
 	
 	/**

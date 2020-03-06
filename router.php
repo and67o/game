@@ -17,7 +17,6 @@ Class Router
 	 */
 	public function run()
 	{
-//		var_dump(22);exit;
 		$urlParts = explode('/', $_SERVER['REQUEST_URI']);
 		
 		//класс контроллера

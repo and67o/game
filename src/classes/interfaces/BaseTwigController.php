@@ -15,6 +15,11 @@ use Twig\Loader\FilesystemLoader;
 abstract class BaseTwigController extends CommonController
 {
 	
+	public function __construct()
+	{
+		parent::__construct();
+	}
+	
 	/** @var string назваине шаблона */
 	protected $tplName;
 	/** @var string название страницы */

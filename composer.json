@@ -21,7 +21,9 @@
       "Router\\Interfaces\\": "src/classes/interfaces/",
       "Router\\Models\\": "src/classes/model/",
       "Router\\Models\\Services\\": "src/classes/model/services/",
-      "Router\\Facades\\": "src/classes/facades"
+      "Router\\Facades\\": "src/classes/facades",
+      "Router\\Exceptions\\": "src/classes/exceptions",
+      "Router\\Traits\\": "src/classes/traits"
     },
     "files": [
       "router.php"

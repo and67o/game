@@ -6,6 +6,10 @@ namespace Router\Models\Services;
 
 class Session
 {
+	public function __construct()
+	{
+	}
+	
 	/**
 	 *
 	 */

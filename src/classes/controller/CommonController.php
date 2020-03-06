@@ -5,20 +5,27 @@ namespace Router\Controller;
 
 
 use Router\Models\Services\Input;
+use Router\Models\Services\Session;
 use Router\Models\User;
 use Router\Models\Services\Cookie;
 use Router\Models\Validation;
+use Router\Traits\JsonTrait;
 
 class CommonController
 {
+	
+	use JsonTrait;
+	
 	/** @var int уникальный идентификатор пользователя */
 	public $userId;
 	/** @var User объект пользователя */
 	protected $User;
     /** @var Input */
     protected $Input;
-    /** @var Validation*/
+    /** @var Validation */
     protected $Validation;
+	/** @var Session */
+	protected $Session;
 
 	/** Путь до шаблонов*/
 	const BASE_TEMPLATE_PATH = 'src/templates/';
@@ -27,28 +34,13 @@ class CommonController
 	{
 	    $this->Input = new Input();
 	    $this->Validation = new Validation();
-
-	    //TODO убрать исправить на сессию
+		$this->Session = new Session();
+		
+		
+		//TODO убрать исправить на сессию
 		$Cookie = new Cookie();
 		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;
 		$this->User = $this->userId ? new User($this->userId) : [];
-	}
-	
-	/**
-	 * Получить ответ в формате JSON
-	 * @param $var
-	 * @param bool $send
-	 * @return false|string
-	 */
-	public function toJSON($var, $send = false)
-	{
-		$result = json_encode($var);
-		if ($send) {
-			header('Content-Type: application/json; charset=utf-8');
-			print($result);
-			exit();
-		}
-		return $result;
 	}
 	
 	/**

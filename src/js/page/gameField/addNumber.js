@@ -18,8 +18,10 @@ const goodRequest = (response, number) => {
 			}).init();
 		} else {
 			const {
-				rightPosition,
-				rightCount
+				data: {
+					rightPosition,
+					rightCount
+				}
 			} = response;
 			const result = hangleResult(rightCount, rightPosition);
 			$('.game__fields').append(getNewNumberLineHTML(number, result));

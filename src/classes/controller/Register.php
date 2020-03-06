@@ -3,12 +3,21 @@
 namespace Router\Controller;
 
 use Exception;
-use Router\Models\Auth;
-use Router\Models\Model;
-use Router\Models\Role;
-use Router\Models\Services\Hash;
-use Router\Models\Services\Input;
-use Router\Models\Validation;
+
+use Router\Exceptions\{
+	BaseException,
+	ErrorException
+};
+use Router\Models\Services\{
+	Hash,
+	Input
+};
+use Router\Models\{
+	Model,
+	Auth,
+	Validation,
+	Role
+};
 
 /**
  * Класс отвечающий за регистрацию
@@ -22,59 +31,70 @@ class Register extends CommonController
 	public function register()
 	{
 		try {
-            $this->Input->setInputParam(
-                file_get_contents('php://input'),
-                Input::METHOD_REQUEST_POST
-            );
-		    
-			if (!$this->Input->checkRequestMethod()) throw new Exception('не тот метод');
+			$this->Input->setInputParam(
+				file_get_contents('php://input'),
+				Input::METHOD_REQUEST_POST
+			);
+			
+			if (!$this->Input->checkRequestMethod()) {
+				throw new BaseException(BaseException::WRONG_METHOD);
+			}
 			
 			$errors = $this->_validateParam();
-			//TODO errors или error вывод одной ошибки или всех
-			if ($errors) throw new Exception(array_shift($errors));
+			if ($errors) {
+				throw new ErrorException($errors);
+			}
 			
 			$userId = $this->createUser();
-			if (!$userId) throw new \PDOException('Проблемы с регистрацией');
+			if (!$userId) {
+				throw new \PDOException('Проблемы с регистрацией');
+			}
 			Auth::setAuthCookie('userId', $userId);
-
-			//TODO Один ответ
-			$this->toJSON([
-				'result' => (bool) $userId,
-			], true);
+			
+			$this->toJSON($this->response(
+				[],
+				(bool) $userId
+			), true);
 			
 		} catch (\PDOException $e) {
-			echo $e->getMessage();
-			exit;
-		} catch (Exception $exception) {
-			$this->toJSON([
-				'errors' => $exception->getMessage(),
-				'result' => false
-			], true);
+			
+			$this->toJSON($this->response(
+				[$e->getMessage()],
+				false
+			), true);
+			
+		} catch (BaseException $BaseException) {
+			
+			$this->toJSON($this->response(
+				[
+					'default' => $BaseException->getTextError()
+				],
+				false
+			), true);
 		}
 	}
-    
-    /**
-     * Создать пользователя
-     * @return int
-     * @throws Exception
-     */
-    private function createUser()
-    {
-        $hashes = Hash::passwordHash($this->Input->get('password', 'string'));
-
-        return (int) $this->User->create([
-            'email' => $this->Input->get('email', 'string'),
-            'password' => $hashes['hash'],
-            'salt' => $hashes['salt'],
-            'name' => $this->Input->get('name', 'string'),
-            'reg_dt' => Model::now(),
-            'role_id' => Role::USER_ROLE,
-        ]) ?? 0;
+	
+	/**
+	 * Создать пользователя
+	 * @return int
+	 * @throws Exception
+	 */
+	private function createUser()
+	{
+		$hashes = Hash::passwordHash($this->Input->get('password', 'string'));
+		
+		return (int) $this->User->create([
+				'email' => $this->Input->get('email', 'string'),
+				'password' => $hashes['hash'],
+				'salt' => $hashes['salt'],
+				'name' => $this->Input->get('name', 'string'),
+				'reg_dt' => Model::now(),
+				'role_id' => Role::USER_ROLE,
+			]) ?? 0;
 	}
 	
 	/**
 	 * Валидация данных
-	 * @param $data
 	 * @return bool|mixed
 	 */
 	private function _validateParam()
@@ -82,10 +102,10 @@ class Register extends CommonController
 		$this->_baseValidate($this->Input->get('email', 'string'), 'email')->isExist()->isValidateEmail();
 		$this->_baseValidate($this->Input->get('password', 'string'), 'password');
 		$this->_baseValidate($this->Input->get('name', 'string'), 'name');
-
+		
 		return $this->Validation->isSuccess()
-            ? false
-            : $this->Validation->getErrors();
+			? false
+			: $this->Validation->getErrors();
 	}
 	
 	/**
