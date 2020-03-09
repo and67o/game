@@ -4,7 +4,7 @@
 namespace Router\Models;
 
 
-use Router\Db;
+use Router\Models\Services\Session;
 
 /**
  * Класс пользователя
@@ -26,6 +26,14 @@ class User extends Model
 	 */
 	public function __construct($userId = 0)
 	{
+		if (!$userId) {
+			$Session = new Session();
+			$Session->start();
+			$userId = $Session->exists('userId')
+				? $Session->get('userId')
+				: 0;
+		}
+		
 		if ($userId) {
 			$userData = self::_db()
 				->queryPrepare([

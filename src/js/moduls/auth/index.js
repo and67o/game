@@ -5,6 +5,7 @@ import Modal from "../modal";
 import {
 	authorisation
 } from "./auth";
+import * as axios from "axios";
 
 export function auth() {
 	const modalContainer = $('.modal-container');
@@ -25,7 +26,6 @@ export function auth() {
 }
 
 export const logOut = () => {
-	document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-	location.reload();
+	axios.post('/Auth/logOut');
 };
 

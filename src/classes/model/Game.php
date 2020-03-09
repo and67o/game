@@ -5,6 +5,7 @@ namespace Router\Models;
 
 
 use PHPUnit\Runner\Exception;
+use Router\Exceptions\BaseException;
 use Router\Models\Services\Session;
 
 class Game extends Model
@@ -17,9 +18,9 @@ class Game extends Model
 	
 	public function __construct($computerNumber = 0)
 	{
-	    // TODO Получить число игры или id игры
+		// TODO Получить число игры или id игры
 		if ($computerNumber) {
-		    $this->setActualNumber($computerNumber);
+			$this->setActualNumber($computerNumber);
 			$this->maxCountNumber = 4;
 		}
 	}
@@ -68,12 +69,12 @@ class Game extends Model
 			'youWin' => $rightPosition + $rightCount === $this->maxCountNumber * 2
 		];
 	}
-
-    /**
-     * создание новой игры
-     * @return int
-     * @throws \Exception
-     */
+	
+	/**
+	 * создание новой игры
+	 * @return int
+	 * @throws \Exception
+	 */
 	public function createGame()
 	{
 		$res = self::_db()
@@ -87,35 +88,28 @@ class Game extends Model
 		}
 		return $res ? : 0;
 	}
-    
-    /**
-     * @param $userId
-     * @return int
-     * @throws \Exception
-     */
+	
+	/**
+	 * @param $userId
+	 * @return int
+	 * @throws \Exception
+	 */
 	public function createFullGame($userId)
 	{
-	    //TODO нужна транзакция
 		try {
 			$gameId = $this->createGame();
-
+			
 			if (!$gameId) {
-				throw new Exception('Game not created');
+				throw new BaseException(BaseException::GAME_NOT_CREATED);
 			}
-
-			if (GameNumbers::writeNumber($gameId, $userId)) {
-				$Session = new Session();
-				$Session->start();
-				$Session->set('gameId', $gameId);
-			} else {
-				throw new Exception('Not create number of game');
+			
+			if (!GameNumbers::writeNumber($gameId, $userId)) {
+				throw new BaseException(BaseException::NO_NUMBER);
 			}
-
-		} catch (Exception $message) {
+			
+		} catch (BaseException $message) {
 			exit;
 		}
 		return $gameId;
-		
-		
 	}
 }

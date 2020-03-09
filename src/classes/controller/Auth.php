@@ -6,7 +6,6 @@ namespace Router\Controller;
 use Router\Exceptions\BaseException;
 use Router\Models\Auth as AuthModel;
 use Router\Models\Services\{
-	Session,
 	Input,
 	Hash
 };
@@ -29,31 +28,33 @@ class Auth extends CommonController
 				Input::METHOD_REQUEST_POST
 			);
 			
-			if (!$this->Input->checkRequestMethod()) {
-				throw new BaseException(BaseException::WRONG_METHOD);
+			if (
+				!$this->Input->getData() &&
+				!$this->Input->checkRequestMethod()
+			) {
+				$this->toMain();
 			}
-			
+
 			$email = $this->Input->get('email', 'string');
 			$password = $this->Input->get('password', 'string');
-			$salt = Hash::getSalt($email);
+			$userParam = Hash::getPasswordParam($email);
+			$salt = $userParam['salt'];
+			
 			if (!$salt) {
 				throw new BaseException(BaseException::WRONG_AUTH);
 			}
 			
 			$hashes = Hash::passwordHash($password, $salt);
 			
-			if ($password !== $hashes['hash']) {
+			$userId = (int) AuthModel::checkEmailAndPassword($email, $hashes['hash']);
+			if (
+				!$userId &&
+				$userParam['password'] !== $hashes['hash']
+			) {
 				throw new BaseException(BaseException::USER_NOT_FOUND);
 			}
 			
-			$userId = AuthModel::checkEmailAndPassword($email, $hashes['hash']);
-			if (!$userId) {
-				throw new BaseException(BaseException::USER_NOT_FOUND);
-			}
-			
-			Session::set('user', $userId);
-			AuthModel::setAuthCookie('userId', $userId);
-			AuthModel::setAuthCookie('hash', $hashes['salt']);
+			$this->setAuthParam($userId, $hashes['salt']);
 			
 			$this->toJSON(
 				$this->response(
@@ -71,5 +72,27 @@ class Auth extends CommonController
 				), true
 			);
 		}
+	}
+	
+	/**
+	 * @param $userId
+	 * @param $salt
+	 * @return void
+	 */
+	private function setAuthParam(int $userId, string $salt)
+	{
+		$this->Session->set('userId', $userId);
+
+		AuthModel::setAuthCookie('userId', $userId);
+		AuthModel::setAuthCookie('hash', $salt);
+	}
+	
+	/**
+	 * Выход
+	 */
+	public function logOut() {
+		$this->Session->delete('userId');
+		setcookie("userId", "", time() - 3600);
+		setcookie("hash", "", time() - 3600);
 	}
 }

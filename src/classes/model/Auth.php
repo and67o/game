@@ -15,7 +15,6 @@ class Auth extends Model
 	 */
 	public static function checkEmailAndPassword(string $email, string $password)
 	{
-	    //TODO перенести в Users
 		return self::_db()
 			->select(['u_id'])
 			->table('users')

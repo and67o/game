@@ -54,15 +54,15 @@ class Hash extends Model
 	
 	/**
 	 * @param string $email
-	 * @return string
+	 * @return array
 	 */
-	public static function getSalt(string $email)
+	public static function getPasswordParam(string $email)
 	{
 		return self::_db()
-			->select(['salt'])
+			->select(['salt', 'password'])
 			->table('users')
 			->where('email = ?')
 			->get([$email])
-			->single();
+			->first();
 	}
 }

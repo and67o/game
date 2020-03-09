@@ -26,17 +26,16 @@ export const authorisation = () => {
 				dataForAxios.url,
 				dataForAxios.data
 			)
-			.then( ({data : { errors, result, data }} = response) => {
-				console.log(data,!result,  errors);
-				//TODO Проверить размер объекта
-				if (!result && error) {
+			.then(({data : { errors, result, data }} = response) => {
+				console.log( errors, result, data)
+				if (!result && Object.keys(errors).length) {
 					addError(errors.default, '.js-error-default');
-				} else {
-					console.log(errors, result, data);
+				} else if (result) {
+					location.reload();
 				}
 			})
-			.catch(function (error) {
-				console.log(21,error);
+			.catch( ({data : { errors }} = response) => {
+				console.log(errors);
 			});
 	}
 };

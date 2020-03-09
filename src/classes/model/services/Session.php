@@ -3,12 +3,12 @@
 
 namespace Router\Models\Services;
 
-
+/**
+ * Class Session
+ * @package Router\Models\Services
+ */
 class Session
 {
-	public function __construct()
-	{
-	}
 	
 	/**
 	 *
@@ -23,7 +23,7 @@ class Session
 	 * @param $value
 	 * @return mixed
 	 */
-	public static function set($name, $value)
+	public function set($name, $value)
 	{
 		return $_SESSION[$name] = $value;
 	}

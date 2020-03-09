@@ -12,7 +12,7 @@ export const registerNewPerson = () => {
 	const name = $('.js-name').val();
 
 	const error = validate(email, password);
-	console.log(error);
+
 	if (error) {
 		const dataForAxios = {
 			url: 'Register/register',
@@ -27,17 +27,11 @@ export const registerNewPerson = () => {
 				dataForAxios.url,
 				dataForAxios.data
 			)
-			.then(function(response) {
-				const {
-					result,
-					errors
-				} = response.data;
-				
+			.then( ({data : { errors, result, data }} = response) => {
 				if (result) {
 					location.reload();
 				}
 				if (errors) {
-					console.log(errors);
 					
 					Object.keys(errors).forEach((errorName) => {
 						addError(errors[errorName], '.js-error-' + errorName);

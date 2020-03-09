@@ -3,7 +3,10 @@
 
 namespace Router\Models\Services;
 
-
+/**
+ * Class SqlHelper
+ * @package Router\Models\Services
+ */
 class SqlHelper
 {
     /**

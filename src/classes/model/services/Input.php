@@ -3,7 +3,10 @@
 
 namespace Router\Models\Services;
 
-
+/**
+ * Class Input
+ * @package Router\Models\Services
+ */
 class Input
 {
  

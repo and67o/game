@@ -21,16 +21,16 @@ class GameField extends BaseTwigController
 {
 	/** @var int уникальный идентификатор игры */
 	public $gameId;
-
+	
 	protected $tplName = 'GameField';
 	protected $pageTitle = 'Игра номер';
 	
 	public function __construct($gameId = '')
 	{
 		parent::__construct();
-		if ($gameId) {
-            $this->Session->start();
-            $this->Session->set('gameId', $gameId);
+
+		if (!$this->isAuth() || !$gameId) {
+			$this->toMain();
 		}
 		$this->gameId = $gameId;
 		$this->pageTitle = 'Игра номер ' . $this->gameId;
@@ -42,7 +42,7 @@ class GameField extends BaseTwigController
 	public function index()
 	{
 		$this->render([
-			'moves' => GameProcess::getAllInformByGame($this->gameId) ?: []
+			'moves' => GameProcess::getAllInformByGame($this->gameId) ? : []
 		]);
 	}
 	
@@ -51,55 +51,54 @@ class GameField extends BaseTwigController
 	 */
 	public function addNewNumber()
 	{
-        try {
-            $this->Input->setInputParam(
-                file_get_contents('php://input'),
-                Input::METHOD_REQUEST_POST
-            );
-            
-            if (!$this->Input->checkRequestMethod()) throw new Exception('Нет данных');
+		try {
+			$this->Input->setInputParam(
+				file_get_contents('php://input'),
+				Input::METHOD_REQUEST_POST
+			);
 
-            $newNumber = $this->Input->get('number', 'int');
-    
-            $this->Session->start();
-    
-            $gameId = $this->Session->exists('gameId')
-                ? (int) $this->Session->get('gameId')
-                : 0;
-            if (!$gameId) throw new Exception('Нет игры');
-    
-            $number = GameNumbers::getGameNumberByGameId($gameId);
-            $GameModel = new GameModel($number);
-            $resultOfMove = $GameModel->checkNumber($newNumber);
-            
-            $this->_saveMove($gameId, $resultOfMove, $newNumber);
-            
-            $this->toJSON($this->response(
-                [],
-                true,
-                $resultOfMove
-            ),true);
-        } catch (Exception $exception) {
-            $this->toJSON($this->response(
-                $exception->getMessage(),
-                false
-            ),true);
-        }
+			if (!$this->Input->checkRequestMethod()) {
+				throw new Exception('Нет данных');
+			}
+			
+			$newNumber = $this->Input->get('number', 'int');
+			
+			if (!$this->gameId) {
+				throw new Exception('Нет игры');
+			}
+			
+			$number = GameNumbers::getGameNumberByGameId($this->gameId);
+			$GameModel = new GameModel($number);
+			$resultOfMove = $GameModel->checkNumber($newNumber);
+			
+			$this->_saveMove($resultOfMove, $newNumber);
+			
+			$this->toJSON($this->response(
+				[],
+				true,
+				$resultOfMove
+			), true);
+		} catch (Exception $exception) {
+			$this->toJSON($this->response(
+				$exception->getMessage(),
+				false
+			), true);
+		}
 	}
-    
-    /**
-     * @param $gameId
-     * @param $resultOfMove
-     * @param $newNumber
-     * @throws Exception
-     */
-	private function _saveMove($gameId, $resultOfMove, $newNumber) {
-        GameProcess::saveMove([
-            'g_id' => $gameId,
-            'dt' => Model::now(),
-            'right_position' => $resultOfMove['rightPosition'],
-            'right_count' => $resultOfMove['rightCount'],
-            'move' => $newNumber
-        ]);
-    }
+	
+	/**
+	 * @param $resultOfMove
+	 * @param $newNumber
+	 * @throws Exception
+	 */
+	private function _saveMove($resultOfMove, $newNumber)
+	{
+		GameProcess::saveMove([
+			'g_id' => $this->gameId,
+			'dt' => Model::now(),
+			'right_position' => $resultOfMove['rightPosition'],
+			'right_count' => $resultOfMove['rightCount'],
+			'move' => $newNumber
+		]);
+	}
 }

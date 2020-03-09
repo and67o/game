@@ -12,7 +12,8 @@ class BaseException extends Exception
 	const BASE_ERROR = 0;
 	const WRONG_AUTH = 3;
 	const USER_NOT_FOUND = 4;
-	
+	const GAME_NOT_CREATED = 5;
+	const NO_NUMBER = 6;
 	/**
 	 * Ошибки исключений
 	 */
@@ -20,7 +21,9 @@ class BaseException extends Exception
 		self::BASE_ERROR => 'Что-то не так',
 		self::WRONG_METHOD => 'Не тот метод',
 		self::WRONG_AUTH => 'Ошибка авторизации',
-		self::USER_NOT_FOUND => 'Пользователь не найден'
+		self::USER_NOT_FOUND => 'Пользователь не найден',
+		self::GAME_NOT_CREATED => 'Игра не создана',
+		self::NO_NUMBER => 'Число не добавлено'
 	];
 	
 	/**

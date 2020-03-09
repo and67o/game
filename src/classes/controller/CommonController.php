@@ -23,35 +23,22 @@ class CommonController
 	public $userId;
 	/** @var User объект пользователя */
 	protected $User;
-    /** @var Input */
-    protected $Input;
-    /** @var Validation */
-    protected $Validation;
+	/** @var Input */
+	protected $Input;
+	/** @var Validation */
+	protected $Validation;
 	/** @var Session */
 	protected $Session;
-
+	
 	/** Путь до шаблонов*/
 	const BASE_TEMPLATE_PATH = 'src/templates/';
-    
-    function __construct()
-	{
-	    $this->Input = new Input();
-	    $this->Validation = new Validation();
-		$this->Session = new Session();
-		
-		//TODO убрать исправить на сессию
-		$Cookie = new Cookie();
-		$this->userId = $Cookie->exists('userId') ? $Cookie->get('userId') : 0;
-		$this->User = new User($this->userId);
-	}
 	
-	/**
-	 * Проверка на то, что запрос отправлен AJAX
-	 * @return bool
-	 */
-	public function isAjax()
+	function __construct()
 	{
-		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+		$this->Input = new Input();
+		$this->Validation = new Validation();
+		$this->Session = new Session();
+		$this->User = new User();
 	}
 	
 	/**
@@ -67,19 +54,35 @@ class CommonController
 		}
 		header('Location: /');
 	}
-
-    /**
-     * @param $errors
-     * @param bool $result
-     * @param array $data
-     * @return array
-     */
-	protected function response($errors, bool $result, array $data = []) :array
-    {
-	   return [
-	       'errors' => $errors,
-           'result' => $result,
-           'data' => $data
-       ];
-    }
+	
+	/**
+	 * Редирект на главную
+	 */
+	protected function toMain()
+	{
+		header('Location: /');
+	}
+	
+	/**
+	 * @return bool
+	 */
+	protected function isAuth() : bool
+	{
+		return $this->User->userId > 0;
+	}
+	
+	/**
+	 * @param $errors
+	 * @param bool $result
+	 * @param array $data
+	 * @return array
+	 */
+	protected function response($errors, bool $result, array $data = []) : array
+	{
+		return [
+			'errors' => $errors,
+			'result' => $result,
+			'data' => $data
+		];
+	}
 }

@@ -3,6 +3,7 @@
 
 namespace Router\Controller;
 
+use Router\Exceptions\BaseException;
 use Router\Interfaces\BaseTwigController;
 use Router\Models\Game as GameModel;
 
@@ -21,11 +22,15 @@ class Game extends BaseTwigController
 	/**
 	 * Создание новой игры
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function createGame()
 	{
 		$Game = new GameModel();
-		$gameId = $Game->createFullGame($this->userId);
-		$this->locationRedirect('/GameField/index/' . $gameId, $gameId);
+		if ($this->User->userId) {
+			$gameId = $Game->createFullGame($this->User->userId);
+			$this->locationRedirect('/GameField/index/' . $gameId, $gameId);
+		}
+		$this->toMain();
 	}
 }

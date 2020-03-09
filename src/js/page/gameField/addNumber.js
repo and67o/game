@@ -7,9 +7,16 @@ import {
 import * as axios from "axios";
 import Modal from "../../moduls/modal";
 
-const goodRequest = (response, number) => {
-	if (response) {
-		if (response.youWin) {
+const goodRequest = ({
+		data: {
+			errors, result,
+			data: {
+				rightPosition, rightCount, youWin
+			}
+		}
+	} = response, number) => {
+	if (result) {
+		if (youWin) {
 			new Modal({
 				headerName: 'Поздравляю',
 				content: `Ты угадал`,
@@ -17,14 +24,8 @@ const goodRequest = (response, number) => {
 				needBtnClose: true,
 			}).init();
 		} else {
-			const {
-				data: {
-					rightPosition,
-					rightCount
-				}
-			} = response;
-			const result = hangleResult(rightCount, rightPosition);
-			$('.game__fields').append(getNewNumberLineHTML(number, result));
+			const resultHangle = hangleResult(rightCount, rightPosition);
+			$('.game__fields').append(getNewNumberLineHTML(number, resultHangle));
 		}
 	}
 };
@@ -43,12 +44,13 @@ const getNewNumberLineHTML = (number, result) => {
 	`;
 };
 
-export const addNewNumber = (countOfNumber) => {
+export const addNewNumber = (countOfNumber, gameId) => {
 	const
 		$errorField = document.querySelector('.error-field'),
 		$number = $('.js-input-number'),
 		numberVal = $number.val(),
 		error = validateField(numberVal, countOfNumber);
+	
 	$errorField.innerHTML = '';
 	
 	if (error) {
@@ -57,7 +59,7 @@ export const addNewNumber = (countOfNumber) => {
 	}
 	
 	const dataForAxios = {
-		url: '/GameField/addNewNumber',
+		url: '/GameField/addNewNumber/' + gameId,
 		data: {
 			number: numberVal
 		}
@@ -69,10 +71,13 @@ export const addNewNumber = (countOfNumber) => {
 			dataForAxios.data
 		)
 		.then(
-			(response) => goodRequest(response.data, $number.val())
+			(response) => goodRequest(response, $number.val())
 		)
 		.catch((error) => {
 			console.log(error)
-			// location.reload();
 		});
 };
+
+export function getGameId() {
+	return window.location.pathname.split('/').pop()
+}

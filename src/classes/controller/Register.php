@@ -49,7 +49,9 @@ class Register extends CommonController
 			if (!$userId) {
 				throw new \PDOException('Проблемы с регистрацией');
 			}
+			
 			Auth::setAuthCookie('userId', $userId);
+			$this->Session->set('userId', $userId);
 			
 			$this->toJSON($this->response(
 				[],
