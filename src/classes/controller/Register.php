@@ -99,10 +99,13 @@ class Register extends CommonController
 	 */
 	private function _validateParam()
 	{
-		$this->_baseValidate($this->Input->get('email', 'string'), 'email')->isExist()->isValidateEmail();
-		$this->_baseValidate($this->Input->get('password', 'string'), 'password');
-		$this->_baseValidate($this->Input->get('name', 'string'), 'name');
+		$email = $this->Input->get('email', 'string');
+		$password = $this->Input->get('password', 'string');
+		$name = $this->Input->get('name', 'string');
 		
+		$this->_baseValidate($email, 'email')->isExist()->isValidateEmail();
+		$this->_baseValidate($password, 'password');
+		$this->_baseValidate($name, 'name');
 		return $this->Validation->isSuccess()
 			? false
 			: $this->Validation->getErrors();

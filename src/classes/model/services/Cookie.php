@@ -3,7 +3,10 @@
 
 namespace Router\Models\Services;
 
-
+/**
+ * Class Cookie
+ * @package Router\Models\Services
+ */
 class Cookie
 {
 	/**

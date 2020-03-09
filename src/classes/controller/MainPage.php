@@ -4,6 +4,7 @@ namespace Router\Controller;
 
 
 use Router\Interfaces\BaseTwigController;
+use Router\Models\Services\Hash;
 
 /**
  * Главная страница

@@ -5,9 +5,11 @@ namespace Router\Controller;
 
 use Exception;
 use Router\Interfaces\BaseTwigController;
-use Router\Models\GameNumbers;
-use Router\Models\GameProcess;
-use Router\Models\Model;
+use Router\Models\{
+	GameNumbers,
+	GameProcess,
+	Model
+};
 use Router\Models\Services\Input;
 use Router\Models\Game as GameModel;
 

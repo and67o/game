@@ -2,6 +2,9 @@ import {
 	validate
 } from "./validate";
 import * as axios from "axios";
+import {
+	addError
+} from "../utils";
 
 export const authorisation = () => {
 	const
@@ -23,13 +26,17 @@ export const authorisation = () => {
 				dataForAxios.url,
 				dataForAxios.data
 			)
-			.then(function (response) {
-				const {
-					result,
-				} = response.data;
+			.then( ({data : { errors, result, data }} = response) => {
+				console.log(data,!result,  errors);
+				//TODO Проверить размер объекта
+				if (!result && error) {
+					addError(errors.default, '.js-error-default');
+				} else {
+					console.log(errors, result, data);
+				}
 			})
 			.catch(function (error) {
-				console.log(error);
+				console.log(21,error);
 			});
 	}
 };

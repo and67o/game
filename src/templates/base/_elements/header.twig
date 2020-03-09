@@ -1,11 +1,13 @@
 <header class="header">
-	{% if email  %}
+	{% if email %}
 		<div class="authorized">
 			<div class="authorized__profile">
-				<a href="Profile" class="authorized__profile-name">{{ email }}</a>
+				<a href="#" class="authorized__profile-name">{{ email }}</a>
 				<p class="authorized__field js-log-out">Выход</p>
 			</div>
-			<a href="Profile"><img src="{{ path ? path : '/src/img/default.png' }}" alt="profile-avatar" class="authorized__avatar"></a>
+			<a href="#">
+				<img src="{{ path ? path : '/src/img/default.png' }}" alt="profile-avatar" class="authorized__avatar">
+			</a>
 		</div>
 	{% else %}
 		<div class="authorized">

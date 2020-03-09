@@ -11,7 +11,7 @@ class Validation extends Model
 {
 	const MIN_LENGTH_OF_FIELD = 3;
 	const MAX_LENGTH_OF_FIELD = 60;
-
+	
 	private $value;
 	private $errors = [];
 	private $name;
@@ -26,12 +26,12 @@ class Validation extends Model
 		if (!$EmailValidator->isValid($this->value, new RFCValidation())) {
 			$this->errors[$this->name] = 'Email набран некорректно';
 		};
-
+		
 		return $this;
 	}
-
+	
 	/**
-	 * записание значение
+	 * записать значение
 	 * @param $value
 	 * @return $this
 	 */
@@ -40,7 +40,16 @@ class Validation extends Model
 		$this->value = $value;
 		return $this;
 	}
-
+	
+	/**
+	 * получить значение
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+	
 	/**
 	 * Обязательное поле
 	 * @return $this
@@ -48,11 +57,12 @@ class Validation extends Model
 	public function required()
 	{
 		if ($this->value == '' || $this->value == null) {
-			$this->errors[$this->name] = 'Поле ' . $this->name . ' Пустое';
+			$nameField = $this->getName();
+			$this->errors[$nameField] = 'Поле ' .$nameField . ' Пустое';
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * Записать поле
 	 * @param $name
@@ -63,7 +73,16 @@ class Validation extends Model
 		$this->name = $name;
 		return $this;
 	}
-
+	
+	/**
+	 * Получить название поля
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	/**
 	 * Минимальное кол-во символов
 	 * @param int $minLength
@@ -81,9 +100,9 @@ class Validation extends Model
 			}
 		}
 		return $this;
-
+		
 	}
-
+	
 	/**
 	 * Максимальное кол-во символов
 	 * @param int $maxLength
@@ -102,20 +121,20 @@ class Validation extends Model
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * проверка на существование email
 	 * @return $this
 	 */
 	public function isExist()
 	{
-	    //TODO один ответ
-		if (User::isEmailExist($this->value)) {
-			$this->errors[$this->name] = 'Email занят';
+		//TODO один ответ
+		if (User::isEmailExist($this->getValue())) {
+			$this->errors[$this->getName()] = 'Email занят';
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * есть ли ошибки
 	 * @return bool
@@ -124,10 +143,10 @@ class Validation extends Model
 	{
 		return empty($this->errors);
 	}
-    
-    /**
-     * @return array
-     */
+	
+	/**
+	 * @return array
+	 */
 	public function getErrors()
 	{
 		if (!$this->isSuccess()) {
@@ -135,5 +154,5 @@ class Validation extends Model
 		}
 		return [];
 	}
-
+	
 }

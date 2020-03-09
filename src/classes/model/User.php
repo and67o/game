@@ -55,7 +55,7 @@ class User extends Model
 	/**
 	 * Проверка на существоание email
 	 * @param string $email
-	 * @return Db
+	 * @return string
 	 */
 	public static function isEmailExist(string $email)
 	{
@@ -63,7 +63,8 @@ class User extends Model
 			->select([1])
 			->table('users', 'u')
 			->where('email = ?')
-			->get((array) $email);
+			->get((array) $email)
+			->single();
 	}
 	
 	/**
