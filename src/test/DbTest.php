@@ -48,7 +48,6 @@ class DbTest extends TestCase
                 'SELECT * FROM game_numbers WHERE g_id = ? AND id = ?',
                 ['*'], ['game_numbers'], ['g_id = ?', 'id = ?']
             ],
-            //TODO на пустом where должно быть where 1
             [
                 'SELECT * FROM game_numbers WHERE ',
                 ['*'], ['game_numbers'], ['']

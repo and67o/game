@@ -108,7 +108,6 @@ class Input
      * @return array|bool|float|int|string
      */
     private function _dataTypes($dataType, $param) {
-        //TODO Добавить в тесты преобразование типов
         switch ($dataType) {
             case 'string': return (string) $param;
             case 'int':    return (int) $param;
