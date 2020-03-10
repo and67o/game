@@ -12,20 +12,18 @@ services:
       - db
     networks:
       - default
-#  php:
-#    image: php:7.1.10-fpm
-#    volumes:
-#      - .:/var/www/html/
-#  apache:
-#    image:
-#    links:
-#      - php
-#    depends_on:
-#      - php
+    depends_on:
+      - db
   db:
     image: mysql:8.0
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306::3306"
+    command: [
+      '--default_authentication_plugin=mysql_native_password',
+      '--collation-server=utf8_general_ci',
+      '--character-set-server=utf8',
+    ]
+    restart: always
     environment:
       MYSQL_DATABASE: myDb
       MYSQL_USER: user
@@ -34,6 +32,7 @@ services:
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
       - ./conf:/etc/mysql/conf.d
+      - persistent:/var/lib/mysql
     networks:
       - default
   phpmyadmin:
@@ -52,3 +51,5 @@ services:
     command: install
     volumes:
       - .:/app
+volumes:
+  persistent:

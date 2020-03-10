@@ -1,3 +1,6 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+
 CREATE TABLE IF NOT EXISTS `game_numbers`
 (
 	`gn_id`       INT(11) NOT NULL AUTO_INCREMENT,
