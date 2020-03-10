@@ -4,6 +4,10 @@ namespace Router\Models;
 
 use Router\Db;
 
+/**
+ * Class Model
+ * @package Router\Models
+ */
 class Model
 {
 	/**

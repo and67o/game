@@ -4,7 +4,9 @@
 use PHPUnit\Framework\TestCase;
 use Router\Models\Game;
 
-
+/**
+ * Class GameTest
+ */
 class GameTest extends TestCase
 {
 	/**

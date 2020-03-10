@@ -3,11 +3,13 @@
 
 namespace Router\Controller;
 
-use Router\Exceptions\BaseException;
 use Router\Interfaces\BaseTwigController;
 use Router\Models\Game as GameModel;
 
-
+/**
+ * Class Game
+ * @package Router\Controller
+ */
 class Game extends BaseTwigController
 {
 	

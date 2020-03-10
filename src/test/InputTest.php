@@ -4,6 +4,9 @@
 use PHPUnit\Framework\TestCase;
 use Router\Models\Services\Input;
 
+/**
+ * Class InputTest
+ */
 class InputTest extends TestCase
 {
     /**

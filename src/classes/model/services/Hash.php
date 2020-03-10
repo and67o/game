@@ -5,6 +5,10 @@ namespace Router\Models\Services;
 
 use Router\Models\Model;
 
+/**
+ * Class Hash
+ * @package Router\Models\Services
+ */
 class Hash extends Model
 {
 	

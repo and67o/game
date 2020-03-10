@@ -9,8 +9,7 @@ use Router\Models\{
 };
 use Router\Models\Services\{
 	Input,
-	Session,
-	Cookie
+	Session
 };
 use Router\Traits\JsonTrait;
 

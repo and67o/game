@@ -3,7 +3,9 @@
 use Router\Models\Services\SqlHelper;
 use PHPUnit\Framework\TestCase;
 
-
+/**
+ * Class SqlHelperTest
+ */
 class SqlHelperTest extends TestCase
 {
     /**

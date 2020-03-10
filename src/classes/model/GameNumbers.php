@@ -6,6 +6,10 @@ namespace Router\Models;
 
 use Router\Db;
 
+/**
+ * Class GameNumbers
+ * @package Router\Models
+ */
 class GameNumbers extends Model
 {
 	/**

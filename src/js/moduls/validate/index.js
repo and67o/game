@@ -4,6 +4,7 @@ import {
 	MIN_LENGTH
 } from "./const";
 import isArray from "lodash-es/isArray";
+import {addError} from "../utils";
 
 const minLength = (email, minLen = MIN_LENGTH) => {
 	return email.length < minLen;
@@ -55,4 +56,18 @@ export function haveRepeatValue(number) {
 		countIteration++;
 	}
 	return false;
+}
+
+export const ValidateEmailPassword = (email, password) => {
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+    if (emailError) {
+        addError(emailError, '.js-error-email');
+    }
+    if (passwordError) {
+        addError(passwordError, '.js-error-password');
+    }
+    if (!emailError && !passwordError) {
+        return true;
+    }
 };

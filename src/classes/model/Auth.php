@@ -5,6 +5,10 @@ namespace Router\Models;
 
 use Router\Models\Services\Cookie;
 
+/**
+ * Class Auth
+ * @package Router\Models
+ */
 class Auth extends Model
 {
 	/**

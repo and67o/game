@@ -3,6 +3,9 @@
 use PHPUnit\Framework\TestCase;
 use Router\Db;
 
+/**
+ * Class DbTest
+ */
 class DbTest extends TestCase
 {
     /**

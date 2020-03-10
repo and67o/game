@@ -4,6 +4,10 @@ namespace Router\Controller;
 
 use Router\Interfaces\BaseTwigController;
 
+/**
+ * Class PageNotFound
+ * @package Router\Controller
+ */
 class PageNotFound extends BaseTwigController
 {
 	protected $tplName = 'pageNotFound';

@@ -5,7 +5,10 @@ namespace Router\Exceptions;
 
 use Exception;
 
-
+/**
+ * Class BaseException
+ * @package Router\Exceptions
+ */
 class BaseException extends Exception
 {
 	const WRONG_METHOD = 1;

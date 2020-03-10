@@ -4,10 +4,12 @@
 namespace Router\Models;
 
 
-use PHPUnit\Runner\Exception;
 use Router\Exceptions\BaseException;
-use Router\Models\Services\Session;
 
+/**
+ * Class Game
+ * @package Router\Models
+ */
 class Game extends Model
 {
 	
@@ -15,21 +17,30 @@ class Game extends Model
 	protected $maxCountNumber;
 	
 	const GAME_NEW = 0;
-	
+    
+    /**
+     * Game constructor.
+     * @param int $computerNumber
+     */
 	public function __construct($computerNumber = 0)
 	{
-		// TODO Получить число игры или id игры
 		if ($computerNumber) {
 			$this->setActualNumber($computerNumber);
 			$this->maxCountNumber = 4;
 		}
 	}
-	
+    
+    /**
+     * @return mixed
+     */
 	public function getActualNumber()
 	{
 		return $this->computerNumber;
 	}
-	
+    
+    /**
+     * @param $computerNumber
+     */
 	public function setActualNumber($computerNumber)
 	{
 		$this->computerNumber = $computerNumber;

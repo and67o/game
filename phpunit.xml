@@ -9,6 +9,7 @@
             <file>SqlHelperTest.php</file>
             <file>InputTest.php</file>
             <file>GameTest.php</file>
+            <file>GameNumbersTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -3,7 +3,9 @@
 use Router\Models\GameNumbers;
 use PHPUnit\Framework\TestCase;
 
-
+/**
+ * Class GameNumbersTest
+ */
 class GameNumbersTest extends TestCase
 {
     /**

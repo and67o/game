@@ -12,6 +12,10 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
+/**
+ * Class BaseTwigController
+ * @package Router\Interfaces
+ */
 abstract class BaseTwigController extends CommonController
 {
 	

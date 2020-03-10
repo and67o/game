@@ -3,7 +3,10 @@
 
 namespace Router\Models;
 
-
+/**
+ * Class GameProcess
+ * @package Router\Models
+ */
 class GameProcess extends Model
 {
 	

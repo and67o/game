@@ -1,16 +1,16 @@
-import {
-	validate
-} from "./validate";
 import * as axios from "axios";
 import {
 	addError
 } from "../utils";
+import {
+    ValidateEmailPassword
+} from "../validate";
 
 export const authorisation = () => {
 	const
 		email = $('.js-email').val(),
 		password = $('.js-password').val(),
-		error = validate(email, password);
+		error = ValidateEmailPassword(email, password);
 
 	if (error) {
 		const dataForAxios = {
