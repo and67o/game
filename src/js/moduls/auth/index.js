@@ -26,6 +26,13 @@ export function auth() {
 }
 
 export const logOut = () => {
-	axios.post('/Auth/logOut');
+	axios
+		.post('/Auth/logOut')
+		.then(() => {
+			location.reload();
+		})
+		.catch(() => {
+			location.reload();
+		})
 };
 

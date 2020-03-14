@@ -4,6 +4,8 @@ namespace Router\Controller;
 
 
 use Router\Interfaces\BaseTwigController;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Главная страница
@@ -21,7 +23,11 @@ class MainPage extends BaseTwigController
 	 */
 	public function index()
 	{
-		$this->render();
+		try {
+			$this->render();
+		} catch (RuntimeError $e) {
+		} catch (SyntaxError $e) {
+		}
 	}
 
 }

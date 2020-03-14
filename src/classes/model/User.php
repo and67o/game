@@ -4,6 +4,7 @@
 namespace Router\Models;
 
 
+use PDOException;
 use Router\Models\Services\Session;
 
 /**
@@ -86,7 +87,7 @@ class User extends Model
 			->table('users')
 			->add($param);
 		if (!$userId) {
-			throw new \PDOException('There was a problem creating this account.');
+			throw new PDOException('There was a problem creating this account.');
 		}
 		return $userId;
 	}

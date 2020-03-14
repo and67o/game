@@ -29,9 +29,6 @@ class CommonController
 	/** @var Session */
 	protected $Session;
 	
-	/** Путь до шаблонов*/
-	const BASE_TEMPLATE_PATH = 'src/templates/';
-	
 	function __construct()
 	{
 		$this->Input = new Input();

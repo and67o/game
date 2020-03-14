@@ -5,6 +5,8 @@ namespace Router\Controller;
 
 use Router\Interfaces\BaseTwigController;
 use Router\Models\Game as GameModel;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class Game
@@ -18,7 +20,11 @@ class Game extends BaseTwigController
 	
 	public function index()
 	{
-		$this->render();
+		try {
+			$this->render();
+		} catch (RuntimeError $e) {
+		} catch (SyntaxError $e) {
+		}
 	}
 	
 	/**

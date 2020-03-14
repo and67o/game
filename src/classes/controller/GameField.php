@@ -6,12 +6,14 @@ namespace Router\Controller;
 use Exception;
 use Router\Interfaces\BaseTwigController;
 use Router\Models\{
-	GameNumbers,
 	GameProcess,
+	GameNumbers,
 	Model
 };
 use Router\Models\Services\Input;
 use Router\Models\Game as GameModel;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Класс отвечающий за игру
@@ -41,9 +43,13 @@ class GameField extends BaseTwigController
 	 */
 	public function index()
 	{
-		$this->render([
-			'moves' => GameProcess::getAllInformByGame($this->gameId) ? : []
-		]);
+		try {
+			$this->render([
+				'moves' => GameProcess::getAllInformByGame($this->gameId) ? : []
+			]);
+		} catch (RuntimeError $e) {
+		} catch (SyntaxError $e) {
+		}
 	}
 	
 	/**

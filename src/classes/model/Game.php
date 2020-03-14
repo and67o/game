@@ -4,6 +4,7 @@
 namespace Router\Models;
 
 
+use PDOException;
 use Router\Exceptions\BaseException;
 
 /**
@@ -95,7 +96,7 @@ class Game extends Model
 				'game_status' => self::GAME_NEW,
 			]);
 		if (!$res) {
-			throw new \PDOException('There was a problem creating this account.');
+			throw new PDOException('There was a problem creating this account.');
 		}
 		return $res ? : 0;
 	}

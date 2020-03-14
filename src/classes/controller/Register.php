@@ -18,6 +18,7 @@ use Router\Models\{
 	Validation,
 	Role
 };
+use PDOException;
 
 /**
  * Класс отвечающий за регистрацию
@@ -47,7 +48,7 @@ class Register extends CommonController
 			
 			$userId = $this->createUser();
 			if (!$userId) {
-				throw new \PDOException('Проблемы с регистрацией');
+				throw new PDOException('Проблемы с регистрацией');
 			}
 			
 			Auth::setAuthCookie('userId', $userId);
@@ -58,7 +59,7 @@ class Register extends CommonController
 				(bool) $userId
 			), true);
 			
-		} catch (\PDOException $e) {
+		} catch (PDOException $e) {
 			
 			$this->toJSON($this->response(
 				[$e->getMessage()],
@@ -73,6 +74,7 @@ class Register extends CommonController
 				],
 				false
 			), true);
+		} catch (Exception $e) {
 		}
 	}
 	

@@ -17,13 +17,13 @@
   "autoload": {
     "psr-4": {
       "Router\\": "",
-      "Router\\Controller\\": "src/classes/controller/",
-      "Router\\Interfaces\\": "src/classes/interfaces/",
-      "Router\\Models\\": "src/classes/model/",
-      "Router\\Models\\Services\\": "src/classes/model/services/",
-      "Router\\Facades\\": "src/classes/facades",
-      "Router\\Exceptions\\": "src/classes/exceptions",
-      "Router\\Traits\\": "src/classes/traits"
+      "Router\\Controller\\": "classes/controller/",
+      "Router\\Interfaces\\": "classes/interfaces/",
+      "Router\\Models\\": "classes/model/",
+      "Router\\Models\\Services\\": "classes/model/services/",
+      "Router\\Facades\\": "classes/facades",
+      "Router\\Exceptions\\": "classes/exceptions",
+      "Router\\Traits\\": "classes/traits"
     },
     "files": [
       "router.php"

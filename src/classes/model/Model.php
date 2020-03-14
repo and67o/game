@@ -2,6 +2,7 @@
 
 namespace Router\Models;
 
+use DateTime;
 use Router\Db;
 
 /**
@@ -26,6 +27,6 @@ class Model
      */
     public static function now()
     {
-        return (new \DateTime('now'))->format('Y-m-d H:i:s');
+        return (new DateTime('now'))->format('Y-m-d H:i:s');
     }
 }

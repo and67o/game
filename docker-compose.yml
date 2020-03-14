@@ -1,12 +1,15 @@
 version: "3.1"
 services:
   www:
+    env_file:
+      - .env
     build:
       context: ./php
+    restart: always
     ports:
       - "8001:80"
     volumes:
-      - .:/var/www/html/
+      - ./src/:/var/www/html/
       - ./conf/httpd.conf:/etc/httpd/httpd.conf
     links:
       - db
@@ -14,6 +17,7 @@ services:
       - default
     depends_on:
       - db
+      - composer
   db:
     image: mysql:8.0
     ports:
@@ -50,6 +54,6 @@ services:
     image: composer
     command: install
     volumes:
-      - .:/app
+      - ./src/:/app
 volumes:
   persistent:

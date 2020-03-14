@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 const conf = {
-	context: path.resolve(__dirname,'./src/js'),
+	context: path.resolve(__dirname,'./js'),
 	entry: {
 		base: './base.js',
 		gameField: './page/gameField/gameField.js',

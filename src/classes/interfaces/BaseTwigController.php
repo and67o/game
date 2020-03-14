@@ -18,16 +18,18 @@ use Twig\Loader\FilesystemLoader;
  */
 abstract class BaseTwigController extends CommonController
 {
-	
-	public function __construct()
-	{
-		parent::__construct();
-	}
+	/** Путь до шаблонов*/
+	const BASE_TEMPLATE_PATH = 'templates/';
 	
 	/** @var string назваине шаблона */
 	protected $tplName;
 	/** @var string название страницы */
 	protected $pageTitle;
+	
+	public function __construct()
+	{
+		parent::__construct();
+	}
 	
 	/**
 	 * Рендер шаблона
@@ -51,33 +53,34 @@ abstract class BaseTwigController extends CommonController
 			Router::getPage404();
 		}
 	}
-
-    /**
-     * Получить путь к шаблону
-     * @return string
-     */
-	private function _getTemplatePath() {
-	   return $this->tplName . '/index.twig';
-    }
-
-    /**
-     * Формирование параметров для шапки сайта
-     * @param string $namePage
-     * @return array
-     */
-    public function getBaseParam(string $namePage) : array
-    {
-        $userData = [];
-        if ($this->User) {
-            $userData = [
-                'email' => $this->User->email,
-                'path' => $this->User->profileAvatar,
-            ];
-        }
-        $html = [
-            'title' => $namePage,
-        ];
-        return array_merge($html, $userData);
-    }
-    
+	
+	/**
+	 * Получить путь к шаблону
+	 * @return string
+	 */
+	private function _getTemplatePath()
+	{
+		return $this->tplName . '/index.twig';
+	}
+	
+	/**
+	 * Формирование параметров для шапки сайта
+	 * @param string $namePage
+	 * @return array
+	 */
+	public function getBaseParam(string $namePage) : array
+	{
+		$userData = [];
+		if ($this->User) {
+			$userData = [
+				'email' => $this->User->email,
+				'path' => $this->User->profileAvatar,
+			];
+		}
+		$html = [
+			'title' => $namePage,
+		];
+		return array_merge($html, $userData);
+	}
+	
 }
