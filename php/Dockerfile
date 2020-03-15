@@ -6,5 +6,3 @@ RUN apt-get update && apt-get install -y wget git unzip \
 RUN docker-php-ext-install pdo pdo_mysql
 RUN a2enmod rewrite
 ADD php.ini /usr/local/etc/php/php.ini
-ADD php.ini /usr/local/etc/php/php.ini
-

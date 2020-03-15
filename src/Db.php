@@ -40,11 +40,11 @@ class Db
         $this->_pdo = new PDO(
             sprintf(
                 'mysql:host=%s;dbname=%s',
-                getenv('HOST'),
-                getenv('DB_NAME')
+                getenv('MYSQL_HOST'),
+                getenv('MYSQL_DATABASE')
             ),
-            getenv('USERNAME'),
-            getenv('PASSWD'),
+            getenv('MYSQL_USER'),
+            getenv('MYSQL_PASSWORD'),
             self::DB_OPTIONS
         );
     }

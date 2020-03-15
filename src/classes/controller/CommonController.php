@@ -29,11 +29,43 @@ class CommonController
 	/** @var Session */
 	protected $Session;
 	
-	function __construct()
+	public function __construct()
+	{
+		$this->setInput();
+		$this->setValidation();
+		$this->setSession();
+		$this->setUser();
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function setInput()
 	{
 		$this->Input = new Input();
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function setValidation()
+	{
 		$this->Validation = new Validation();
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function setSession()
+	{
 		$this->Session = new Session();
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function setUser()
+	{
 		$this->User = new User();
 	}
 	
@@ -41,6 +73,7 @@ class CommonController
 	 * Редирект
 	 * @param $location
 	 * @param bool $condition
+	 * @return void
 	 */
 	protected function locationRedirect($location, $condition = true)
 	{
@@ -53,6 +86,7 @@ class CommonController
 	
 	/**
 	 * Редирект на главную
+	 * @return void
 	 */
 	protected function toMain()
 	{

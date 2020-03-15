@@ -1,8 +1,6 @@
 version: "3.1"
 services:
   www:
-    env_file:
-      - .env
     build:
       context: ./php
     restart: always
@@ -29,10 +27,10 @@ services:
     ]
     restart: always
     environment:
-      MYSQL_DATABASE: myDb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: test
-      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
       - ./conf:/etc/mysql/conf.d
@@ -46,9 +44,15 @@ services:
     ports:
       - 8000:80
     environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: test
-      MYSQL_ROOT_PASSWORD: test
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  node:
+    image: "node:8.11.3"
+    container_name: node
+    working_dir: /home/node/app
+    volumes:
+      - ./src/:/home/node/app
   composer:
     restart: 'no'
     image: composer
