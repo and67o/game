@@ -30,7 +30,7 @@ class GameField extends BaseTwigController
 	public function __construct($gameId = '')
 	{
 		parent::__construct();
-
+		
 		if (!$this->isAuth() || !$gameId) {
 			$this->toMain();
 		}
@@ -41,7 +41,7 @@ class GameField extends BaseTwigController
 	/**
 	 * Главная страница игры
 	 */
-	public function index()
+	public function index() : void
 	{
 		try {
 			$this->render([
@@ -62,7 +62,7 @@ class GameField extends BaseTwigController
 				file_get_contents('php://input'),
 				Input::METHOD_REQUEST_POST
 			);
-
+			
 			if (!$this->Input->checkRequestMethod()) {
 				throw new Exception('Нет данных');
 			}

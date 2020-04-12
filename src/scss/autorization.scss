@@ -1,5 +1,5 @@
 @import "modal";
-
+@import "social";
 .auth {
 	&__text {
 		font-family: 'Rubik Mono One', sans-serif;
@@ -32,6 +32,7 @@
 
 	&__field {
 		cursor: pointer;
+		margin-top: 12px;
 	}
 
 	&__profile-name {

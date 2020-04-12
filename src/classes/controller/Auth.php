@@ -23,17 +23,7 @@ class Auth extends CommonController
 	public function authorisation()
 	{
 		try {
-			$this->Input->setInputParam(
-				file_get_contents('php://input'),
-				Input::METHOD_REQUEST_POST
-			);
-			
-			if (
-				!$this->Input->getData() &&
-				!$this->Input->checkRequestMethod()
-			) {
-				$this->toMain();
-			}
+			$this->setRequest(Input::METHOD_REQUEST_POST);
 
 			$email = $this->Input->get('email', 'string');
 			$password = $this->Input->get('password', 'string');

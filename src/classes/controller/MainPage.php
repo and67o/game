@@ -21,7 +21,7 @@ class MainPage extends BaseTwigController
 	/**
 	 * Главная страницы
 	 */
-	public function index()
+	public function index() : void
 	{
 		try {
 			$this->render();
@@ -29,5 +29,5 @@ class MainPage extends BaseTwigController
 		} catch (SyntaxError $e) {
 		}
 	}
-
+	
 }

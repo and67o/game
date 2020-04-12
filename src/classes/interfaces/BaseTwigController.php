@@ -32,6 +32,11 @@ abstract class BaseTwigController extends CommonController
 	}
 	
 	/**
+	 *
+	 */
+	abstract public function index() : void;
+	
+	/**
 	 * Рендер шаблона
 	 * @param array $params
 	 * @throws RuntimeError

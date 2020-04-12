@@ -25,4 +25,13 @@ trait JsonTrait
 		return $result;
 	}
 	
+	/**
+	 * @param $var
+	 * @param bool $mask
+	 * @return mixed
+	 */
+	public function fromJSon($var, bool $mask)
+	{
+		return json_decode($var, $mask);
+	}
 }

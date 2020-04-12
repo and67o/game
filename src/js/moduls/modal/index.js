@@ -16,6 +16,7 @@ class Modal {
 	bindEvents() {
 		this.closeModal();
 		this.submitModal();
+		this.onOpen();
 	};
 
 	closeModal = () => {
@@ -26,6 +27,14 @@ class Modal {
 				$('.modal-container').remove();
 			}
 		})
+	};
+	
+	onOpen = () => {
+		if (isFunction(this.modalParams.callbacks.onOpen)) {
+			this.modalParams.callbacks.onOpen()
+		} else {
+			$('.modal-container').remove();
+		}
 	};
 	
 	submitModal = () => {

@@ -6,6 +6,9 @@ import {
 	authorisation
 } from "./auth";
 import * as axios from "axios";
+import {
+	socialAuth
+} from "../social";
 
 export function auth() {
 	const modalContainer = $('.modal-container');
@@ -17,6 +20,9 @@ export function auth() {
 			callbacks: {
 				btnSubmit: () => {
 					authorisation();
+				},
+				onOpen: () => {
+					$('.js-social-btn').on('click', (event) => socialAuth(event));
 				}
 			},
 		}).init();

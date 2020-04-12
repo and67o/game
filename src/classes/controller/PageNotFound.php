@@ -14,11 +14,11 @@ class PageNotFound extends BaseTwigController
 {
 	protected $tplName = 'pageNotFound';
 	protected $pageTitle = 'Страница не найдена';
-
+	
 	/**
 	 * Страница 404
 	 */
-	public function index()
+	public function index() : void
 	{
 		try {
 			$this->render();

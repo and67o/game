@@ -6,7 +6,8 @@ const defaultParam = () => {
 		modalClass: null,
 		callbacks: {
 			btnClose: null,
-			btnSubmit: null
+			btnSubmit: null,
+			onOpen: null,
 		},
 	};
 };

@@ -2,7 +2,10 @@
 
 namespace Router;
 
-
+/**
+ * Class Router
+ * @package Router
+ */
 Class Router
 {
 	const PATH_CONTROLLER = '\Router\Controller\\';
@@ -12,22 +15,19 @@ Class Router
 	private static $controller404 = 'PageNotFound';
 	
 	/**
-	 *
 	 * Роутер
 	 */
 	public function run()
 	{
 		$urlParts = explode('/', $_SERVER['REQUEST_URI']);
 		
-		//класс контроллера
 		array_shift($urlParts);
-		$controllerName = array_shift($urlParts);
-		$controllerName = $controllerName ? ucfirst($controllerName) : self::$defaultControllerName;
+		
+		//класс контроллера
+		$fullControllerName = $this->_controller(array_shift($urlParts));
 		
 		//метод контроллера
-		$methodName = array_shift($urlParts);
-		$methodName = $methodName ? ucfirst($methodName) : self::$defaultMethodName;
-		$fullControllerName = self::PATH_CONTROLLER . $controllerName;
+		$methodName = $this->_methodName(array_shift($urlParts));
 		
 		//параметр
 		$param = count($urlParts) ? array_shift($urlParts) : '';
@@ -39,6 +39,35 @@ Class Router
 		}
 		
 		self::getPage404();
+	}
+	
+	/**
+	 * @param string $methodName
+	 * @return string
+	 */
+	private function _methodName($methodName) : string
+	{
+		$methodName = $methodName
+			? ucfirst($methodName)
+			: self::$defaultMethodName;
+		
+		if (strpos($methodName, '?')) {
+			$methodName = stristr($methodName, '?', true);
+		}
+		return $methodName;
+	}
+	
+	/**
+	 * @param string $controllerName
+	 * @return string
+	 */
+	private function _controller(string $controllerName) : string
+	{
+		$controllerName = $controllerName
+			? ucfirst($controllerName)
+			: self::$defaultControllerName;
+		
+		return self::PATH_CONTROLLER . $controllerName;
 	}
 	
 	/**

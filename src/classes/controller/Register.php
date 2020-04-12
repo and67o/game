@@ -32,10 +32,7 @@ class Register extends CommonController
 	public function register()
 	{
 		try {
-			$this->Input->setInputParam(
-				file_get_contents('php://input'),
-				Input::METHOD_REQUEST_POST
-			);
+			$this->setRequest(Input::METHOD_REQUEST_POST);
 			
 			if (!$this->Input->checkRequestMethod()) {
 				throw new BaseException(BaseException::WRONG_METHOD);

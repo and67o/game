@@ -115,4 +115,36 @@ class CommonController
 			'data' => $data
 		];
 	}
+	
+	/**
+	 * @param string $methodRequest
+	 * @return false|string
+	 */
+	private function getRequestData(string $methodRequest)
+	{
+		switch ($methodRequest) {
+			case Input::METHOD_REQUEST_GET:
+				return $_GET;
+			case Input::METHOD_REQUEST_POST:
+				return file_get_contents('php://input');
+		}
+	}
+	
+	/**
+	 * @param string $methodRequest
+	 */
+	protected function setRequest(string $methodRequest) : void
+	{
+		$this->Input->setInputParam(
+			$this->getRequestData($methodRequest),
+			$methodRequest
+		);
+		
+		if (
+			!$this->Input->getData() &&
+			!$this->Input->checkRequestMethod()
+		) {
+			$this->toMain();
+		}
+	}
 }

@@ -17,6 +17,8 @@ class BaseException extends Exception
 	const USER_NOT_FOUND = 4;
 	const GAME_NOT_CREATED = 5;
 	const NO_NUMBER = 6;
+	const UNKNOWN_SOCIAL_NETWORK = 7;
+	
 	/**
 	 * Ошибки исключений
 	 */
@@ -26,7 +28,8 @@ class BaseException extends Exception
 		self::WRONG_AUTH => 'Ошибка авторизации',
 		self::USER_NOT_FOUND => 'Пользователь не найден',
 		self::GAME_NOT_CREATED => 'Игра не создана',
-		self::NO_NUMBER => 'Число не добавлено'
+		self::NO_NUMBER => 'Число не добавлено',
+		self::UNKNOWN_SOCIAL_NETWORK => 'Неизвестная социальная сеть',
 	];
 	
 	/**
