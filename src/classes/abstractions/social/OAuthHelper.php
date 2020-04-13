@@ -4,6 +4,7 @@ namespace Router\Abstractions\Social;
 
 use Router\Controller\CommonController;
 use Router\Exceptions\InstanceNotFound;
+use Router\Models\social\OAuthHelperMailRu;
 use Router\Models\Social\OAuthHelperVkontakte;
 
 /**
@@ -57,6 +58,8 @@ abstract class OAuthHelper extends CommonController
 		switch ($Network->getId()) {
 			case Network::ID_VKONTAKTE:
 				return new OAuthHelperVkontakte($Network);
+			case Network::ID_MAILRU:
+				return new OAuthHelperMailRu($Network);
 			default :
 				throw new InstanceNotFound();
 		}

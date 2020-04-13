@@ -14,7 +14,6 @@ use Router\Models\Services\Request;
  */
 class Vkontakte extends Network
 {
-	const REDIRECT_URI = 'http://test.site/socialAuth/oauthCallback';
 	const API_VKONTAKTE_V = '5.80';
 	const BASE_URL = 'https://api.vk.com/method/';
 	

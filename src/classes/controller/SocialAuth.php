@@ -23,7 +23,7 @@ class SocialAuth extends CommonController
 		$this->setRequest(Input::METHOD_REQUEST_POST);
 		
 		$returnURL = $this->Input->get('returnUrl', 'string');
-		$socialNetwork = $this->Input->get('returnUrl', 'int');
+		$socialNetwork = $this->Input->get('socialNetworkId', 'int');
 		
 		try {
 			$Network = Network::getById($socialNetwork);

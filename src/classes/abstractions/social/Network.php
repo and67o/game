@@ -3,6 +3,7 @@
 namespace Router\Abstractions\Social;
 
 use Router\Exceptions\InstanceNotFound;
+use Router\Models\social\MailRu;
 use Router\Models\Social\Vkontakte;
 
 /**
@@ -12,9 +13,12 @@ use Router\Models\Social\Vkontakte;
 abstract class Network
 {
 	const RESPONSE_TYPE = 'code';
+	const REDIRECT_URI = 'http://test.site/socialAuth/oauthCallback';
 	
 	/** ID СОЦИАЛЬНОЙ СЕТИ: ВКонтакте */
 	const ID_VKONTAKTE = 0;
+	/** ID СОЦИАЛЬНОЙ СЕТИ: MAIL.RU */
+	const ID_MAILRU = 1;
 	
 	/** @var string */
 	protected $redirectUri;
@@ -126,6 +130,8 @@ abstract class Network
 		switch ($id) {
 			case self::ID_VKONTAKTE:
 				return new Vkontakte();
+			case self::ID_MAILRU:
+				return new MailRu();
 			default :
 				throw new InstanceNotFound();
 		}
