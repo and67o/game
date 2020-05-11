@@ -36,24 +36,37 @@ class Vkontakte extends Network
 	 */
 	public function getUserSocialAccountByToken(array $accessToken) :array
 	{
+		if (isset($accessToken['error'])) {
+			return [
+				'errors' => [$accessToken['error']],
+				'result' => false,
+				'data' => []
+			];
+		}
+
 		$this->setAccessToken($accessToken);
 		$userId = $accessToken['user_id'];
+		$email = $accessToken['email'];
 
 		$data = $this->get('users.get', [
 			'user_id' => $userId,
 			'fields' => [
-				'avatar',
-				'email',
 				'photo_100'
 			],
 		])['response'];
 
 		$data = array_shift($data);
+
 		return [
-			'socialNetwork' => self::ID_MAILRU,
-			'socialId' => $data['id'],
-			'name' => $data['first_name'] . ' ' .  $data['last_name'],
-			'avatar' => $data['photo_100']
+			'errors' => [],
+			'result' => true,
+			'data' => [
+				'socialNetwork' => self::ID_MAILRU,
+				'socialId' => $data['id'],
+				'name' => $data['first_name'] . ' ' .  $data['last_name'],
+				'avatar' => $data['photo_100'],
+				'email' => $email
+			]
 		];
 	}
 
@@ -80,7 +93,7 @@ class Vkontakte extends Network
 		$url = self::BASE_URL . $method . '?' . http_build_query($query);
 
 		$res = $this->getRequest()->curl($url);
-		return json_decode($res, true);
+		return $this->fromJSon($res, true);
 	}
 
 }

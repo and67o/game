@@ -20,7 +20,7 @@ class SocialAuth extends CommonController
 	/**
 	 *
 	 */
-	public function authorisation() : void
+	public function authorisation(): void
 	{
 		$this->setResponse(Input::METHOD_REQUEST_POST);
 
@@ -37,9 +37,7 @@ class SocialAuth extends CommonController
 				], true);
 			}
 
-			$this->Session->start();
-			$this->Session->set('sn', $socialNetwork);
-			$this->Session->set('return', $returnURL);
+			$this->_setSocialParams($socialNetwork, $returnURL);
 
 		} catch (InstanceNotFound $exception) {
 			$redirectURL = $returnURL;
@@ -50,15 +48,26 @@ class SocialAuth extends CommonController
 	}
 
 	/**
+	 * @param int $socialNetwork
+	 * @param string $returnURL
+	 */
+	private function _setSocialParams(int $socialNetwork, string $returnURL): void
+	{
+		$this->Session->start();
+		$this->Session->set('sn', $socialNetwork);
+		$this->Session->set('return', $returnURL);
+	}
+
+	/**
 	 *
 	 */
-	public function oauthCallback() : void
+	public function oauthCallback(): void
 	{
 		$this->setResponse(Input::METHOD_REQUEST_GET);
 
 		$this->Session->start();
-		$redirectURL = (string) $this->Session->get('return');
-		$socialNetwork = (int) $this->Session->get('sn');
+		$redirectURL = (string)$this->Session->get('return');
+		$socialNetwork = (int)$this->Session->get('sn');
 
 		$code = $this->Input->get('code', 'string');
 		try {

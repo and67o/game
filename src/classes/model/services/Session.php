@@ -9,17 +9,17 @@ namespace Router\Models\Services;
  */
 class Session
 {
-	
+
 	/**
 	 *
 	 */
 	public function start()
 	{
-		if(session_id() == '') {
+		if (session_id() == '') {
 			session_start();
 		}
 	}
-	
+
 	/**
 	 * @param $name
 	 * @param $value
@@ -29,7 +29,7 @@ class Session
 	{
 		return $_SESSION[$name] = $value;
 	}
-	
+
 	/**
 	 * @param $name
 	 * @return bool
@@ -38,17 +38,17 @@ class Session
 	{
 		return isset($_SESSION[$name]);
 	}
-	
+
 	/**
 	 * @param $name
 	 * @return mixed
 	 */
-	public function get($name) :string
+	public function get($name): string
 	{
 		$this->start();
-		return isset($_SESSION[$name]) ?? '';
+		return $_SESSION[$name] ?? '';
 	}
-	
+
 	/**
 	 * @param $name
 	 */
@@ -58,5 +58,13 @@ class Session
 			unset($_SESSION[$name]);
 		}
 	}
-	
+
+	/**
+	 *
+	 */
+	public function destroy()
+	{
+		session_destroy();
+	}
+
 }

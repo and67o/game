@@ -86,5 +86,6 @@ class Auth extends CommonController
 		$this->Session->delete('userId');
 		setcookie("userId", "", time() - 3600);
 		setcookie("hash", "", time() - 3600);
+		$this->Session->destroy();
 	}
 }

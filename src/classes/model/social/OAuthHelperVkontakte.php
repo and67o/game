@@ -24,11 +24,11 @@ class OAuthHelperVkontakte extends OAuthHelper
 	 */
 	public function getAuthUrl() : string
 	{
-
 		$params = [
 			'client_id' => $this->_Network->getClientId(),
 			'redirect_uri' => $this->_Network->getRedirectUri(),
 			'response_type' => Network::RESPONSE_TYPE,
+			'scope' => 'email',
 		];
 		
 		return self::BASE_URL . self::AUTHORIZE_METHOD . '?' . urldecode(http_build_query($params));

@@ -27,7 +27,7 @@ class CommonController
 	/** @var Validation */
 	protected $Validation;
 	/** @var Session */
-	protected $Session;
+	public $Session;
 	
 	public function __construct()
 	{
