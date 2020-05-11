@@ -16,10 +16,11 @@ export function socialAuth(event) {
 			dataForAxios.url,
 			dataForAxios.data
 		)
-		.then(({data: {linkContinue}} = response) => {
-			window.location = linkContinue;
+		.then((response) => {
+			console.log(response.data.linkContinue)
+			window.location = response.data.linkContinue;
 		})
-		.catch((response) => {
-			console.log(response);
-		});
+		// .catch((response) => {
+		// 	console.log(response);
+		// });
 }

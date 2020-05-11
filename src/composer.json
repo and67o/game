@@ -17,24 +17,25 @@
   "autoload": {
     "classmap": [
       "classes/controller/",
-      "classes/interfaces/",
       "classes/model/",
       "classes/model/services/",
       "classes/exceptions",
       "classes/traits",
       "classes/abstractions/social/",
+      "classes/abstractions/",
       "classes/model/social/"
     ],
     "psr-4": {
       "Router\\": "",
       "Router\\Controller\\": "classes/controller/",
-      "Router\\Interfaces\\": "classes/interfaces/",
       "Router\\Models\\": "classes/model/",
       "Router\\Models\\Services\\": "classes/model/services/",
-      "Router\\Exceptions\\": "classes/exceptions",
-      "Router\\Traits\\": "classes/traits",
+      "Router\\Exceptions\\": "classes/exceptions/",
+      "Router\\Traits\\": "classes/traits/",
       "Router\\Abstractions\\Social\\": "classes/abstractions/social/",
-      "Router\\Models\\Social\\": "classes/model/social/"
+      "Router\\Abstractions\\": "classes/abstractions/",
+      "Router\\Models\\Social\\": "classes/model/social/",
+      "Router\\Facades\\": "classes/facades/"
     },
     "files": [
       "router.php"

@@ -5,10 +5,8 @@ namespace Router\Models\Social;
 
 
 use Exception;
-use GuzzleHttp\Client;
 use Router\Abstractions\Social\Network;
 use Router\Abstractions\Social\OAuthHelper;
-use Router\Exceptions\BaseException;
 use Router\Models\Services\Request;
 
 /**
@@ -26,6 +24,7 @@ class OAuthHelperVkontakte extends OAuthHelper
 	 */
 	public function getAuthUrl() : string
 	{
+
 		$params = [
 			'client_id' => $this->_Network->getClientId(),
 			'redirect_uri' => $this->_Network->getRedirectUri(),
@@ -37,18 +36,17 @@ class OAuthHelperVkontakte extends OAuthHelper
 	
 	/**
 	 * @param string $code
-	 * @param string $state
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAccessToken(string $code, string $state)
+	public function fetchAccessToken(string $code) : array
 	{
 		$url = $this->_getOauTokenThUrl($code);
-
-		$token = Request::curl($url);
+		
+		$token = $this->getRequest()->curl($url);
 		$decodedToken = $this->fromJSon($token, true);
 		$this->_Network->setAccessToken($decodedToken);
-		return $this->_Network->getAccessToken();
+		return $this->_Network->getAccessToken() ?? [];
 	}
 	
 	/**

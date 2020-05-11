@@ -23,8 +23,8 @@ class Auth extends CommonController
 	public function authorisation()
 	{
 		try {
-			$this->setRequest(Input::METHOD_REQUEST_POST);
-
+			$this->setResponse(Input::METHOD_REQUEST_POST);
+			
 			$email = $this->Input->get('email', 'string');
 			$password = $this->Input->get('password', 'string');
 			$userParam = Hash::getPasswordParam($email);
@@ -71,8 +71,9 @@ class Auth extends CommonController
 	 */
 	private function setAuthParam(int $userId, string $salt)
 	{
+		session_start();
 		$this->Session->set('userId', $userId);
-
+		
 		AuthModel::setAuthCookie('userId', $userId);
 		AuthModel::setAuthCookie('hash', $salt);
 	}
@@ -80,7 +81,8 @@ class Auth extends CommonController
 	/**
 	 * Выход
 	 */
-	public function logOut() {
+	public function logOut()
+	{
 		$this->Session->delete('userId');
 		setcookie("userId", "", time() - 3600);
 		setcookie("hash", "", time() - 3600);

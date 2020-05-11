@@ -4,7 +4,7 @@
 namespace Router\Controller;
 
 use Exception;
-use Router\Interfaces\BaseTwigController;
+use Router\Abstractions\BaseTwigController;
 use Router\Models\{
 	GameProcess,
 	GameNumbers,

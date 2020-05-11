@@ -15,7 +15,9 @@ class Session
 	 */
 	public function start()
 	{
-		session_start();
+		if(session_id() == '') {
+			session_start();
+		}
 	}
 	
 	/**
@@ -41,9 +43,10 @@ class Session
 	 * @param $name
 	 * @return mixed
 	 */
-	public function get($name)
+	public function get($name) :string
 	{
-		return $_SESSION[$name];
+		$this->start();
+		return isset($_SESSION[$name]) ?? '';
 	}
 	
 	/**

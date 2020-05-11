@@ -2,23 +2,20 @@
 
 namespace Router\Controller;
 
-use Exception;
 
 use Router\Exceptions\{
 	BaseException,
 	ErrorException
 };
 use Router\Models\Services\{
-	Hash,
 	Input
 };
 use Router\Models\{
-	Model,
 	Auth,
 	Validation,
-	Role
 };
 use PDOException;
+use Router\Facades\UserFacade;
 
 /**
  * Класс отвечающий за регистрацию
@@ -32,7 +29,7 @@ class Register extends CommonController
 	public function register()
 	{
 		try {
-			$this->setRequest(Input::METHOD_REQUEST_POST);
+			$this->setResponse(Input::METHOD_REQUEST_POST);
 			
 			if (!$this->Input->checkRequestMethod()) {
 				throw new BaseException(BaseException::WRONG_METHOD);
@@ -43,12 +40,18 @@ class Register extends CommonController
 				throw new ErrorException($errors);
 			}
 			
-			$userId = $this->createUser();
+			$userId = UserFacade::add(
+				$this->Input->get('email', 'string'),
+				$this->Input->get('password', 'string'),
+				$this->Input->get('name', 'string')
+			);
+			
 			if (!$userId) {
-				throw new PDOException('Проблемы с регистрацией');
+				throw new BaseException(BaseException::USER_NOT_CREATED);
 			}
 			
 			Auth::setAuthCookie('userId', $userId);
+			$this->Session->start();
 			$this->Session->set('userId', $userId);
 			
 			$this->toJSON($this->response(
@@ -71,27 +74,7 @@ class Register extends CommonController
 				],
 				false
 			), true);
-		} catch (Exception $e) {
 		}
-	}
-	
-	/**
-	 * Создать пользователя
-	 * @return int
-	 * @throws Exception
-	 */
-	private function createUser()
-	{
-		$hashes = Hash::passwordHash($this->Input->get('password', 'string'));
-		
-		return (int) $this->User->create([
-				'email' => $this->Input->get('email', 'string'),
-				'password' => $hashes['hash'],
-				'salt' => $hashes['salt'],
-				'name' => $this->Input->get('name', 'string'),
-				'reg_dt' => Model::now(),
-				'role_id' => Role::USER_ROLE,
-			]) ?? 0;
 	}
 	
 	/**

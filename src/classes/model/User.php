@@ -14,6 +14,8 @@ use Router\Models\Services\Session;
  */
 class User extends Model
 {
+	const TABLE_NAME= 'users';
+
 	/** @var int уникальный идентификатор пользователя */
 	public $userId;
 	/** @var string email пользователя */
@@ -25,7 +27,7 @@ class User extends Model
 	 * User constructor.
 	 * @param int $userId
 	 */
-	public function __construct($userId = 0)
+	public function __construct(int $userId = 0)
 	{
 		if ($userId) {
 			$userData = self::_db()
@@ -62,7 +64,7 @@ class User extends Model
 	{
 		return self::_db()
 			->select([1])
-			->table('users', 'u')
+			->table(self::TABLE_NAME, 'u')
 			->where('email = ?')
 			->get((array) $email)
 			->single();
@@ -71,12 +73,12 @@ class User extends Model
 	/**
 	 * Создание пользователя
 	 * @param array $param
-	 * @return string
+	 * @return int
 	 */
-	public function create(array $param = [])
+	public function create(array $param = []) :int 
 	{
-		$userId = self::_db()
-			->table('users')
+		$userId = (int) self::_db()
+			->table(self::TABLE_NAME)
 			->add($param);
 		if (!$userId) {
 			throw new PDOException('There was a problem creating this account.');

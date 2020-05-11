@@ -7,6 +7,8 @@ namespace Router\Controller;
 use Router\Abstractions\Social\Network;
 use Router\Exceptions\BaseException;
 use Router\Exceptions\InstanceNotFound;
+use Router\Facades\UserFacade;
+use Router\Models\Auth;
 use Router\Models\Services\Input;
 
 /**
@@ -20,25 +22,25 @@ class SocialAuth extends CommonController
 	 */
 	public function authorisation() : void
 	{
-		$this->setRequest(Input::METHOD_REQUEST_POST);
-		
+		$this->setResponse(Input::METHOD_REQUEST_POST);
+
 		$returnURL = $this->Input->get('returnUrl', 'string');
-		$socialNetwork = $this->Input->get('socialNetworkId', 'int');
-		
+		$socialNetwork = $this->Input->get('socialNetwork', 'int');
+
 		try {
 			$Network = Network::getById($socialNetwork);
 			$redirectURL = $Network->getURLForAuth();
-			
+
 			if (!$redirectURL) {
 				$this->toJSON([
 					'urlTo' => $returnURL
 				], true);
 			}
-			
+
 			$this->Session->start();
 			$this->Session->set('sn', $socialNetwork);
 			$this->Session->set('return', $returnURL);
-			
+
 		} catch (InstanceNotFound $exception) {
 			$redirectURL = $returnURL;
 		}
@@ -46,32 +48,51 @@ class SocialAuth extends CommonController
 			'linkContinue' => $redirectURL
 		], true);
 	}
-	
+
 	/**
 	 *
 	 */
 	public function oauthCallback() : void
 	{
-		$this->setRequest(Input::METHOD_REQUEST_GET);
-		
+		$this->setResponse(Input::METHOD_REQUEST_GET);
+
 		$this->Session->start();
-		$redirectURL = $this->Session->get('return');
-		$socialNetwork = $this->Session->get('sn');
-		
+		$redirectURL = (string) $this->Session->get('return');
+		$socialNetwork = (int) $this->Session->get('sn');
+
 		$code = $this->Input->get('code', 'string');
-		$state = $this->Input->get('state', 'string');
-		
 		try {
-			if (
-				!$socialNetwork &&
-				$socialNetwork !== Network::ID_VKONTAKTE
-			) {
+			if (!in_array($socialNetwork, Network::getAllNetworkId())) {
 				throw new BaseException(BaseException::UNKNOWN_SOCIAL_NETWORK);
 			}
 			$Network = Network::getById($socialNetwork);
-			$accessToken = $Network->fetchAccessTokenForAuth($code, $state);
+			$accessToken = $Network->fetchAccessTokenForAuth($code);
 			$UserSocialAccount = $Network->getUserSocialAccountByToken($accessToken);
-			
+			if (!$UserSocialAccount['result']) {
+				$this->toJSON($this->response(
+					[],
+					false
+				), true);
+			}
+
+			//TODO пароли в отдельную таблицу и связка пароль к users
+			$userId = UserFacade::add(
+				$UserSocialAccount['data']['email'],
+				'',
+				$UserSocialAccount['data']['email'],
+				$UserSocialAccount['data']['avatar']
+			);
+
+			if (!$userId) {
+				throw new BaseException(BaseException::USER_NOT_CREATED);
+			}
+
+			Auth::setAuthCookie('userId', $userId);
+			$this->Session->start();
+			$this->Session->set('userId', $userId);
+
+			$this->toMain();
+
 		} catch (BaseException $exception) {
 			var_dump($exception->getMessage());
 		}

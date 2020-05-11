@@ -7,6 +7,10 @@ namespace Router\Models;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
 
+/**
+ * Class Validation
+ * @package Router\Models
+ */
 class Validation extends Model
 {
 	const MIN_LENGTH_OF_FIELD = 3;

@@ -7,7 +7,7 @@ namespace Router\Traits;
  * Trait JsonTrait
  * @package Router\Traits
  */
-trait JsonTrait
+trait Json
 {
 	/**
 	 * @param $var

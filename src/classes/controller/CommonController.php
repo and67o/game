@@ -11,12 +11,12 @@ use Router\Models\Services\{
 	Input,
 	Session
 };
-use Router\Traits\JsonTrait;
+use Router\Traits\Json;
 
 class CommonController
 {
 	
-	use JsonTrait;
+	use Json;
 	
 	/** @var int уникальный идентификатор пользователя */
 	public $userId;
@@ -34,7 +34,8 @@ class CommonController
 		$this->setInput();
 		$this->setValidation();
 		$this->setSession();
-		$this->setUser();
+		$userId = (int) $this->Session->get('userId') ?? 0;
+		$this->setUser($userId);
 	}
 	
 	/**
@@ -60,15 +61,16 @@ class CommonController
 	{
 		$this->Session = new Session();
 	}
-	
+
 	/**
+	 * @param int $userId
 	 * @return void
 	 */
-	public function setUser()
+	public function setUser(int $userId)
 	{
-		$this->User = new User();
+		$this->User = new User($userId);
 	}
-	
+
 	/**
 	 * Редирект
 	 * @param $location
@@ -133,7 +135,7 @@ class CommonController
 	/**
 	 * @param string $methodRequest
 	 */
-	protected function setRequest(string $methodRequest) : void
+	protected function setResponse(string $methodRequest) : void
 	{
 		$this->Input->setInputParam(
 			$this->getRequestData($methodRequest),

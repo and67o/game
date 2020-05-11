@@ -6,7 +6,7 @@ export const SOCIAL_BTNS = {
 	},
 	mail: {
 		name: 'mail',
-		imageClass: 'vk',
+		imageClass: 'mailru',
 		socialNetwork: 1
 	},
 };

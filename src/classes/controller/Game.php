@@ -4,7 +4,7 @@
 namespace Router\Controller;
 
 use Exception;
-use Router\Interfaces\BaseTwigController;
+use Router\Abstractions\BaseTwigController;
 use Router\Models\Game as GameModel;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;

@@ -1,8 +1,9 @@
 .vk {
 	background: url('/img/social/vk.png') center no-repeat;
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+}
+
+.mailru {
+	background: url('/img/social/mailru-logo.png') center no-repeat;
 }
 
 .social {
@@ -11,5 +12,8 @@
 
 	&__btn {
 		margin-right: 10px;
+		width: 50px;
+		height: 50px;
+		background-size: contain;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router\Interfaces;
+namespace Router\Abstractions;
 
 
 use Router\Controller\CommonController;
@@ -46,14 +46,13 @@ abstract class BaseTwigController extends CommonController
 	{
 		$loader = new FilesystemLoader(self::BASE_TEMPLATE_PATH);
 		$twig = new Environment($loader);
+		$templateParams = array_merge(
+			$this->getBaseParam($this->pageTitle),
+			$params
+		);
+
 		try {
-			echo $twig->render(
-				$this->_getTemplatePath(),
-				array_merge(
-					$this->getBaseParam($this->pageTitle),
-					$params
-				)
-			);
+			echo $twig->render($this->_getTemplatePath(), $templateParams);
 		} catch (LoaderError $e) {
 			Router::getPage404();
 		}

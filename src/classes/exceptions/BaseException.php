@@ -18,6 +18,8 @@ class BaseException extends Exception
 	const GAME_NOT_CREATED = 5;
 	const NO_NUMBER = 6;
 	const UNKNOWN_SOCIAL_NETWORK = 7;
+	const WRONG_REQUEST = 8;
+	const USER_NOT_CREATED = 9;
 	
 	/**
 	 * Ошибки исключений
@@ -30,6 +32,8 @@ class BaseException extends Exception
 		self::GAME_NOT_CREATED => 'Игра не создана',
 		self::NO_NUMBER => 'Число не добавлено',
 		self::UNKNOWN_SOCIAL_NETWORK => 'Неизвестная социальная сеть',
+		self::WRONG_REQUEST => 'Неверный запрос',
+		self::USER_NOT_CREATED => 'Проблемы с регистрацией'
 	];
 	
 	/**
@@ -40,8 +44,8 @@ class BaseException extends Exception
 	 * @param Exception $previous
 	 */
 	public function __construct(
-		$code = self::BASE_ERROR,
-		$message = '',
+		int $code = self::BASE_ERROR,
+		string $message = '',
 		Exception $previous = null
 	)
 	{

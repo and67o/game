@@ -2,7 +2,7 @@
 
 namespace Router\Controller;
 
-use Router\Interfaces\BaseTwigController;
+use Router\Abstractions\BaseTwigController;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 

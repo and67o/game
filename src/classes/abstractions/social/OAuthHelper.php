@@ -2,27 +2,47 @@
 
 namespace Router\Abstractions\Social;
 
-use Router\Controller\CommonController;
 use Router\Exceptions\InstanceNotFound;
+use Router\Models\Services\Request;
 use Router\Models\social\OAuthHelperMailRu;
 use Router\Models\Social\OAuthHelperVkontakte;
+use Router\Traits\Json;
 
 /**
  * Class OAuthHelper
  * @package Router\Abstractions\Social
  */
-abstract class OAuthHelper extends CommonController
+abstract class OAuthHelper
 {
+	use Json;
+
 	/** @var Network */
 	protected $_Network;
+	/** @var Request */
+	protected $_Request;
 	
 	public function __construct(Network $Network)
 	{
-		parent::__construct();
+		$Request = new Request();
+		$this->setRequest($Request);
 		$this->setNetwork($Network);
-		
 	}
-	
+
+	/**
+	 * @param Request $Request
+	 */
+	public function setRequest(Request $Request): void
+	{
+		$this->_Request = $Request;
+	}
+
+	/**
+	 * @return Request
+	 */
+	public function getRequest(): Request
+	{
+		return $this->_Request;
+	}
 	/**
 	 * @param Network $Network
 	 */
@@ -64,11 +84,10 @@ abstract class OAuthHelper extends CommonController
 				throw new InstanceNotFound();
 		}
 	}
-	
+
 	/**
 	 * @param string $code
-	 * @param string $state
 	 * @return array
 	 */
-	abstract public function fetchAccessToken(string $code, string $state);
+	abstract public function fetchAccessToken(string $code);
 }

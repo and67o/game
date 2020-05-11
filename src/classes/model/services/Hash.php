@@ -11,19 +11,19 @@ use Router\Models\Model;
  */
 class Hash extends Model
 {
-	
+
 	const MAX_COUNT_OF_ITERATION = 10;
-	
+
 	/**
 	 * @param $password
 	 * @param string $salt
 	 * @return string
 	 */
-	public static function makeHash(string $password, string $salt = '') : string
+	public static function makeHash(string $password, string $salt = ''): string
 	{
 		return md5(md5($password . md5($salt)));
 	}
-	
+
 	/**
 	 * @param string $password
 	 * @param string $salt
@@ -34,7 +34,7 @@ class Hash extends Model
 		string $password,
 		string $salt = '',
 		int $iterations = self::MAX_COUNT_OF_ITERATION
-	) : array
+	): array
 	{
 		$salt || $salt = self::makeSalt();
 		$hash = self::makeHash($password, $salt);
@@ -46,16 +46,16 @@ class Hash extends Model
 			'salt' => $salt
 		];
 	}
-	
+
 	/**
 	 * Генерирует соль
 	 * @return string
 	 */
-	public static function makeSalt()
+	public static function makeSalt() :string
 	{
 		return uniqid();
 	}
-	
+
 	/**
 	 * @param string $email
 	 * @return array

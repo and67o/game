@@ -58,3 +58,5 @@ CREATE TABLE IF NOT EXISTS `users`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 6
   DEFAULT CHARSET = utf8;
+
+alter table users alter column password set default 0;

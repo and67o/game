@@ -4,7 +4,7 @@
 namespace Router\Exceptions;
 
 
-use Router\Traits\JsonTrait;
+use Router\Traits\Json;
 
 /**
  * Class ErrorException
@@ -12,14 +12,14 @@ use Router\Traits\JsonTrait;
  */
 class ErrorException extends BaseException
 {
-	use JsonTrait;
-    
-    /**
-     * ErrorException constructor.
-     * @param string $errors
-     * @param int $code
-     * @param \Exception|null $previous
-     */
+	use Json;
+	
+	/**
+	 * ErrorException constructor.
+	 * @param string $errors
+	 * @param int $code
+	 * @param \Exception|null $previous
+	 */
 	public function __construct($errors = "", $code = 0, \Exception $previous = null)
 	{
 		$this->toJSON([
